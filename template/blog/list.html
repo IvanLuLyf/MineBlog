@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <hr>
-                    <p class="card-text"><?= $blog['message'] ?></p>
+                    <p class="card-text"><?= htmlspecialchars($blog['message']) ?></p>
                 </div>
             </div>
             <?php endforeach ?>
