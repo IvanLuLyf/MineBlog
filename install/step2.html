@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>安装MineBlog</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0;">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            安装MineBlog
+        </div>
+        <div class="card-body">
+            <h2>站点配置</h2>
+            <form method="post" action="/install.php?step=3">
+                <div class="form-group">
+                    <label for="site_name">站点名称</label>
+                    <input type="text" name="site_name" class="form-control" id="site_name" placeholder="站点名称" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" name="username" class="form-control" id="username" placeholder="用户名" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">邮箱</label>
+                    <input type="email" name="email" class="form-control" id="email" placeholder="邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" name="password" class="form-control" id="password" placeholder="密码">
+                </div>
+                <input type="submit" class="btn btn-dark" value="安装">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

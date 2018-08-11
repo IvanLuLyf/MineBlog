@@ -1,0 +1,76 @@
+<html lang="zh-cn">
+<head>
+    <title><?=constant("TP_SITE_NAME")?></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0;">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="/static/css/common.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<?php include "template/common/navbar.html"; ?>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9">
+            <?php foreach ($blogs as $blog): ?>
+            <div class="card neo_card mt-4">
+                <div class="card-body">
+                    <div class="media">
+                        <div class="media-body small">
+                            <h2><a href="/blog/view/<?= $blog['tid'] ?>"><?= $blog['title'] ?></a></h2>
+                            <div>
+								<span class="username">
+									<a href="#" class="text-muted font-weight-bold"><?= $blog['nickname'] ?></a>
+								</span>
+                                <span class="text-grey ml-2"><?= date('Y-m-d H:i:s', $blog['timeline']) ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <p class="card-text"><?= $blog['message'] ?></p>
+                </div>
+            </div>
+            <?php endforeach ?>
+        </div>
+        <div class="col-lg-3">
+            <?php if (isset($tp_user)): ?>
+            <div class="card neo_card mt-4">
+                <div class="card-body">
+                    <a href="/blog/create" class="btn btn-dark btn-block text-white badge-pill">发博客</a>
+                </div>
+            </div>
+            <div class="card neo_card mt-4">
+                <div class="card-body text-center">
+                    <img src="https://tp.twimi.cn/api.php?mod=user&action=getavatar&username=<?= $tp_user['username'] ?>"
+                         class="rounded-circle img-thumbnail center-block" width="72px"/>
+                    <h4 class="card-title"><?= $tp_user['nickname'] ?></h4>
+                    <p class="card-text">签名?</p>
+                </div>
+                <div class="card-footer text-muted">
+                    <a href="#" class="card-link">帖子 10</a>
+                    <a href="#" class="card-link">微博 3</a>
+                </div>
+            </div>
+            <?php endif; ?>
+            <?php if(isset($recommend_blogs)):?>
+            <div class="card neo_card mt-4">
+                <div class="card-header">
+                    推荐列表
+                </div>
+                <ul class="list-group list-group-flush">
+                    <?php foreach ($recommend_blogs as $blog): ?>
+                    <li class="list-group-item list-group-item-action"><?=$blog['title']?></li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+            <?php endif;?>
+        </div>
+    </div>
+</div>
+<?php include "template/common/footer.html"; ?>
+</body>
+</html>

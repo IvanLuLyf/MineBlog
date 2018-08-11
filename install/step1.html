@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>安装MineBlog</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0;">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            安装MineBlog
+        </div>
+        <div class="card-body">
+            <h2>数据库配置</h2>
+            <form method="post" action="/install.php?step=2">
+                <div class="form-group">
+                    <label for="db_host">数据库服务器</label>
+                    <input type="text" name="db_host" class="form-control" id="db_host" placeholder="数据库服务器" required>
+                </div>
+                <div class="form-group">
+                    <label for="db_user">数据库用户名</label>
+                    <input type="text" name="db_user" class="form-control" id="db_user" placeholder="数据库用户名" required>
+                </div>
+                <div class="form-group">
+                    <label for="db_pass">数据库密码</label>
+                    <input type="password" name="db_pass" class="form-control" id="db_pass" placeholder="数据库密码">
+                </div>
+                <div class="form-group">
+                    <label for="db_name">数据库名</label>
+                    <input type="text" name="db_name" class="form-control" id="db_name" placeholder="数据库名" required>
+                </div>
+                <input type="submit" class="btn btn-dark" value="下一步">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

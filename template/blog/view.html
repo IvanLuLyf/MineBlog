@@ -1,0 +1,46 @@
+<html lang="zh-cn">
+<head>
+    <title><?=$blog['title']?> - <?=constant("TP_SITE_NAME")?></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0;">
+    <meta name="description"  content="<?=$blog['title']?> - <?=constant("TP_SITE_NAME")?>">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="/static/css/common.css" rel="stylesheet">
+    <link href="/static/css/article.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<?php include "template/common/navbar.html"; ?>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card neo_card mt-4">
+                <div class="card-body">
+                    <h1><?=$blog['title']?></h1>
+                    <div class="media">
+                        <img class="rounded-circle"
+                             src="https://tp.twimi.cn/api.php?mod=user&action=getavatar&username=<?=$blog['username']?>"
+                             width="48px"/>
+                        <div class="media-body ml-3 small">
+                            <h6><a href="#" class="text-muted font-weight-bold"><?=$blog['nickname']?></a></h6>
+                            <div>
+                                <span class="text-grey text-muted font-weight-bold"><?=date('Y-m-d H:i:s',$blog['timeline'])?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="markdown-body">
+                        <?=$html_content?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php include "template/common/footer.html"; ?>
+</body>
+</html>

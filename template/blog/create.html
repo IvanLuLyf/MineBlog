@@ -1,0 +1,43 @@
+<html lang="zh-cn">
+<head>
+    <title>发帖 - <?=constant("TP_SITE_NAME")?></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0;">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="/static/css/common.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<?php include "template/common/navbar.html"; ?>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card neo_card mt-4">
+                <div class="card-body">
+                    <form class="form-horizontal" role="form" action="/blog/create" method="post">
+                        <div class="form-group">
+                            <label for="title">标题</label>
+                            <input id="title" name="title" type="text" placeholder="标题" class="form-control" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">内容</label>
+                            <textarea class="form-control" id="message" name="message" rows="3" cols="60" placeholder="内容" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="float-right">
+                                <button class="btn btn-outline-dark" type="submit">发布</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php include "template/common/footer.html"; ?>
+</body>
+</html>

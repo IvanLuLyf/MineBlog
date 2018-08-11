@@ -1,0 +1,44 @@
+<html>
+<head>
+    <title>登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0;">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="/static/css/common.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/css/login.css"/>
+</head>
+<body>
+<div class="container">
+    <h2 class="login-heading"><?=constant("TP_SITE_NAME")?></h2>
+    <?php if (isset($tp_error_msg)): ?>
+    <div id="err_alert" class="alert alert-danger login-alert">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>提示信息:</strong><?=$tp_error_msg; ?>
+    </div>
+    <?php endif; ?>
+    <div class="card form-login">
+        <form action="/user/login" method="post">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="用户名" required
+                       autofocus>
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="密码" required>
+            </div>
+            <input type="submit" class="btn btn-success btn-block" value="登陆">
+            <div class="oauth-bar">
+                <a href="/qqconnect/connect"><img alt="QQ" class="oauth-icon" src="/static/img/qq.png"></a>
+                <a href="/sinaconnect/connect"><img alt="微博" class="oauth-icon" src="/static/img/wb.png"></a>
+                <a href="/tauth/connect"><img alt="Twimi" class="oauth-icon" src="/static/img/tm.png"></a>
+            </div>
+            <div class="float-right"><a href="/user/register">注册</a> | <a href="/user/findpass">忘记密码</a></div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

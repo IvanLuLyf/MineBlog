@@ -1,0 +1,20 @@
+body {
+    margin: 0 auto;
+    padding-top: 70px;
+    padding-bottom: 55px;
+    background-color: #f1f1f1;
+    overflow-x: hidden;
+}
+
+.neo_nav_bg {
+    background-color: #000000CC !important;
+}
+
+.neo_card {
+    border-radius: 0.1rem;
+}
+
+.neo_card a {
+    color: #343a40;
+    font-weight: bold;
+}
