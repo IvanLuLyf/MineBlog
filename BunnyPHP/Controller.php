@@ -52,4 +52,9 @@ class Controller
     {
         return BunnyPHP::getStorage();
     }
+
+    public function config($name): array
+    {
+        return BunnyPHP::getConfig($name);
+    }
 }

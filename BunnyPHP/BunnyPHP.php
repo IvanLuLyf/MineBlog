@@ -23,6 +23,11 @@ class BunnyPHP
         $this->mode = $m;
     }
 
+    public static function getConfig($name)
+    {
+        return require(APP_PATH . "config/{$name}.php");
+    }
+
     public function run()
     {
         spl_autoload_register(array($this, 'loadClass'));
