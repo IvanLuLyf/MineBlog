@@ -7,6 +7,7 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link href="/static/css/common.css" rel="stylesheet">
+    <link href="/static/css/article.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
@@ -31,7 +32,9 @@
                         </div>
                     </div>
                     <hr>
-                    <p class="card-text"><?= htmlspecialchars($blog['message']) ?></p>
+                    <div class="markdown-body">
+                        <?=$parser->makeHtml($blog['message'])?>
+                    </div>
                 </div>
             </div>
             <?php endforeach ?>

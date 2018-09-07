@@ -63,9 +63,13 @@ class BlogController extends Controller
         $page = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : $page;
         $blogs = (new BlogModel())->getBlogByPage($page);
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
+            include APP_PATH . 'library/Parser.php';
+            $parser = new HyperDown\Parser;
+            $this->assign('parser', $parser);
             $this->assign('tp_user', $this->service('user')->getLoginUser());
             $this->assign('cur_ctr', 'blog');
         }
+        $this->assign("page", $page);
         $this->assign("blogs", $blogs);
         $this->render('blog/list.html');
     }
