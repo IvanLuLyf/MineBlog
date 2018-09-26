@@ -61,7 +61,7 @@ if (file_exists("./config/install.lock")) {
                 fwrite($config_file, '$config[\'site_url\'] = \'' . $_SERVER['SERVER_NAME'] . "';\n");
                 fwrite($config_file, '$config[\'controller\'] = \'Index' . "';\n");
                 fwrite($config_file, '$config[\'action\'] = \'index' . "';\n");
-                fwrite($config_file, '$config[\'storage\'] = \'file' . "';\n");
+                fwrite($config_file, '$config[\'storage\'][\'name\'] = \'File' . "';\n");
                 fwrite($config_file, 'return $config;');
                 fclose($config_file);
 
