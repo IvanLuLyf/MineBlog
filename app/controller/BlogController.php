@@ -11,14 +11,14 @@ class BlogController extends Controller
 
     public function ac_index()
     {
-        $this->redirect('/blog/list');
+        $this->redirect('blog', 'list');
     }
 
     public function ac_create_get()
     {
         $tp_user = $this->service('user')->getLoginUser();
         if ($tp_user == null) {
-            $this->redirect('/user/login');
+            $this->redirect('user', 'login');
             return;
         }
         $this->assign('tp_user', $tp_user);
@@ -30,7 +30,7 @@ class BlogController extends Controller
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
             $tp_user = $this->service('user')->getLoginUser();
             if ($tp_user == null) {
-                $this->redirect('/user/login');
+                $this->redirect('user', 'login');
                 return;
             }
             $tid = (new BlogModel())->sendBlog($tp_user, $_POST['title'], $_POST['message']);
@@ -38,13 +38,13 @@ class BlogController extends Controller
         }
     }
 
-    public function ac_view($tid = 0)
+    public function ac_view($path = [])
     {
-        $tid = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : $tid;
+        $tid = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : isset($path[0]) ? $path[0] : 0;
         $blog = (new BlogModel())->getBlogById($tid);
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
             if ($blog == null) {
-                $this->redirect('/blog/list');
+                $this->redirect('blog', 'list');
                 return;
             }
             $this->assign('tp_user', $this->service('user')->getLoginUser());
@@ -58,9 +58,9 @@ class BlogController extends Controller
         $this->render('blog/view.html');
     }
 
-    function ac_list($page = 1)
+    function ac_list($path = [])
     {
-        $page = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : $page;
+        $page = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : isset($path[0]) ? $path[0] : 1;
         $blogs = (new BlogModel())->getBlogByPage($page);
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
             include APP_PATH . 'library/Parser.php';
