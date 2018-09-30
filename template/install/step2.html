@@ -20,7 +20,7 @@
         </div>
         <div class="card-body">
             <h2>站点配置</h2>
-            <form method="post" action="/install.php?step=3">
+            <form method="post" action="/install/step3">
                 <div class="form-group">
                     <label for="site_name">站点名称</label>
                     <input type="text" name="site_name" class="form-control" id="site_name" placeholder="站点名称" required>
@@ -36,6 +36,18 @@
                 <div class="form-group">
                     <label for="password">密码</label>
                     <input type="password" name="password" class="form-control" id="password" placeholder="密码">
+                </div>
+                <div class="form-group">
+                    <label for="nickname">昵称</label>
+                    <input type="text" name="nickname" class="form-control" id="nickname" placeholder="昵称(可选)">
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input name="allow_reg" class="form-check-input" type="checkbox" id="allow_reg" value="" checked>
+                        <label class="form-check-label" for="allow_reg">
+                            允许注册
+                        </label>
+                    </div>
                 </div>
                 <input type="submit" class="btn btn-dark" value="安装">
             </form>
