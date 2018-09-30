@@ -12,7 +12,10 @@
         <ul class="navbar-nav">
             <?php if (isset($tp_user)): ?>
             <li class="nav-item">
-                <a class="nav-link" href="/user/index"><?=$tp_user['nickname']?></a>
+                <a class="nav-link" href="/user/index">
+                    <img src="https://tp.twimi.cn/api.php?mod=user&action=getavatar&username=<?= $tp_user['username'] ?>"
+                         class="rounded-circle" width="32"> <?=$tp_user['nickname']?>
+                </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/user/logout">退出</a>
