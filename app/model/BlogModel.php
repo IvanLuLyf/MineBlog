@@ -15,20 +15,14 @@ class BlogModel extends Model
 
     public function getBlogById($id)
     {
-        return $this->where("tid=:tid", [':tid' => $id])->fetch();
+        return $this->where("tid=:tid", ['tid' => $id])->fetch();
     }
 
     public function sendBlog($user, $title, $message)
     {
         if ($user != null && $title != null && $message != null) {
-            $datas = array(
-                'username' => $user['username'],
-                'nickname' => $user['nickname'],
-                'title' => $title,
-                'message' => $message,
-                'timeline' => time()
-            );
-            return $this->add($datas);
+            $blog = ['username' => $user['username'], 'nickname' => $user['nickname'], 'title' => $title, 'message' => $message, 'timestamp' => time()];
+            return $this->add($blog);
         } else {
             return -1;
         }
