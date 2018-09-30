@@ -10,6 +10,10 @@ class IndexController extends Controller
 {
     function ac_index()
     {
-        $this->redirect('/blog/list');
+        if (Config::check('config')) {
+            $this->redirect('blog', 'list');
+        } else {
+            $this->redirect('install', 'index');
+        }
     }
 }
