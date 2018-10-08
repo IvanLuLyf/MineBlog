@@ -1,5 +1,7 @@
 # MineBlog
 
+![MineBlog](https://github.com/IvanLuLyf/MineBlog/blob/master/static/img/mineblog.png?raw=true)
+
 本项目为自制的PHP博客系统
 
 ## 环境要求
