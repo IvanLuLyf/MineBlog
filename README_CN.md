@@ -5,7 +5,7 @@
 ## 环境要求
 
 * PHP >= 7.0
-* MySQL
+* MySQL 或 SQLite
 
 ## 安装方式
 
@@ -34,7 +34,7 @@ location / {
 }
 ```
 
-### 3. 打开 http://yourdomain/install.php 完成安装
+### 3. 打开 http://yourdomain/install 完成安装
 
 ## 错误码
 

@@ -5,7 +5,7 @@ This repository is made for my blog site.
 ## Requirement
 
 * PHP >= 7.0
-* MySQL
+* MySQL or SQLite
 
 ## Installation
 
@@ -34,7 +34,7 @@ location / {
 }
 ```
 
-### 3. Open http://yourdomain/install.php
+### 3. Open http://yourdomain/install
 
 ## Error Code
 
