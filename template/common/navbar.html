@@ -12,8 +12,8 @@
         <ul class="navbar-nav">
             <?php if (isset($tp_user)): ?>
             <li class="nav-item">
-                <a class="nav-link" href="/user/index">
-                    <img src="https://tp.twimi.cn/api.php?mod=user&action=getavatar&username=<?= $tp_user['username'] ?>"
+                <a class="nav-link" href="/setting/index">
+                    <img src="/user/avatar/<?= $tp_user['id'] ?>"
                          class="rounded-circle" width="32"> <?=$tp_user['nickname']?>
                 </a>
             </li>
