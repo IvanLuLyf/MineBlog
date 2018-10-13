@@ -101,6 +101,11 @@ class InstallController extends Controller
             'like_num' => ['integer', 'default 0'],
         ], ['tid'], 'tid');
 
+        Database::getInstance()->createTable($db_prefix . 'avatar', [
+            'uid' => ['integer', 'not null'],
+            'url' => ['text', 'not null'],
+        ], ['uid']);
+
         Database::getInstance()->insert(['username' => $username, 'password' => $password, 'email' => $email, 'nickname' => $nickname, 'token' => ''], $db_prefix . 'user');
         $config_file = fopen(APP_PATH . "config/config.php", "w") or die("Unable to open file!");
         $config = Config::make([
