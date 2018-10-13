@@ -1,0 +1,39 @@
+<html lang="zh-cn">
+<head>
+    <title>头像 - <?=constant("TP_SITE_NAME")?></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/common.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<?php include "template/common/navbar.html"; ?>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <?php include "template/setting/nav.html"; ?>
+        </div>
+        <div class="col-lg-9">
+            <div class="card neo_card mt-4">
+                <div class="card-body">
+                    <form action="/setting/gravatar">
+                        <div class="form-group">
+                            <div class="col-sm-3 col-form-label">
+                                <img class="rounded-circle" src="https://www.gravatar.com/avatar/<?=md5(strtolower(trim($tp_user['email'])))?>">
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="submit" value="使用Gravatar头像" class="btn btn-dark">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php include "template/common/footer.html"; ?>
+</body>
+</html>
