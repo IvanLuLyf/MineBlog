@@ -75,7 +75,7 @@ class UserController extends Controller
         $username = isset($_GET['username']) ? $_GET['username'] : null;
         $imgUrl = "/static/img/avatar.png";
         if ($username != null) {
-            if ($uid = (new UserModel())->where(["username = :username"], [':username' => $username])->fetch()['id']) {
+            if ($uid = (new UserModel())->where(["username = :username"], ['username' => $username])->fetch()['id']) {
                 $imgUrl = (new AvatarModel())->getAvatar($uid);
             }
         } else if ($uid != 0) {
