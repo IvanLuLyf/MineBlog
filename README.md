@@ -2,7 +2,7 @@
 
 ![MineBlog](https://github.com/IvanLuLyf/MineBlog/blob/master/static/img/mineblog.png?raw=true)
 
-This repository is made for my blog site.
+MineBlog is a simple blog software powered by BunnyPHP framework.
 
 ## Requirement
 
