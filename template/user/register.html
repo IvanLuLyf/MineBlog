@@ -36,8 +36,11 @@
                 <label for="nickname">昵称</label>
                 <input type="text" id="nickname" name="nickname" class="form-control" placeholder="昵称(可选)">
             </div>
+            <?php if(isset($referer)):?>
+            <input type="hidden" id="referer" name="referer" value="<?=$referer?>">
+            <?php endif;?>
             <input type="submit" class="btn btn-success btn-block" value="注册">
-            <div class="mt-2 float-right"><a href="/user/login">登陆</a></div>
+            <div class="mt-2 float-right"><a href="/user/login?referer=<?=isset($referer)?urlencode($referer):''?>">登陆</a></div>
         </form>
     </div>
 </div>

@@ -28,13 +28,17 @@
                 <label for="password">密码</label>
                 <input type="password" id="password" name="password" class="form-control" placeholder="密码" required>
             </div>
+            <?php if(isset($referer)):?>
+            <input type="hidden" id="referer" name="referer" value="<?=$referer?>">
+            <?php endif;?>
             <input type="submit" class="btn btn-success btn-block" value="登陆">
             <div class="oauth-bar">
                 <a href="/oauth/connect/qq"><img alt="QQ" class="oauth-icon" src="/static/img/qq.png"></a>
                 <a href="/oauth/connect/wb"><img alt="微博" class="oauth-icon" src="/static/img/wb.png"></a>
                 <a href="/oauth/connect/tm"><img alt="Twimi" class="oauth-icon" src="/static/img/tm.png"></a>
             </div>
-            <div class="float-right"><a href="/user/register">注册</a> | <a href="/user/findpass">忘记密码</a></div>
+            <div class="float-right"><a href="/user/register?referer=<?=isset($referer)?urlencode($referer):''?>">注册</a> | <a
+                    href="/user/findpass">忘记密码</a></div>
         </form>
     </div>
 </div>
