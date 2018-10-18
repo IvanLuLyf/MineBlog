@@ -12,7 +12,7 @@ class SettingController extends Controller
     {
         $tp_user = $this->service('user')->getLoginUser();
         if ($tp_user == null) {
-            $this->redirect('user', 'login');
+            $this->redirect('user', 'login', ['referer' => View::get_url('setting', 'index')]);
             return;
         }
         $this->assign('tp_user', $tp_user);
@@ -23,7 +23,7 @@ class SettingController extends Controller
     {
         $tp_user = $this->service('user')->getLoginUser();
         if ($tp_user == null) {
-            $this->redirect('user', 'login');
+            $this->redirect('user', 'login', ['referer' => View::get_url('setting', 'gravatar')]);
             return;
         }
         (new AvatarModel())->upload($tp_user['id'], 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($tp_user['email']))));

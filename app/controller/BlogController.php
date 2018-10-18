@@ -18,7 +18,7 @@ class BlogController extends Controller
     {
         $tp_user = $this->service('user')->getLoginUser();
         if ($tp_user == null) {
-            $this->redirect('user', 'login');
+            $this->redirect('user', 'login', ['referer' => View::get_url('blog', 'create')]);
             return;
         }
         $this->assign('tp_user', $tp_user);
@@ -30,7 +30,7 @@ class BlogController extends Controller
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
             $tp_user = $this->service('user')->getLoginUser();
             if ($tp_user == null) {
-                $this->redirect('user', 'login');
+                $this->redirect('user', 'login', ['referer' => View::get_url('blog', 'create')]);
                 return;
             }
             $tid = (new BlogModel())->sendBlog($tp_user, $_POST['title'], $_POST['message']);
@@ -60,7 +60,7 @@ class BlogController extends Controller
 
     function ac_list($path = [])
     {
-        $page = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : isset($path[0]) ? $path[0] : 1;
+        $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : isset($path[0]) ? $path[0] : 1;
         $blogs = (new BlogModel())->getBlogByPage($page);
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
             include APP_PATH . 'library/Parser.php';
