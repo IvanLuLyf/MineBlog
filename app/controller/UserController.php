@@ -107,4 +107,31 @@ class UserController extends Controller
         }
         $this->redirect($imgUrl);
     }
+
+    public function ac_blog(array $path)
+    {
+        if (count($path) == 0) $path = [''];
+        $username = isset($_GET['username']) ? $_GET['username'] : $path[0];
+        $page = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : isset($path[1]) ? $path[1] : 1;
+        if ($username == '') {
+            $tp_user = $this->service('user')->getLoginUser();
+            if ($tp_user == null) {
+                $this->redirect('user', 'login');
+                return;
+            }
+            $this->assign('tp_user', $tp_user);
+            $username = $tp_user['username'];
+        }
+        $blogs = (new BlogModel())->getBlogByUsername($username);
+        if ($this->_mode == BunnyPHP::MODE_NORMAL) {
+            include APP_PATH . 'library/Parser.php';
+            $parser = new HyperDown\Parser;
+            $this->assign('parser', $parser);
+            $this->assign('tp_user', $this->service('user')->getLoginUser());
+            $this->assign('cur_ctr', 'blog');
+        }
+        $this->assign("page", $page);
+        $this->assign("blogs", $blogs);
+        $this->render('blog/list.html');
+    }
 }
