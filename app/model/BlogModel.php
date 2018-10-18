@@ -18,6 +18,11 @@ class BlogModel extends Model
         return $this->where("tid=:tid", ['tid' => $id])->fetch();
     }
 
+    public function getBlogByUsername($username)
+    {
+        return $this->where("username=:un", ['un' => $username])->order(['tid desc'])->fetchAll();
+    }
+
     public function sendBlog($user, $title, $message)
     {
         if ($user != null && $title != null && $message != null) {
