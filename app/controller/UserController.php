@@ -10,6 +10,12 @@ class UserController extends Controller
 {
     public function ac_login_get()
     {
+        if (isset($_REQUEST['referer'])) {
+            session_start();
+            $referer = $_REQUEST['referer'];
+            $_SESSION['referer'] = $referer;
+            $this->assign('referer', $referer);
+        }
         $this->render("user/login.html");
     }
 
@@ -20,7 +26,13 @@ class UserController extends Controller
             if ($result['ret'] == 0) {
                 session_start();
                 $_SESSION['token'] = $result['token'];
-                $this->redirect('index', 'index');
+                if (isset($_SESSION['referer'])) {
+                    $referer = $_SESSION['referer'];
+                    unset($_SESSION['referer']);
+                    $this->redirect($referer);
+                } else {
+                    $this->redirect('index', 'index');
+                }
             } else {
                 $this->assignAll($result);
                 $this->render('user/login.html');
@@ -33,9 +45,15 @@ class UserController extends Controller
 
     public function ac_register_get()
     {
-        if (Config::load('config')->get('allow_reg'))
+        if (Config::load('config')->get('allow_reg')) {
+            if (isset($_REQUEST['referer'])) {
+                session_start();
+                $referer = $_REQUEST['referer'];
+                $_SESSION['referer'] = $referer;
+                $this->assign('referer', $referer);
+            }
             $this->render("user/register.html");
-        else
+        } else
             echo "<h1>站点关闭注册</h1>";
     }
 
@@ -47,7 +65,13 @@ class UserController extends Controller
                 if ($result['ret'] == 0) {
                     session_start();
                     $_SESSION['token'] = $result['token'];
-                    $this->redirect('index', 'index');
+                    if (isset($_SESSION['referer'])) {
+                        $referer = $_SESSION['referer'];
+                        unset($_SESSION['referer']);
+                        $this->redirect($referer);
+                    } else {
+                        $this->redirect('index', 'index');
+                    }
                 } else {
                     $this->assignAll($result);
                     $this->render('user/register.html');
