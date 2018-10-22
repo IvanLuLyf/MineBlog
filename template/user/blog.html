@@ -15,21 +15,29 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-9">
-            <?php foreach ($blogs as $blog): ?>
             <div class="card neo_card mt-4">
+                <div class="card-body text-center">
+                    <img src="/user/avatar/?username=<?= $blogs[0]['username'] ?>"
+                         class="rounded-circle center-block" width="72px"/>
+                    <h4 class="card-title"><?= $blogs[0]['nickname'] ?></h4>
+                    <p class="card-text">签名?</p>
+                </div>
+            </div>
+            <?php foreach ($blogs as $blog): ?>
+            <div class="card neo_card mt-2">
                 <div class="card-body">
-                    <div class="media">
+                    <div class="media mt-4">
                         <div class="media-body small">
                             <h2><a href="/blog/view/<?= $blog['tid'] ?>"><?= $blog['title'] ?></a></h2>
                             <div>
 								<span class="username">
-									<a href="/user/blog/<?=$blog['username']?>" class="text-muted font-weight-bold"><?= $blog['nickname'] ?></a>
+									<a href="/user/blog/<?=$blog['username']?>"
+                                       class="text-muted font-weight-bold"><?= $blog['nickname'] ?></a>
 								</span>
                                 <span class="text-grey ml-2"><?= date('Y-m-d H:i:s', $blog['timestamp']) ?></span>
                             </div>
                         </div>
                     </div>
-                    <hr>
                     <div class="markdown-body">
                         <?=$parser->makeHtml($blog['content'])?>
                     </div>
@@ -38,21 +46,6 @@
             <?php endforeach ?>
         </div>
         <div class="col-lg-3">
-            <?php if (isset($tp_user)): ?>
-            <div class="card neo_card mt-4">
-                <div class="card-body">
-                    <a href="/blog/create" class="btn btn-dark btn-block text-white badge-pill">发博客</a>
-                </div>
-            </div>
-            <div class="card neo_card mt-4">
-                <div class="card-body text-center">
-                    <img src="/user/avatar/<?= $tp_user['id'] ?>"
-                         class="rounded-circle center-block" width="72px"/>
-                    <h4 class="card-title"><?= $tp_user['nickname'] ?></h4>
-                    <p class="card-text">签名?</p>
-                </div>
-            </div>
-            <?php endif; ?>
             <?php if(isset($recommend_blogs)):?>
             <div class="card neo_card mt-4">
                 <div class="card-header">

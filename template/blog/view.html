@@ -24,7 +24,7 @@
                              src="/user/avatar?username=<?=$blog['username']?>"
                              width="48px"/>
                         <div class="media-body ml-3 small">
-                            <h6><a href="#" class="text-muted font-weight-bold"><?=$blog['nickname']?></a></h6>
+                            <h6><a href="/user/blog/<?=$blog['username']?>" class="text-muted font-weight-bold"><?=$blog['nickname']?></a></h6>
                             <div>
                                 <span class="text-grey text-muted font-weight-bold"><?=date('Y-m-d H:i:s',$blog['timestamp'])?></span>
                             </div>
