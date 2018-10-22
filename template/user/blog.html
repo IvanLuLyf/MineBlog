@@ -9,6 +9,13 @@
     <link href="/static/css/common.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <link href="/static/css/article.css" rel="stylesheet">
+    <?php if(isset($user_info['background'])):?>
+    <style>
+        body {
+            background: url(<?=$user_info['background']?>) no-repeat fixed center;
+        }
+    </style>
+    <?php endif;?>
 </head>
 <body>
 <?php include "template/common/navbar.html"; ?>

@@ -2,7 +2,7 @@ body {
     margin: 0 auto;
     padding-top: 70px;
     padding-bottom: 55px;
-    background-color: #f1f1f1;
+    background-color: #f5f5f5;
     overflow-x: hidden;
 }
 
@@ -12,6 +12,7 @@ body {
 
 .neo_card {
     border-radius: 0.1rem;
+    border-width: 0;
 }
 
 .neo_card a {

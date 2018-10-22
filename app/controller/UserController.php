@@ -139,7 +139,11 @@ class UserController extends Controller
             $this->assign('tp_user', $tp_user);
             $this->assign('cur_ctr', 'blog');
         }
+        $user = (new UserModel())->where(["username = :username"], ['username' => $username])->fetch(['id', 'username', 'nickname']);
+        $user_info = (new UserInfoModel())->get($user['id']);
         $blogs = (new BlogModel())->getBlogByUsername($username, $visible);
+        $this->assign('user', $user);
+        $this->assign('user_info', $user_info);
         $this->assign("page", $page);
         $this->assign("blogs", $blogs);
         $this->render('user/blog.html');
