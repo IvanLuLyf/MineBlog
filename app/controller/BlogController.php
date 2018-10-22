@@ -44,7 +44,7 @@ class BlogController extends Controller
         $blog = (new BlogModel())->getBlogById($tid);
         $tp_user = $this->service('user')->getLoginUser();
         if ($blog != null) {
-            if ($blog['visible'] == 0 || ($blog['visible'] == 1 && $tp_user['username'] == $blog['username'])) {
+            if ($blog['visible'] == 0 || ($blog['visible'] > 0 && $tp_user['username'] == $blog['username'])) {
                 if ($this->_mode == BunnyPHP::MODE_NORMAL) {
                     $this->assign('tp_user', $tp_user);
                     include APP_PATH . 'library/Parser.php';
