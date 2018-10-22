@@ -33,7 +33,7 @@ class BlogController extends Controller
                 $this->redirect('user', 'login', ['referer' => View::get_url('blog', 'create')]);
                 return;
             }
-            $tid = (new BlogModel())->sendBlog($tp_user, $_POST['title'], $_POST['message']);
+            $tid = (new BlogModel())->sendBlog($tp_user, $_POST['title'], $_POST['content']);
             $this->redirect("/blog/view/$tid");
         }
     }
@@ -42,20 +42,31 @@ class BlogController extends Controller
     {
         $tid = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : isset($path[0]) ? $path[0] : 0;
         $blog = (new BlogModel())->getBlogById($tid);
-        if ($this->_mode == BunnyPHP::MODE_NORMAL) {
-            if ($blog == null) {
-                $this->redirect('blog', 'list');
-                return;
+        $tp_user = $this->service('user')->getLoginUser();
+        if ($blog != null) {
+            if ($blog['visible'] == 0 || ($blog['visible'] == 1 && $tp_user['username'] == $blog['username'])) {
+                if ($this->_mode == BunnyPHP::MODE_NORMAL) {
+                    $this->assign('tp_user', $tp_user);
+                    include APP_PATH . 'library/Parser.php';
+                    $parser = new HyperDown\Parser;
+                    $html_content = $parser->makeHtml($blog['content']);
+                    $this->assign('cur_ctr', 'blog');
+                    $this->assign("html_content", $html_content);
+                }
+                $this->assign("blog", $blog);
+                $this->render('blog/view.html');
+            } else {
+                $this->assign('ret', 4002);
+                $this->assign('status', 'permission denied');
+                $this->assign('tp_error_msg', "没有访问权限");
+                $this->render('common/error.html');
             }
-            $this->assign('tp_user', $this->service('user')->getLoginUser());
-            include APP_PATH . 'library/Parser.php';
-            $parser = new HyperDown\Parser;
-            $html_content = $parser->makeHtml($blog['message']);
-            $this->assign('cur_ctr', 'blog');
-            $this->assign("html_content", $html_content);
+        } else {
+            $this->assign('ret', 4001);
+            $this->assign('status', 'blog not found');
+            $this->assign('tp_error_msg', "博客不存在");
+            $this->render('common/error.html');
         }
-        $this->assign("blog", $blog);
-        $this->render('blog/view.html');
     }
 
     function ac_list($path = [])

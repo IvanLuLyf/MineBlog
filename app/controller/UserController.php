@@ -53,8 +53,12 @@ class UserController extends Controller
                 $this->assign('referer', $referer);
             }
             $this->render("user/register.html");
-        } else
-            echo "<h1>站点关闭注册</h1>";
+        } else {
+            $this->assign('ret', 1007);
+            $this->assign('status', 'register not allowed');
+            $this->assign('tp_error_msg', "站点关闭注册");
+            $this->render('common/error.html');
+        }
     }
 
     public function ac_register_post()
@@ -81,7 +85,10 @@ class UserController extends Controller
                 $this->render();
             }
         } else {
-            echo "<h1>站点关闭注册</h1>";
+            $this->assign('ret', 1007);
+            $this->assign('status', 'register not allowed');
+            $this->assign('tp_error_msg', "站点关闭注册");
+            $this->render('common/error.html');
         }
     }
 
@@ -113,25 +120,28 @@ class UserController extends Controller
         if (count($path) == 0) $path = [''];
         $username = isset($_GET['username']) ? $_GET['username'] : $path[0];
         $page = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : isset($path[1]) ? $path[1] : 1;
+        $tp_user = $this->service('user')->getLoginUser();
         if ($username == '') {
-            $tp_user = $this->service('user')->getLoginUser();
             if ($tp_user == null) {
-                $this->redirect('user', 'login');
+                $this->redirect('user', 'login', ['referer' => View::get_url('user', 'blog')]);
                 return;
             }
-            $this->assign('tp_user', $tp_user);
             $username = $tp_user['username'];
         }
-        $blogs = (new BlogModel())->getBlogByUsername($username);
+        $visible = 0;
+        if ($tp_user != null && $tp_user['username'] == $username) {
+            $visible = 2;
+        }
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
             include APP_PATH . 'library/Parser.php';
             $parser = new HyperDown\Parser;
             $this->assign('parser', $parser);
-            $this->assign('tp_user', $this->service('user')->getLoginUser());
+            $this->assign('tp_user', $tp_user);
             $this->assign('cur_ctr', 'blog');
         }
+        $blogs = (new BlogModel())->getBlogByUsername($username, $visible);
         $this->assign("page", $page);
         $this->assign("blogs", $blogs);
-        $this->render('blog/list.html');
+        $this->render('user/blog.html');
     }
 }
