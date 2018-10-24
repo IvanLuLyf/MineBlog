@@ -45,6 +45,7 @@ class BlogController extends Controller
         $tp_user = $this->service('user')->getLoginUser();
         if ($blog != null) {
             if ($blog['visible'] == 0 || ($blog['visible'] > 0 && $tp_user['username'] == $blog['username'])) {
+                $comments = (new CommentModel())->listComment($tid);
                 if ($this->_mode == BunnyPHP::MODE_NORMAL) {
                     $this->assign('tp_user', $tp_user);
                     include APP_PATH . 'library/Parser.php';
@@ -54,6 +55,7 @@ class BlogController extends Controller
                     $this->assign("html_content", $html_content);
                 }
                 $this->assign("blog", $blog);
+                $this->assign('comments', $comments);
                 $this->render('blog/view.html');
             } else {
                 $this->assign('ret', 4002);
