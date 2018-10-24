@@ -116,6 +116,15 @@ class InstallController extends Controller
                 'like_num' => ['integer', 'default 0'],
             ], ['tid'], 'tid');
 
+            Database::getInstance()->createTable($db_prefix . 'comment', [
+                'cid' => ['integer', 'not null'],
+                'tid' => ['integer', 'not null'],
+                'username' => ['varchar(16)', 'not null'],
+                'nickname' => ['varchar(32)'],
+                'content' => ['text', 'not null'],
+                'timestamp' => ['text'],
+            ], ['cid'], 'cid');
+
             Database::getInstance()->createTable($db_prefix . 'avatar', [
                 'uid' => ['integer', 'not null'],
                 'url' => ['text', 'not null'],
