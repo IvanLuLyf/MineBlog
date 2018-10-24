@@ -3,7 +3,7 @@
     <title><?=$blog['title']?> - <?=constant("TP_SITE_NAME")?></title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description"  content="<?=$blog['title']?> - <?=constant('TP_SITE_NAME')?>">
+    <meta name="description" content="<?=$blog['title']?> - <?=constant('TP_SITE_NAME')?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -24,7 +24,8 @@
                              src="/user/avatar?username=<?=$blog['username']?>"
                              width="48px"/>
                         <div class="media-body ml-3 small">
-                            <h6><a href="/user/blog/<?=$blog['username']?>" class="text-muted font-weight-bold"><?=$blog['nickname']?></a></h6>
+                            <h6><a href="/user/blog/<?=$blog['username']?>"
+                                   class="text-muted font-weight-bold"><?=$blog['nickname']?></a></h6>
                             <div>
                                 <span class="text-grey text-muted font-weight-bold"><?=date('Y-m-d H:i:s',$blog['timestamp'])?></span>
                             </div>
@@ -34,6 +35,45 @@
                     <div class="markdown-body">
                         <?=$html_content?>
                     </div>
+                </div>
+            </div>
+            <div class="card neo_card mt-3">
+                <div class="card-body">
+                    <form class="form-horizontal" role="form" action="" method="post">
+                        <input type="hidden" name="tid" value="<?=$blog['tid']?>"/>
+                        <div class="form-group">
+                            <label for="content">评论</label>
+                            <textarea class="form-control" id="content" name="content" rows="3"
+                                      cols="60"
+                                      placeholder="内容" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="mr-auto"></div>
+                                <div class="col-md-3 col-lg-3">
+                                    <button class="btn btn-dark btn-block badge-pill" type="submit" <?php if (!isset($tp_user)):?>disabled<?php endif;?>>发布</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <?php foreach ($comments as $comment) : ?>
+                    <hr>
+                    <div class="media">
+                        <img class="rounded-circle"
+                             src="/user/avatar?username=<?= $comment['username'] ?>"
+                             width="40px"/>
+                        <div class="media-body ml-2 small">
+                            <div>
+								<span class="username">
+									<a href="/user/blog/<?= $comment['username'] ?>"
+                                       class="text-muted font-weight-bold"><?=$comment['nickname']?></a>
+								</span>
+                                <span class="text-grey ml-2"><?=date('Y-m-d H:i:s', $comment['timestamp'])?></span>
+                            </div>
+                            <h6><?=htmlspecialchars($comment['content'])?></h6>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
