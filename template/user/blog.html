@@ -27,7 +27,7 @@
                     <img src="/user/avatar/?username=<?= $blogs[0]['username'] ?>"
                          class="rounded-circle center-block" width="72px"/>
                     <h4 class="card-title"><?= $blogs[0]['nickname'] ?></h4>
-                    <p class="card-text">签名?</p>
+                    <p class="card-text"><?=htmlspecialchars($user_info['signature'])?></p>
                 </div>
             </div>
             <?php foreach ($blogs as $blog): ?>
