@@ -16,7 +16,7 @@ class CommentModel extends Model
     public function sendComment($tid, $user, $content)
     {
         if ($user != null && $tid != null && $content != null) {
-            $comment = ['username' => $user['username'], 'nickname' => $user['nickname'], 'content' => $content, 'timestamp' => time()];
+            $comment = ['tid' => $tid, 'username' => $user['username'], 'nickname' => $user['nickname'], 'content' => $content, 'timestamp' => time()];
             return $this->add($comment);
         } else {
             return -1;

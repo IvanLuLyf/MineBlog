@@ -39,7 +39,7 @@
             </div>
             <div class="card neo_card mt-3">
                 <div class="card-body">
-                    <form class="form-horizontal" role="form" action="" method="post">
+                    <form class="form-horizontal" role="form" action="/blog/comment/<?=$blog['tid']?>" method="post">
                         <input type="hidden" name="tid" value="<?=$blog['tid']?>"/>
                         <div class="form-group">
                             <label for="content">评论</label>

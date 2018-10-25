@@ -86,4 +86,26 @@ class BlogController extends Controller
         $this->assign("blogs", $blogs);
         $this->render('blog/list.html');
     }
+
+    function ac_comment(array $path = [])
+    {
+        $tid = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : isset($path[0]) ? $path[0] : 0;
+        $blog = (new BlogModel())->getBlogById($tid);
+        if ($blog != null) {
+            if ($this->_mode == BunnyPHP::MODE_NORMAL) {
+                $tp_user = $this->service('user')->getLoginUser();
+                if ($tp_user == null) {
+                    $this->redirect('user', 'login', ['referer' => View::get_url('blog', 'view', ['tid' => $tid])]);
+                    return;
+                }
+                $cid = (new CommentModel())->sendComment($tid, $tp_user, $_POST['content']);
+                $this->redirect("/blog/view/$tid");
+            }
+        } else {
+            $this->assign('ret', 4001);
+            $this->assign('status', 'blog not found');
+            $this->assign('tp_error_msg', "博客不存在");
+            $this->render('common/error.html');
+        }
+    }
 }
