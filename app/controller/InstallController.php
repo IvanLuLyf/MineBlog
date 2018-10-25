@@ -125,6 +125,13 @@ class InstallController extends Controller
                 'timestamp' => ['text'],
             ], ['cid'], 'cid');
 
+            Database::getInstance()->createTable($db_prefix . 'user_info', [
+                'uid' => ['integer', 'not null'],
+                'signature' => ['text'],
+                'cover' => ['text'],
+                'background' => ['text'],
+            ], ['uid']);
+
             Database::getInstance()->createTable($db_prefix . 'avatar', [
                 'uid' => ['integer', 'not null'],
                 'url' => ['text', 'not null'],
