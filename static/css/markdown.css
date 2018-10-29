@@ -1,0 +1,30 @@
+html { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; }
+.article {display: block;margin: 0 auto;max-width: 900px;padding: 10px;}
+.user {display: flex;align-items: flex-start;margin-bottom: 2rem;}
+.avatar {border-radius: 50%;width: 48px;}
+.user-info {margin-left: 0.5rem;display: flex;flex-direction: column;justify-content: space-between;color: #6c757d;}
+.footer {font-weight: lighter;font-size: 1.1rem;display: block;text-align: center;padding: 12px 10px 100px;}
+.footer-img{height: 32px;vertical-align: middle;}
+.markdown-body { user-select: auto; word-wrap: break-word; }
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6, .markdown-body #title { line-height: 1.15; margin: 1em 0 1em 0; }
+.markdown-body h1, .markdown-body #title { font-size: 2em; }
+.markdown-body h1:first-of-type, .markdown-body #title:first-of-type { margin-top: 0; }
+.markdown-body h2 { font-size: 1.8em; }
+.markdown-body h3 { font-size: 1.4em; }
+.markdown-body h4 { font-size: 1.2em; }
+.markdown-body h5, .markdown-body h6 { font-size: 1em; text-transform: uppercase; }
+.markdown-body #title { margin-bottom: 0.5em; font-weight: bold; }
+.markdown-body p, .markdown-body ul, .markdown-body ol, .markdown-body blockquote, .markdown-body pre, .markdown-body table, .markdown-body img { margin-bottom: 1.7em; box-sizing: border-box; }
+.markdown-body img { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.markdown-body a { color: #4895d9; }
+.markdown-body hr { border: 0; margin: 3.4em 0; color: #4895d9; height: 1em; }
+.markdown-body hr:before { content: '...'; display: block; width: 100%; letter-spacing: 2em; text-indent: 2em; z-index: 1; line-height: .5; text-align: center; }
+.markdown-body blockquote { border-left: 4px solid #dfe2e5; margin-left: 0; padding-left: 0.7em; }
+.markdown-body code { font-size: 85%; background: #f1f2f3; border-radius: 3px; background: #f6f7f8; width: 100%; overflow-x: auto; display: inline; }
+.markdown-body p code { display: inline; padding: 4px; color: #e83e8c; }
+.markdown-body pre { padding: 1em; border-radius: 3px; background: #f6f7f8; }
+.markdown-body pre code { font-size: 100%; color: #212529; background: transparent; display: block; padding: 1em; }
+.markdown-body table { border-collapse: collapse; border-spacing: 0; display: block; width: 100%; }
+.markdown-body table tr:nth-child(2n) { background-color: #f6f7f8; }
+.markdown-body table th, .markdown-body table td { border: 1px solid #c0c4c8; padding: 6px 13px; }
+.markdown-body table th { font-weight: 600; }
