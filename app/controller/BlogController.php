@@ -71,14 +71,17 @@ class BlogController extends Controller
     function ac_list(array $path, UserService $userService)
     {
         $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : isset($path[0]) ? $path[0] : 1;
-        $blogs = (new BlogModel())->getBlogByPage($page);
+        $blogModel = new BlogModel();
+        $blogs = $blogModel->getBlogByPage($page);
+        $total = $blogModel->getTotal();
+        $endPage = ceil($total / 5);
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
             include APP_PATH . 'library/Parser.php';
             $parser = new HyperDown\Parser;
             $this->assign('parser', $parser)->assign('tp_user', $userService->getLoginUser())
-                ->assign('cur_ctr', 'blog');
+                ->assign('cur_ctr', 'blog')->assign('end_page', $endPage);
         }
-        $this->assign("page", $page)->assign("blogs", $blogs)
+        $this->assign("page", $page)->assign('total', $total)->assign("blogs", $blogs)
             ->render('blog/list.html');
     }
 

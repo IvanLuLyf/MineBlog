@@ -13,6 +13,11 @@ class BlogModel extends Model
         return $this->where('visible=:v', ['v' => $visible])->order(['tid desc'])->limit($size, ($page - 1) * $size)->fetchAll();
     }
 
+    public function getTotal()
+    {
+        return $this->fetch("count(*) num")['num'];
+    }
+
     public function getBlogById($id)
     {
         return $this->where("tid=:tid", ['tid' => $id])->fetch();

@@ -14,7 +14,7 @@
                 <div class="card-body">
                     <div class="media">
                         <div class="media-body small">
-                            <h4><a href="/blog/view/<?= $blog['tid'] ?>"><?= $blog['title'] ?></a></h4>
+                            <h4><a class="link-dark" href="/blog/view/<?= $blog['tid'] ?>"><?= $blog['title'] ?></a></h4>
                             <div>
 								<span class="username">
 									<a href="/user/blog/<?=$blog['username']?>" class="text-muted font-weight-bold"><?= $blog['nickname'] ?></a>
@@ -30,6 +30,33 @@
                 </div>
             </div>
             <?php endforeach ?>
+            <nav class="mt-4" aria-label="">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link link-dark" href="/blog/list/1">首页</a>
+                    </li>
+                    <li class="page-item <?=$page==1?'disabled':''?>">
+                        <a aria-label="Previous" class="page-link link-dark" href="/blog/list/<?=$page==1?1:($page-1)?>">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">上一页</span>
+                        </a>
+                    </li>
+                    <?php for($i=($page>4?($page-3):1);($i<=$page+5 && $i<=$end_page);$i++):?>
+                    <li class="page-item <?=$page==$i?'active':''?>"><a class="page-link link-dark"
+                                                                        href="/blog/list/<?=$i?>"><?=$i?></a></li>
+                    <?php endfor;?>
+                    <li class="page-item <?=$page==$end_page?'disabled':''?>">
+                        <a aria-label="Next" class="page-link link-dark"
+                           href="/blog/list/<?=$page==$end_page?$end_page:($page+1)?>">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">下一页</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link link-dark" href="/blog/list/<?=$end_page?>">尾页</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
         <div class="col-lg-3">
             <?php if (isset($tp_user)): ?>
