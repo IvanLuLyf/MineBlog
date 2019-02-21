@@ -8,25 +8,22 @@
 
 class SettingController extends Controller
 {
+    /**
+     * @filter auth
+     */
     public function ac_index()
     {
-        $tp_user = $this->service('user')->getLoginUser();
-        if ($tp_user == null) {
-            $this->redirect('user', 'login', ['referer' => View::get_url('setting', 'index')]);
-            return;
-        }
-        $this->assign('tp_user', $tp_user);
+        $this->assign('tp_user', BunnyPHP::app()->get('tp_user'));
         $this->render('setting/avatar.html');
     }
 
+    /**
+     * @filter auth
+     */
     public function ac_gravatar()
     {
-        $tp_user = $this->service('user')->getLoginUser();
-        if ($tp_user == null) {
-            $this->redirect('user', 'login', ['referer' => View::get_url('setting', 'gravatar')]);
-            return;
-        }
-        (new AvatarModel())->upload($tp_user['id'], 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($tp_user['email']))));
+        $tp_user = BunnyPHP::app()->get('tp_user');
+        (new AvatarModel())->upload($tp_user['uid'], 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($tp_user['email']))));
         $this->assign('tp_user', $tp_user);
         $this->redirect('setting', 'index');
     }

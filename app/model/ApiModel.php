@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * Created by PhpStorm.
+ * User: IvanLu
+ * Date: 2018/1/1
+ * Time: 16:45
+ */
+class ApiModel extends Model
+{
+    public function check($appKey)
+    {
+        if ($row = $this->where(["appkey = ?"], [$appKey])->fetch()) {
+            return [
+                'id' => $row['id'],
+                'name' => $row['appname'],
+                'type' => $row['type'],
+                'canGetInfo' => (intval($row['auth']) & 1) && true,
+                'canFeed' => (intval($row['auth']) & 2) && true,
+                'canGetFriend' => (intval($row['auth']) & 4) && true,
+                'canRequestPay' => (intval($row['auth']) & 8) && true,
+                'canPay' => (intval($row['auth']) & 16) && true
+            ];
+        } else {
+            return null;
+        }
+    }
+
+    public function validate($appKey, $appSecret)
+    {
+        if ($row = $this->where(["appkey = ? and appsecret = ?"], [$appKey, $appSecret])->fetch()) {
+            return [
+                'id' => $row['id'],
+                'name' => $row['appname'],
+                'type' => $row['type'],
+                'canGetInfo' => (intval($row['auth']) & 1) && true,
+                'canFeed' => (intval($row['auth']) & 2) && true,
+                'canGetFriend' => (intval($row['auth']) & 4) && true,
+                'canRequestPay' => (intval($row['auth']) & 8) && true,
+                'canPay' => (intval($row['auth']) & 16) && true
+            ];
+        } else {
+            return null;
+        }
+    }
+
+    public function getAuthorByAppKey($appKey)
+    {
+        if ($row = $this->where(["appkey = ?"], [$appKey])->fetch()) {
+            return $row['uid'];
+        } else {
+            return null;
+        }
+    }
+
+    public function getAuthorByAppId($aid)
+    {
+        if ($row = $this->where(["id = ?"], [$aid])->fetch()) {
+            return $row['uid'];
+        } else {
+            return null;
+        }
+    }
+}

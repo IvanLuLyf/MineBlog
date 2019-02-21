@@ -19,15 +19,15 @@ class UserModel extends Model
         if ($user != null) {
             if ($user['password'] == md5($password)) {
                 $timestamp = time();
-                $uid = $user['id'];
+                $uid = $user['uid'];
                 if ($user['expire'] == null || $timestamp > intval($user['expire'])) {
-                    $token = md5($user['id'] . $user['username'] . $timestamp);
+                    $token = md5($user['uid'] . $user['username'] . $timestamp);
                     $updates = ['token' => $token, 'expire' => $timestamp + 604800];
-                    $this->where(["id = :uid"], ['uid' => $uid])->update($updates);
+                    $this->where(["uid = :uid"], ['uid' => $uid])->update($updates);
                 } else {
                     $token = $user['token'];
                 }
-                $response = ['ret' => 0, 'status' => 'ok', 'id' => $uid, 'username' => $user['username'], 'email' => $user['email'], 'token' => $token, 'nickname' => $user['nickname'], 'expire' => $timestamp + 604800];
+                $response = ['ret' => 0, 'status' => 'ok', 'uid' => $uid, 'username' => $user['username'], 'email' => $user['email'], 'token' => $token, 'nickname' => $user['nickname'], 'expire' => $timestamp + 604800];
             } else {
                 $response = ['ret' => 1001, 'status' => "password error", 'tp_error_msg' => "密码错误"];
             }
@@ -51,7 +51,7 @@ class UserModel extends Model
                     $token = md5($password . $username . $timestamp);
                     $new_data = ['username' => $username, 'email' => $email, 'password' => md5($password), 'nickname' => $nickname, 'token' => $token, 'expire' => $timestamp + 604800];
                     if ($uid = $this->add($new_data)) {
-                        $response = ['ret' => 0, 'status' => 'ok', 'id' => $uid, 'username' => $username, 'email' => $email, 'token' => $token, 'nickname' => $nickname];
+                        $response = ['ret' => 0, 'status' => 'ok', 'uid' => $uid, 'username' => $username, 'email' => $email, 'token' => $token, 'nickname' => $nickname];
                     } else {
                         $response = ['ret' => 1006, 'status' => "database error", 'tp_error_msg' => "数据库内部出错"];
                     }
@@ -73,9 +73,9 @@ class UserModel extends Model
 
     public function getUserByUid($uid)
     {
-        $user = $this->where("id = ?", [$uid])->fetch();
+        $user = $this->where("uid = ?", [$uid])->fetch();
         $response = [
-            'id' => $uid,
+            'uid' => $uid,
             'username' => $user['username'],
             'email' => $user['email'],
             'nickname' => $user['nickname']
@@ -87,7 +87,7 @@ class UserModel extends Model
     {
         $user = $this->where("username = ?", [$username])->fetch();
         $response = [
-            'id' => $user['id'],
+            'uid' => $user['uid'],
             'username' => $user['username'],
             'email' => $user['email'],
             'nickname' => $user['nickname']
@@ -97,7 +97,7 @@ class UserModel extends Model
 
     public function getTokenByUid($uid)
     {
-        if ($user = $this->where("id = ?", [$uid])->fetch()) {
+        if ($user = $this->where("uid = ?", [$uid])->fetch()) {
             return $user['token'];
         } else {
             return null;

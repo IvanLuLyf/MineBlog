@@ -37,11 +37,19 @@ class InstallController extends Controller
             if ($_POST['db_type'] == 'mysql') {
                 $dsn = "mysql:host=" . $_POST['db_host'] . ";dbname=" . $_POST['db_name'] . ";charset=utf8mb4";
                 $db_host = $_POST['db_host'];
+                $db_port = $_POST['db_port'];
+                $db_user = $_POST['db_user'];
+                $db_pass = $_POST['db_pass'];
+            } elseif ($_POST['db_type'] == 'pgsql') {
+                $dsn = "pgsql:host=" . $_POST['db_host'] . ";dbname=" . $_POST['db_name'] . ";port=" . $_POST['db_port'];
+                $db_host = $_POST['db_host'];
+                $db_port = $_POST['db_port'];
                 $db_user = $_POST['db_user'];
                 $db_pass = $_POST['db_pass'];
             } else {
                 $dsn = "sqlite:" . $_POST['db_name'];
                 $db_host = '';
+                $db_port = '';
                 $db_user = '';
                 $db_pass = '';
             }
@@ -53,6 +61,7 @@ class InstallController extends Controller
                     $db_info = [
                         'type' => $_POST['db_type'],
                         'host' => $db_host,
+                        'port' => $db_port,
                         'username' => $db_user,
                         'password' => $db_pass,
                         'database' => $_POST['db_name'],
@@ -81,6 +90,7 @@ class InstallController extends Controller
             $db_info = $_SESSION['db_info'];
             define('DB_TYPE', $db_info['type']);
             define('DB_HOST', $db_info['host']);
+            define('DB_PORT', $db_info['port']);
             define('DB_NAME', $db_info['database']);
             define('DB_USER', $db_info['username']);
             define('DB_PASS', $db_info['password']);
@@ -90,18 +100,18 @@ class InstallController extends Controller
             $username = $_POST['username'];
             $password = md5($_POST['password']);
             $email = $_POST['email'];
-            $nickname = isset($_POST['nickname']) ? $_POST['nickname'] : $username;
+            $nickname = (isset($_POST['nickname']) && $_POST['nickname'] != '') ? $_POST['nickname'] : $username;
             $site_name = $_POST['site_name'];
             $db_prefix = $db_info['prefix'];
             Database::getInstance()->createTable($db_prefix . 'user', [
-                'id' => ['integer', 'not null'],
+                'uid' => ['integer', 'not null'],
                 'username' => ['varchar(16)', 'not null'],
                 'password' => ['varchar(32)', 'not null'],
                 'nickname' => ['varchar(32)'],
                 'email' => ['text', 'not null'],
                 'token' => ['text', 'not null'],
                 'expire' => ['text']
-            ], ['id'], 'id');
+            ], ['uid'], 'uid');
 
             Database::getInstance()->createTable($db_prefix . 'blog', [
                 'tid' => ['integer', 'not null'],
@@ -136,6 +146,25 @@ class InstallController extends Controller
                 'uid' => ['integer', 'not null'],
                 'url' => ['text', 'not null'],
             ], ['uid']);
+
+            Database::getInstance()->createTable($db_prefix . 'api', [
+                'id' => ['integer', 'not null'],
+                'uid' => ['integer', 'not null'],
+                'appname' => ['text', 'not null'],
+                'appkey' => ['text', 'not null'],
+                'appsecret' => ['text', 'not null'],
+                'appurl' => ['text', 'not null'],
+                'type' => ['integer'],
+                'auth' => ['integer'],
+            ], ['id'], 'id');
+
+            Database::getInstance()->createTable($db_prefix . 'oauth_token', [
+                'id' => ['integer', 'not null'],
+                'uid' => ['integer', 'not null'],
+                'appkey' => ['text', 'not null'],
+                'token' => ['text', 'not null'],
+                'expire' => ['text']
+            ], ['id'], 'id');
 
             Database::getInstance()->insert(['username' => $username, 'password' => $password, 'email' => $email, 'nickname' => $nickname, 'token' => ''], $db_prefix . 'user');
             $config_file = fopen(APP_PATH . "config/config.php", "w") or die("Unable to open file!");

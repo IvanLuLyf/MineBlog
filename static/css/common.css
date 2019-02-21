@@ -15,7 +15,26 @@ body {
     border-width: 0;
 }
 
-.neo_card a {
+.link-dark {
     color: #343a40;
     font-weight: bold;
+}
+
+.fab-div {
+    width: 66px;
+    position: fixed;
+    bottom: 65px;
+    right: 25px;
+    font-size: 0;
+    line-height: 0;
+    z-index: 100;
+}
+
+.btn-fab {
+    width: 50px;
+    height: 50px;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 23px;
+    border-radius: 50%;
 }

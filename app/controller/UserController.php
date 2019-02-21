@@ -38,6 +38,11 @@ class UserController extends Controller
                 $this->render('user/login.html');
             }
         } elseif ($this->_mode == BunnyPHP::MODE_API) {
+            if ($result['ret'] == 0) {
+                $appToken = (new OauthTokenModel())->get($result['uid'], $_POST['appkey']);
+                $result['token'] = $appToken['token'];
+                $result['expire'] = $appToken['expire'];
+            }
             $this->assignAll($result);
             $this->render();
         }
@@ -81,6 +86,11 @@ class UserController extends Controller
                     $this->render('user/register.html');
                 }
             } elseif ($this->_mode == BunnyPHP::MODE_API) {
+                if ($result['ret'] == 0) {
+                    $appToken = (new OauthTokenModel())->get($result['uid'], $_POST['appkey']);
+                    $result['token'] = $appToken['token'];
+                    $result['expire'] = $appToken['expire'];
+                }
                 $this->assignAll($result);
                 $this->render();
             }
@@ -106,7 +116,7 @@ class UserController extends Controller
         $username = isset($_GET['username']) ? $_GET['username'] : null;
         $imgUrl = "/static/img/avatar.png";
         if ($username != null) {
-            if ($uid = (new UserModel())->where(["username = :username"], ['username' => $username])->fetch()['id']) {
+            if ($uid = (new UserModel())->where(["username = :username"], ['username' => $username])->fetch()['uid']) {
                 $imgUrl = (new AvatarModel())->getAvatar($uid);
             }
         } else if ($uid != 0) {
