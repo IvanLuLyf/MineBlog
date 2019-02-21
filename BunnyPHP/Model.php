@@ -15,13 +15,26 @@ class Model
     private $_param = [];
     private $_has_where = false;
 
-    public function __construct()
+    public function __construct($name = "")
     {
         if (!$this->_table) {
-            $this->_name = substr(get_class($this), 0, -5);
+            if (isset($name) && $name != "") {
+                $this->_name = $name;
+            } else {
+                $this->_name = substr(get_class($this), 0, -5);
+            }
             $dashed = strtolower(preg_replace('/([A-Z])/', '_$1', lcfirst($this->_name)));
             $this->_table = DB_PREFIX . strtolower($dashed);
         }
+    }
+
+    public static function create()
+    {
+        $name = substr(get_called_class(), 0, -5);
+        $dashed = strtolower(preg_replace('/([A-Z])/', '_$1', lcfirst($name)));
+        $table = DB_PREFIX . strtolower($dashed);
+        $vars = get_class_vars(get_called_class());
+        Database::getInstance()->createTable($table, $vars['_column'], $vars['_pk'], $vars['_ai']);
     }
 
     private function reset()
@@ -48,7 +61,7 @@ class Model
 
     public function join($tableName, $condition = [], $mod = '')
     {
-        $this->_join .= " $mod join `$tableName`";
+        $this->_join .= " $mod join $tableName";
         if (is_array($condition)) {
             $this->_join .= " on (" . implode(' ', $condition) . ") ";
         } else {
@@ -59,7 +72,11 @@ class Model
 
     public function limit($size, $start = 0)
     {
-        $this->_filter .= " limit $start,$size ";
+        if (constant("DB_TYPE") == 'pgsql') {
+            $this->_filter .= " limit $size offset $start";
+        } else {
+            $this->_filter .= " limit $start,$size ";
+        }
         return $this;
     }
 
@@ -82,7 +99,7 @@ class Model
         if ($this->_has_where) {
             $this->_filter = ' where ' . $this->_filter;
         }
-        $sql = "select {$column} from `{$this->_table}` {$this->_join} {$this->_filter}";
+        $sql = "select {$column} from {$this->_table} {$this->_join} {$this->_filter}";
         $result = Database::getInstance()->fetchOne($sql, $this->_param);
         $this->reset();
         return $result;
@@ -96,7 +113,7 @@ class Model
         if ($this->_has_where) {
             $this->_filter = ' where ' . $this->_filter;
         }
-        $sql = "select {$column} from `{$this->_table}` {$this->_join} {$this->_filter}";
+        $sql = "select {$column} from {$this->_table} {$this->_join} {$this->_filter}";
         $result = Database::getInstance()->fetchAll($sql, $this->_param);
         $this->reset();
         return $result;

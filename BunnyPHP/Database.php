@@ -15,9 +15,11 @@ class Database
     {
         $db_type = strtolower(constant("DB_TYPE"));
         if ($db_type == 'mysql') {
-            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+            $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
         } elseif ($db_type == 'sqlite') {
             $dsn = "sqlite:" . DB_NAME;
+        } elseif ($db_type == 'pgsql') {
+            $dsn = "pgsql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . "";
         }
         $option = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC);
         $this->conn = new PDO($dsn, DB_USER, DB_PASS, $option);
@@ -48,10 +50,10 @@ class Database
     {
         $sets = [];
         foreach ($data as $key => $value) {
-            $sets[] = "`{$key}` = :{$key}";
+            $sets[] = "{$key} = :{$key}";
         }
         $updates = implode(',', $sets);
-        $where = $where == null ? '' : ' where ' . $where;
+        $where = $where == null ? '' : ' WHERE ' . $where;
         $sql = "update {$table} set {$updates} {$where}";
         $pst = $this->conn->prepare($sql);
         foreach ($data as $k => &$v) {
@@ -70,7 +72,7 @@ class Database
 
     public function delete($table, $where = null, $condition = [])
     {
-        $where = $where == null ? '' : ' where ' . $where;
+        $where = $where == null ? '' : ' WHERE ' . $where;
         $sql = "delete from {$table} {$where}";
         $pst = $this->conn->prepare($sql);
         foreach ($condition as $k => &$v) {
@@ -135,6 +137,27 @@ class Database
                 $pk .= ',primary key(' . implode(',', $primary) . ')';
             }
             $sql = "create table {$tableName}({$c}{$pk});";
+            return $this->conn->exec($sql);
+        } elseif ($db_type == 'pgsql') {
+            $columnsData = [];
+            foreach ($columns as $name => $info) {
+                $columnData = $name . ' ';
+                if ($a_i == $name) {
+                    $columnData .= ' serial ';
+                } else {
+                    if (is_array($info)) {
+                        $columnData .= implode(' ', $info);
+                    } else {
+                        $columnData .= ' ' . $info;
+                    }
+                }
+                if (in_array($name, $primary)) {
+                    $columnData .= ' primary key ';
+                }
+                $columnsData[] = $columnData;
+            }
+            $c = implode(',', $columnsData);
+            $sql = "create table {$tableName}({$c});";
             return $this->conn->exec($sql);
         } elseif ($db_type == 'sqlite') {
             $columnsData = [];
