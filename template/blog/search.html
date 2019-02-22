@@ -13,11 +13,16 @@
                 <div class="card-body">
                     搜索
                     <form class="form-inline mt-2 mb-2" action="/blog/search">
-                        <input name="word" class="form-control mr-sm-2" type="text" placeholder="搜索" aria-label="搜索">
+                        <input name="word" class="form-control mr-sm-2" type="text" placeholder="搜索" aria-label="搜索"
+                               value="<?=$word?>">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
                     </form>
                     <?php if($total==0): ?>
+                    <?php if($word!=''):?>
                     找不到博客
+                    <?php endif;?>
+                    <?php else:?>
+                    共找到<?=$total?>篇博客
                     <?php endif;?>
                 </div>
             </div>
@@ -36,10 +41,6 @@
                                 <span class="text-grey ml-2"><?= date('Y-m-d H:i:s', $blog['timestamp']) ?></span>
                             </div>
                         </div>
-                    </div>
-                    <hr>
-                    <div class="markdown-body">
-                        <?=$parser->makeHtml($blog['content'])?>
                     </div>
                 </div>
             </div>
