@@ -1,0 +1,83 @@
+<html lang="zh-cn">
+<head>
+    <title><?=constant("TP_SITE_NAME")?></title>
+    <?php include "template/common/header.html"; ?>
+    <link href="/static/css/article.css" rel="stylesheet">
+</head>
+<body>
+<?php include "template/common/navbar.html"; ?>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card neo_card mt-4">
+                <div class="card-body">
+                    搜索
+                    <form class="form-inline mt-2 mb-2" action="/blog/search">
+                        <input name="word" class="form-control mr-sm-2" type="text" placeholder="搜索" aria-label="搜索">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+                    </form>
+                    <?php if($total==0): ?>
+                    找不到博客
+                    <?php endif;?>
+                </div>
+            </div>
+            <?php foreach ($blogs as $blog): ?>
+            <div class="card neo_card mt-4">
+                <div class="card-body">
+                    <div class="media">
+                        <div class="media-body small">
+                            <h4><a class="link-dark" href="/blog/view/<?= $blog['tid'] ?>"><?= $blog['title'] ?></a>
+                            </h4>
+                            <div>
+								<span class="username">
+									<a href="/user/blog/<?=$blog['username']?>"
+                                       class="text-muted font-weight-bold"><?= $blog['nickname'] ?></a>
+								</span>
+                                <span class="text-grey ml-2"><?= date('Y-m-d H:i:s', $blog['timestamp']) ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="markdown-body">
+                        <?=$parser->makeHtml($blog['content'])?>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach ?>
+            <?php if($total!=0): ?>
+            <nav class="mt-4" aria-label="">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link link-dark" href="/blog/search?word=<?=$word?>&page=1">首页</a>
+                    </li>
+                    <li class="page-item <?=$page==1?'disabled':''?>">
+                        <a aria-label="Previous" class="page-link link-dark"
+                           href="/blog/search?word=<?=$word?>&page=<?=$page==1?1:($page-1)?>">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">上一页</span>
+                        </a>
+                    </li>
+                    <?php for($i=($page>4?($page-3):1);($i<=$page+5 && $i<=$end_page);$i++):?>
+                    <li class="page-item <?=$page==$i?'active':''?>"><a class="page-link link-dark"
+                                                                        href="/blog/search?word=<?=$word?>&page=<?=$i?>"><?=$i?></a>
+                    </li>
+                    <?php endfor;?>
+                    <li class="page-item <?=$page==$end_page?'disabled':''?>">
+                        <a aria-label="Next" class="page-link link-dark"
+                           href="/blog/search?word=<?=$word?>&page=<?=$page==$end_page?$end_page:($page+1)?>">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">下一页</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link link-dark" href="/blog/search?word=<?=$word?>&page=<?=$end_page?>">尾页</a>
+                    </li>
+                </ul>
+            </nav>
+            <?php endif;?>
+        </div>
+    </div>
+</div>
+<?php include "template/common/footer.html"; ?>
+</body>
+</html>

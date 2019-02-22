@@ -105,4 +105,21 @@ class BlogController extends Controller
             $this->render('common/error.html');
         }
     }
+
+    function ac_search(array $path, UserService $userService)
+    {
+        $word = $_REQUEST['word'];
+        $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+        $result = (new BlogModel())->searchBlog($word, $page);
+        $endPage = ceil($result['total'] / 5);
+        if ($this->_mode == BunnyPHP::MODE_NORMAL) {
+            include APP_PATH . 'library/Parser.php';
+            $parser = new HyperDown\Parser;
+            $this->assign('parser', $parser)->assign('tp_user', $userService->getLoginUser())
+                ->assign('cur_ctr', 'blog')->assign('end_page', $endPage);
+        }
+        $this->assign('word', $word);
+        $this->assign("page", $page)->assign('total', $result['total'])->assign("blogs", $result['blogs'])
+            ->render('blog/search.html');
+    }
 }

@@ -18,6 +18,13 @@ class BlogModel extends Model
         return $this->fetch("count(*) num")['num'];
     }
 
+    public function searchBlog($word, $page = 1, $visible = 0, $size = 5)
+    {
+        $blogs = $this->where('visible=:v and content like :c', ['v' => $visible, 'c' => "%$word%"])->order(['tid desc'])->limit($size, ($page - 1) * $size)->fetchAll();
+        $total = $this->where('visible=:v and content like :c', ['v' => $visible, 'c' => "%$word%"])->fetch("count(*) num")['num'];
+        return ['blogs' => $blogs, 'total' => $total];
+    }
+
     public function getBlogById($id)
     {
         return $this->where("tid=:tid", ['tid' => $id])->fetch();
