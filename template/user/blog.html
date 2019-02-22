@@ -27,9 +27,9 @@
             <?php foreach ($blogs as $blog): ?>
             <div class="card neo_card mt-2">
                 <div class="card-body">
-                    <div class="media mt-4">
+                    <div class="media">
                         <div class="media-body small">
-                            <h2><a href="/blog/view/<?= $blog['tid'] ?>"><?= $blog['title'] ?></a></h2>
+                            <h4><a class="link-dark" href="/blog/view/<?= $blog['tid'] ?>"><?= $blog['title'] ?></a></h4>
                             <div>
 								<span class="username">
 									<a href="/user/blog/<?=$blog['username']?>"
