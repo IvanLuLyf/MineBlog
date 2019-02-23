@@ -32,6 +32,7 @@
             </div>
             <div class="card neo_card mt-3">
                 <div class="card-body">
+                    <?php if (isset($tp_user)): ?>
                     <form class="form-horizontal" role="form" action="/blog/comment/<?=$blog['tid']?>" method="post">
                         <input type="hidden" name="tid" value="<?=$blog['tid']?>"/>
                         <div class="form-group">
@@ -44,11 +45,23 @@
                             <div class="row">
                                 <div class="mr-auto"></div>
                                 <div class="col-md-3 col-lg-3">
-                                    <button class="btn btn-dark btn-block badge-pill" type="submit" <?php if (!isset($tp_user)):?>disabled<?php endif;?>>发布</button>
+                                    <button class="btn btn-dark btn-block badge-pill" type="submit">发布</button>
                                 </div>
                             </div>
                         </div>
                     </form>
+                    <?php else:?>
+                    <div class="center-block">
+                        <p class="text-center">
+                            <a href="/user/login?referer=/blog/view/<?=$blog['tid']?>">登陆</a>评论
+                        </p>
+                    </div>
+                    <div class="oauth-bar text-center">
+                        <a href="/oauth/connect/qq"><img alt="QQ" class="oauth-icon" src="/static/img/qq.png"></a>
+                        <a href="/oauth/connect/wb"><img alt="微博" class="oauth-icon" src="/static/img/wb.png"></a>
+                        <a href="/oauth/connect/tm"><img alt="Twimi" class="oauth-icon" src="/static/img/tm.png"></a>
+                    </div>
+                    <?php endif;?>
                     <?php foreach ($comments as $comment) : ?>
                     <hr>
                     <div class="media">
