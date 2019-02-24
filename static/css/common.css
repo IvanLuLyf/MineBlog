@@ -39,14 +39,20 @@ body {
     border-radius: 50%;
 }
 
-.oauth-bar{
+.oauth-bar {
     padding: 10px;
     text-align: center;
 }
 
-.oauth-icon{
+.oauth-icon {
     height: 40px;
     width: 40px;
     border-radius: 50%;
     margin: 4px;
+}
+
+.oauth-icon-small {
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
 }

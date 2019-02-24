@@ -129,8 +129,9 @@ class InstallController extends Controller
             Database::getInstance()->createTable($db_prefix . 'comment', [
                 'cid' => ['integer', 'not null'],
                 'tid' => ['integer', 'not null'],
-                'username' => ['varchar(16)', 'not null'],
-                'nickname' => ['varchar(32)'],
+                'type' => ['text'],
+                'username' => ['text', 'not null'],
+                'nickname' => ['text'],
                 'content' => ['text', 'not null'],
                 'timestamp' => ['text'],
             ], ['cid'], 'cid');
@@ -165,6 +166,27 @@ class InstallController extends Controller
                 'token' => ['text', 'not null'],
                 'expire' => ['text']
             ], ['id'], 'id');
+
+            Database::getInstance()->createTable($db_prefix . 'qq_bind', [
+                'uid' => ['integer', 'not null'],
+                'buid' => ['text', 'not null'],
+                'token' => ['text', 'not null'],
+                'expire' => ['text']
+            ], ['uid']);
+
+            Database::getInstance()->createTable($db_prefix . 'sina_bind', [
+                'uid' => ['integer', 'not null'],
+                'buid' => ['text', 'not null'],
+                'token' => ['text', 'not null'],
+                'expire' => ['text']
+            ], ['uid']);
+
+            Database::getInstance()->createTable($db_prefix . 'twimi_bind', [
+                'uid' => ['integer', 'not null'],
+                'buid' => ['text', 'not null'],
+                'token' => ['text', 'not null'],
+                'expire' => ['text']
+            ], ['uid']);
 
             Database::getInstance()->insert(['username' => $username, 'password' => $password, 'email' => $email, 'nickname' => $nickname, 'token' => ''], $db_prefix . 'user');
             $config_file = fopen(APP_PATH . "config/config.php", "w") or die("Unable to open file!");

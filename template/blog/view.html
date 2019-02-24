@@ -50,6 +50,24 @@
                             </div>
                         </div>
                     </form>
+                    <?php elseif(isset($oauth_user)):?>
+                    <form class="form-horizontal" role="form" action="/blog/o_comment/<?=$blog['tid']?>" method="post">
+                        <input type="hidden" name="tid" value="<?=$blog['tid']?>"/>
+                        <div class="form-group">
+                            <label for="o_content">评论</label>
+                            <textarea class="form-control" id="o_content" name="content" rows="3"
+                                      cols="60"
+                                      placeholder="内容" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="mr-auto"></div>
+                                <div class="col-md-3 col-lg-3">
+                                    <button class="btn btn-dark btn-block badge-pill" type="submit">发布</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                     <?php else:?>
                     <div class="center-block">
                         <p class="text-center">
@@ -65,15 +83,55 @@
                     <?php foreach ($comments as $comment) : ?>
                     <hr>
                     <div class="media">
+                        <?php if ($comment['type']=='wb'):?>
+                        <img class="rounded-circle"
+                             src="/oauth/avatar/wb/<?= $comment['username'] ?>"
+                             width="40px"/>
+                        <?php elseif($comment['type']=='qq'):?>
+                        <img class="rounded-circle"
+                             src="/oauth/avatar/qq/<?= $comment['username'] ?>"
+                             width="40px"/>
+                        <?php elseif($comment['type']=='tm'):?>
+                        <img class="rounded-circle"
+                             src="https://twimi.cn/user/avatar/<?= $comment['username'] ?>"
+                             width="40px"/>
+                        <?php else:?>
                         <img class="rounded-circle"
                              src="/user/avatar?username=<?= $comment['username'] ?>"
                              width="40px"/>
+                        <?php endif;?>
                         <div class="media-body ml-2 small">
                             <div>
-								<span class="username">
+                                <?php if ($comment['type']=='wb'):?>
+                                <span class="username">
+									<a href="https://weibo.com/u/<?= $comment['username'] ?>"
+                                       class="text-muted font-weight-bold">
+                                        <?=$comment['nickname']?>
+                                        <img alt="微博" class="oauth-icon-small" src="/static/img/wb.png">
+                                    </a>
+                                </span>
+                                <?php elseif ($comment['type']=='qq'):?>
+                                <span class="username">
+									<a href="#"
+                                       class="text-muted font-weight-bold">
+                                        <?=$comment['nickname']?>
+                                        <img alt="QQ" class="oauth-icon-small" src="/static/img/qq.png">
+                                    </a>
+                                </span>
+                                <?php elseif ($comment['type']=='tm'):?>
+                                <span class="username">
+									<a href="#"
+                                       class="text-muted font-weight-bold">
+                                        <?=$comment['nickname']?>
+                                        <img alt="Twimi" class="oauth-icon-small" src="/static/img/tm.png">
+                                    </a>
+                                </span>
+                                <?php else:?>
+                                <span class="username">
 									<a href="/user/blog/<?= $comment['username'] ?>"
                                        class="text-muted font-weight-bold"><?=$comment['nickname']?></a>
-								</span>
+                                </span>
+                                <?php endif;?>
                                 <span class="text-grey ml-2"><?=date('Y-m-d H:i:s', $comment['timestamp'])?></span>
                             </div>
                             <h6><?=htmlspecialchars($comment['content'])?></h6>

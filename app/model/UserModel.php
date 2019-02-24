@@ -13,6 +13,20 @@ class UserModel extends Model
         return $this->limit(10, ($page - 1) * 10)->fetchAll();
     }
 
+    public function refresh($uid)
+    {
+        $user = $this->where("uid = :u", ['u' => $uid])->fetch();
+        $timestamp = time();
+        if ($user['expire'] == null || $timestamp > intval($user['expire'])) {
+            $token = md5($user['uid'] . $user['username'] . $timestamp);
+            $updates = ['token' => $token, 'expire' => $timestamp + 604800];
+            $this->where(["uid = :uid"], ['uid' => $uid])->update($updates);
+        } else {
+            $token = $user['token'];
+        }
+        return $token;
+    }
+
     public function login(string $username, string $password)
     {
         $user = $this->where("username = :u or email = :e", ['u' => $username, 'e' => $username])->fetch();

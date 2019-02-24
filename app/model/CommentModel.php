@@ -13,10 +13,10 @@ class CommentModel extends Model
         return $this->where('tid = :t', ['t' => $tid])->limit(20, ($page - 1) * 20)->fetchAll();
     }
 
-    public function sendComment($tid, $user, $content)
+    public function sendComment($tid, $user, $content, $type = '')
     {
         if ($user != null && $tid != null && $content != null) {
-            $comment = ['tid' => $tid, 'username' => $user['username'], 'nickname' => $user['nickname'], 'content' => $content, 'timestamp' => time()];
+            $comment = ['tid' => $tid, 'type' => $type, 'username' => $user['username'], 'nickname' => $user['nickname'], 'content' => $content, 'timestamp' => time()];
             return $this->add($comment);
         } else {
             return -1;

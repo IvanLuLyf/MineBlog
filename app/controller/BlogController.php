@@ -51,6 +51,9 @@ class BlogController extends Controller
                 $comments = (new CommentModel())->listComment($tid);
                 if ($this->_mode == BunnyPHP::MODE_NORMAL) {
                     $this->assign('tp_user', $tp_user);
+                    if (isset($_SESSION['oauth_user'])) {
+                        $this->assign('oauth_user', $_SESSION['oauth_user']);
+                    }
                     include APP_PATH . 'library/Parser.php';
                     $parser = new HyperDown\Parser;
                     $html_content = $parser->makeHtml($blog['content']);
@@ -97,6 +100,29 @@ class BlogController extends Controller
             if ($this->_mode == BunnyPHP::MODE_NORMAL) {
                 $cid = (new CommentModel())->sendComment($tid, BunnyPHP::app()->get('tp_user'), $_POST['content']);
                 $this->redirect('blog', 'view', ['tid' => $tid]);
+            }
+        } else {
+            $this->assign('ret', 4001);
+            $this->assign('status', 'blog not found');
+            $this->assign('tp_error_msg', "博客不存在");
+            $this->render('common/error.html');
+        }
+    }
+
+    function ac_o_comment(array $path)
+    {
+        $tid = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : isset($path[0]) ? $path[0] : 0;
+        $blog = (new BlogModel())->getBlogById($tid);
+        if ($blog != null) {
+            if ($this->_mode == BunnyPHP::MODE_NORMAL) {
+                session_start();
+                if (isset($_SESSION['oauth_user'])) {
+                    $cid = (new CommentModel())->sendComment($tid, [
+                        'username' => $_SESSION['oauth_user']['uid'],
+                        'nickname' => $_SESSION['oauth_user']['nickname']
+                    ], $_POST['content'], $_SESSION['oauth_user']['type']);
+                    $this->redirect('blog', 'view', ['tid' => $tid]);
+                }
             }
         } else {
             $this->assign('ret', 4001);
