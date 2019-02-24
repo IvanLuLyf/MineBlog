@@ -267,9 +267,21 @@ class OauthController extends Controller
         $params = ['http' => ['method' => 'GET',]];
         $ctx = stream_context_create($params);
         $fp = @fopen($url, 'rb', false, $ctx);
-        if (!$fp) die("Problem with $url, $php_errormsg");
+        if (!$fp) {
+            $this->assign('ret', 2004);
+            $this->assign('status', "can't open url");
+            $this->assign('tp_error_msg', "无法打开请求页面");
+            $this->render('common/error.html');
+            die();
+        }
         $response = @stream_get_contents($fp);
-        if ($response === false) die("Problem reading data from $url, $php_errormsg");
+        if ($response === false) {
+            $this->assign('ret', 2005);
+            $this->assign('status', "can't read content");
+            $this->assign('tp_error_msg', "无法读取页面内容");
+            $this->render('common/error.html');
+            die();
+        }
         return $response;
     }
 
@@ -279,9 +291,21 @@ class OauthController extends Controller
         if ($optional_headers !== null) $params['http']['header'] = $optional_headers;
         $ctx = stream_context_create($params);
         $fp = @fopen($url, 'rb', false, $ctx);
-        if (!$fp) die("Problem with $url, $php_errormsg");
+        if (!$fp) {
+            $this->assign('ret', 2004);
+            $this->assign('status', "can't open url");
+            $this->assign('tp_error_msg', "无法打开请求页面");
+            $this->render('common/error.html');
+            die();
+        }
         $response = @stream_get_contents($fp);
-        if ($response === false) die("Problem reading data from $url, $php_errormsg");
+        if ($response === false) {
+            $this->assign('ret', 2005);
+            $this->assign('status', "can't read content");
+            $this->assign('tp_error_msg', "无法读取页面内容");
+            $this->render('common/error.html');
+            die();
+        }
         return $response;
     }
 }
