@@ -27,6 +27,10 @@ class OauthController extends Controller
                 $url = 'http://tp.twimi.cn/index.php?mod=tauth&appkey=' . $oauth['key'] . '&url=' . urlencode($oauth['callback']);
                 break;
         }
+        if (isset($_REQUEST['referer'])) {
+            session_start();
+            $_SESSION['referer'] = $_REQUEST['referer'];
+        }
         $this->redirect($url);
     }
 
@@ -174,6 +178,17 @@ class OauthController extends Controller
             $this->assignAll($result);
             $this->assign('oauth', ['type' => $type, 'nickname' => isset($_POST['nickname']) ? $_POST['nickname'] : ''])
                 ->render('oauth/connect.html');
+        }
+    }
+
+    function ac_logout()
+    {
+        session_start();
+        unset($_SESSION['oauth_user']);
+        if (isset($_REQUEST['referer'])) {
+            $this->redirect($_REQUEST['referer']);
+        } else {
+            $this->redirect('user', 'login');
         }
     }
 
