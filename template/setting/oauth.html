@@ -1,6 +1,6 @@
 <html lang="zh-cn">
 <head>
-    <title>头像 - <?=constant("TP_SITE_NAME")?></title>
+    <title>账号绑定 - <?=constant("TP_SITE_NAME")?></title>
     <?php include "template/common/header.html"; ?>
 </head>
 <body>
@@ -13,16 +13,23 @@
         <div class="col-lg-9">
             <div class="card neo_card mt-4">
                 <div class="card-body">
-                    <form action="/setting/gravatar">
+                    <?php if(isset($tp_bind)):?>
+                    <form action="/setting/oauth_avatar/<?=$oauth['type']?>">
+                        <input type="hidden" name="avatar" value="<?=$avatar?>">
                         <div class="form-group">
                             <div class="col-sm-3 col-form-label">
-                                <img height="100px" width="100px" class="rounded-circle" src="https://www.gravatar.com/avatar/<?=md5(strtolower(trim($tp_user['email'])))?>">
+                                <img height="100px" width="100px" class="rounded-circle"
+                                     src="<?=$avatar?>">
                             </div>
                             <div class="col-sm-9">
-                                <input type="submit" value="使用Gravatar头像" class="btn btn-dark">
+                                <input type="submit" value="使用<?=$oauth['name']?>头像" class="btn btn-dark">
                             </div>
                         </div>
                     </form>
+                    <?php else: ?>
+                    <a role="button" class="btn btn-info"
+                       href="/oauth/connect/<?=$oauth['type']?>">使用<?=$oauth['name']?>账号绑定</a>
+                    <?php endif;?>
                 </div>
             </div>
         </div>

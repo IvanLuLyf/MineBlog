@@ -1,8 +1,12 @@
 <div class="card neo_card mt-4">
     <div class="card-body">
         <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active" aria-selected="true">头像</a>
-            <a class="nav-link" href="#">#</a>
+            <a class="nav-link link-dark <?=(isset($cur_st)&&$cur_st=='avatar')?'active':''?>" href="/setting/avatar">头像</a>
+            <a class="nav-link link-dark <?=(isset($cur_st)&&$cur_st=='qq')?'active':''?>" href="/setting/oauth/qq">QQ绑定</a>
+            <a class="nav-link link-dark <?=(isset($cur_st)&&$cur_st=='wb')?'active':''?>" href="/setting/oauth/wb">微博绑定</a>
+            <a class="nav-link link-dark <?=(isset($cur_st)&&$cur_st=='gh')?'active':''?>" href="/setting/oauth/gh">Github绑定</a>
+            <a class="nav-link link-dark <?=(isset($cur_st)&&$cur_st=='tm')?'active':''?>" href="/setting/oauth/tm">Twimi绑定</a>
+            <a class="nav-link link-dark" href="#">#</a>
         </div>
     </div>
 </div>

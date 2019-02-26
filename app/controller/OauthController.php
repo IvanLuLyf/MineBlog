@@ -22,6 +22,10 @@ class OauthController extends Controller
                 $oauth = Config::load('oauth')->get('wb');
                 $url = 'https://api.weibo.com/oauth2/authorize?client_id=' . $oauth['key'] . '&redirect_uri=' . urlencode($oauth['callback']) . '&response_type=code';
                 break;
+            case 'gh':
+                $oauth = Config::load('oauth')->get('gh');
+                $url = 'https://github.com/login/oauth/authorize?client_id=' . $oauth['key'] . '&redirect_uri=' . urlencode($oauth['callback']) . '&scope=user,public_repo';
+                break;
             case 'tm':
                 $oauth = Config::load('oauth')->get('tm');
                 $url = 'http://tp.twimi.cn/index.php?mod=tauth&appkey=' . $oauth['key'] . '&url=' . urlencode($oauth['callback']);
@@ -39,30 +43,14 @@ class OauthController extends Controller
         if (count($path) < 1) $path = [''];
         list($type) = $path;
         $uid = null;
-        $bind_model = null;
+        $bind_model = new BindModel();
         if (isset($_GET['code'])) {
-            switch ($type) {
-                case 'tm';
-                    $oauth = Config::load('oauth')->get('tm');
-                    $bind = $this->tm_oauth($oauth, $_GET['code']);
-                    $bind_model = new TwimiBindModel();
-                    break;
-                case 'qq':
-                    $oauth = Config::load('oauth')->get('qq');
-                    $bind = $this->qq_oauth($oauth, $_GET['code']);
-                    $bind_model = new QqBindModel();
-                    break;
-                case 'wb':
-                    $oauth = Config::load('oauth')->get('wb');
-                    $bind = $this->wb_oauth($oauth, $_GET['code']);
-                    $bind_model = new SinaBindModel();
-                    break;
-            }
-            if ($uid = $bind_model->getUid($bind['uid'])) {
+            $bind = (new OauthService($this))->oauth($type);
+            if ($uid = $bind_model->getUid($bind['uid'], $type)) {
                 $userToken = (new UserModel())->refresh($uid);
                 session_start();
                 $_SESSION['token'] = $userToken;
-                $bind_model->where(['buid = :buid'], ['buid' => $bind['uid']])->update(['token' => $bind['token'], 'expire' => $bind['expire']]);
+                $bind_model->where(['buid = :buid and type = :t'], ['buid' => $bind['uid'], 't' => $type])->update(['token' => $bind['token'], 'expire' => $bind['expire']]);
                 if (isset($_SESSION['referer'])) {
                     $referer = $_SESSION['referer'];
                     unset($_SESSION['referer']);
@@ -72,33 +60,22 @@ class OauthController extends Controller
                 }
             } else {
                 if ($user = $userService->getLoginUser()) {
-                    $bind_data = array('uid' => $user['uid'], 'buid' => $bind['uid'], 'token' => $bind['token'], 'expire' => $bind['expire']);
-                    switch ($type) {
-                        case 'tm';
-                            (new TwimiBindModel())->add($bind_data);
-                            break;
-                        case 'qq':
-                            (new QqBindModel())->add($bind_data);
-                            break;
-                        case 'wb':
-                            (new SinaBindModel())->add($bind_data);
-                            break;
-                    }
-                    $this->redirect('setting', $type);
+                    $bind_data = array('uid' => $user['uid'], 'type' => $type, 'buid' => $bind['uid'], 'token' => $bind['token'], 'expire' => $bind['expire']);
+                    $bind_model->add($bind_data);
+                    $this->redirect('setting', 'oauth', ['type' => $type]);
                 } else {
                     session_start();
+                    $_SESSION['oauth_user'] = [
+                        'type' => $type,
+                        'uid' => $bind['uid'],
+                        'token' => $bind['token'],
+                        'expire' => $bind['expire'],
+                        'nickname' => $bind['nickname'],
+                    ];
                     if (Config::load('config')->get('allow_reg')) {
-                        $_SESSION[$type . '_bind_uid'] = $bind['uid'];
-                        $_SESSION[$type . '_token'] = $bind['token'];
-                        $_SESSION[$type . '_expire'] = $bind['expire'];
                         $this->assign('oauth', ['nickname' => $bind['nickname'], 'type' => $type])
                             ->render('oauth/connect.html');
                     } else {
-                        $_SESSION['oauth_user'] = [
-                            'type' => $type,
-                            'uid' => $bind['uid'],
-                            'nickname' => $bind['nickname'],
-                        ];
                         if (isset($_SESSION['referer'])) {
                             $referer = $_SESSION['referer'];
                             unset($_SESSION['referer']);
@@ -120,20 +97,9 @@ class OauthController extends Controller
         $type = $_REQUEST['type'];
         $bind_uid = $_REQUEST['buid'];
         $bind_token = $_REQUEST['token'];
-        $model = null;
-        switch ($type) {
-            case 'tm';
-                $model = new TwimiBindModel();
-                break;
-            case 'qq':
-                $model = new QqBindModel();
-                break;
-            case 'wb':
-                $model = new SinaBindModel();
-                break;
-        }
-        if ($uid = $model->getUid($bind_uid)) {
-            $model->where(['buid=:b'], ['b' => $bind_uid])->update(['token' => $bind_token]);
+        $model = new BindModel();
+        if ($uid = $model->getUid($bind_uid, $type)) {
+            $model->where(['buid=:b and type=:t'], ['b' => $bind_uid, 't' => $type])->update(['token' => $bind_token]);
             $result = (new UserModel())->getUserByUid($uid);
             $appToken = (new OauthTokenModel())->get($uid, $_POST['appkey']);
             $result['token'] = $appToken['token'];
@@ -155,18 +121,9 @@ class OauthController extends Controller
         if ($result['ret'] == 0) {
             session_start();
             $_SESSION['access_token'] = $result['token'];
-            $bind_data = array('uid' => $result['uid'], 'buid' => $_SESSION[$type . '_bind_uid'], 'token' => $_SESSION[$type . '_token'], 'expire' => $_SESSION[$type . '_expire']);
-            switch ($type) {
-                case 'tm';
-                    (new TwimiBindModel())->add($bind_data);
-                    break;
-                case 'qq':
-                    (new QqBindModel())->add($bind_data);
-                    break;
-                case 'wb':
-                    (new SinaBindModel())->add($bind_data);
-                    break;
-            }
+            $bind = $_SESSION['oauth_user'];
+            $bind_data = ['uid' => $result['uid'], 'type' => $type, 'buid' => $bind['uid'], 'token' => $bind['token'], 'expire' => $bind['expire']];
+            (new BindModel())->add($bind_data);
             if (isset($_SESSION['referer'])) {
                 $referer = $_SESSION['referer'];
                 unset($_SESSION['referer']);
@@ -196,116 +153,6 @@ class OauthController extends Controller
     {
         if (count($path) < 1) $path = ['', ''];
         list($type, $bind_id) = $path;
-        $imgUrl = '/static/images/avatar.jpg';
-        switch ($type) {
-            case 'qq':
-                $oauth = Config::load('oauth')->get('qq');
-                $imgUrl = $this->qq_avatar($oauth, $bind_id);
-                break;
-            case 'wb':
-                $oauth = Config::load('oauth')->get('wb');
-                $imgUrl = $this->wb_avatar($oauth, $bind_id);
-                break;
-            case 'tm':
-                $imgUrl = "https://ts.twimi.cn/user/avatar/$bind_id";
-                break;
-        }
-        $this->redirect($imgUrl);
-    }
-
-    function tm_oauth($oauth, $code)
-    {
-        $strInfo = $this->do_post_request("http://tp.twimi.cn/api.php?mod=tauth&action=gettoken", "appkey=" . $oauth['key'] . "&appsecret=" . $oauth['secret'] . "&code=" . $code);
-        $oauth_data = json_decode($strInfo, true);
-        $oauthToken = $oauth_data['token'];
-        $strUserInfo = $this->do_post_request("http://tp.twimi.cn/api.php?mod=user&action=getinfo", "appkey=" . $oauth['key'] . "&token=$oauthToken");
-        $user_info = json_decode($strUserInfo, true);
-        return ['uid' => $user_info['id'], 'nickname' => $user_info['nickname'], 'token' => $oauthToken, 'expire' => $oauth_data['expire']];
-    }
-
-    function qq_oauth($oauth, $code)
-    {
-        $token_url = 'https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&' . 'client_id=' . $oauth['key'] . '&redirect_uri=' . urlencode($oauth['callback']) . '&client_secret=' . $oauth['secret'] . '&code=' . $code;
-        $token = [];
-        parse_str($this->do_get_request($token_url), $token);
-        $open_id_str = $this->do_get_request('https://graph.qq.com/oauth2.0/me?access_token=' . $token['access_token']);
-        if (strpos($open_id_str, "callback") !== false) {
-            $l_pos = strpos($open_id_str, "(");
-            $r_pos = strrpos($open_id_str, ")");
-            $open_id_str = substr($open_id_str, $l_pos + 1, $r_pos - $l_pos - 1);
-        }
-        $open_id = json_decode($open_id_str, TRUE);
-        $user_info_url = 'https://graph.qq.com/user/get_user_info?' . 'access_token=' . $token['access_token'] . '&oauth_consumer_key=' . $oauth['key'] . '&openid=' . $open_id['openid'] . '&format=json';
-        $user_info = json_decode($this->do_get_request($user_info_url), TRUE);
-        return ['uid' => $open_id['openid'], 'nickname' => $user_info['nickname'], 'token' => $token['access_token'], 'expire' => time() + $token['expires_in']];
-    }
-
-    function wb_oauth($oauth, $code)
-    {
-        $token_url = 'https://api.weibo.com/oauth2/access_token';
-        $token = json_decode($this->do_post_request($token_url, "client_id=" . $oauth['key'] . "&client_secret=" . $oauth['secret'] . "&grant_type=authorization_code&code=" . $code . "&redirect_uri=" . $oauth['callback']), TRUE);
-        $user_info_url = "https://api.weibo.com/2/users/show.json?access_token=" . $token['access_token'] . "&uid=" . $token['uid'];
-        $user_info = json_decode($this->do_get_request($user_info_url), TRUE);
-        return ['uid' => $token['uid'], 'nickname' => $user_info['screen_name'], 'token' => $token['access_token'], 'expire' => time() + $token['expires_in']];
-    }
-
-    function wb_avatar($oauth, $bind_id)
-    {
-        $row = (new SinaBindModel())->where(['uid = 1'], [])->fetch();
-        $user_info_url = "https://api.weibo.com/2/users/show.json?access_token=" . $row['token'] . "&uid=" . $bind_id;
-        $user_info = json_decode($this->do_get_request($user_info_url), TRUE);
-        return $user_info['avatar_large'];
-    }
-
-    function qq_avatar($oauth, $bind_id)
-    {
-        return "https://qzapp.qlogo.cn/qzapp/{$oauth['key']}/$bind_id/100";
-    }
-
-    function do_get_request($url)
-    {
-        $params = ['http' => ['method' => 'GET',]];
-        $ctx = stream_context_create($params);
-        $fp = @fopen($url, 'rb', false, $ctx);
-        if (!$fp) {
-            $this->assign('ret', 2004);
-            $this->assign('status', "can't open url");
-            $this->assign('tp_error_msg', "无法打开请求页面");
-            $this->render('common/error.html');
-            die();
-        }
-        $response = @stream_get_contents($fp);
-        if ($response === false) {
-            $this->assign('ret', 2005);
-            $this->assign('status', "can't read content");
-            $this->assign('tp_error_msg', "无法读取页面内容");
-            $this->render('common/error.html');
-            die();
-        }
-        return $response;
-    }
-
-    function do_post_request($url, $data, $optional_headers = null)
-    {
-        $params = ['http' => ['method' => 'POST', 'content' => $data]];
-        if ($optional_headers !== null) $params['http']['header'] = $optional_headers;
-        $ctx = stream_context_create($params);
-        $fp = @fopen($url, 'rb', false, $ctx);
-        if (!$fp) {
-            $this->assign('ret', 2004);
-            $this->assign('status', "can't open url");
-            $this->assign('tp_error_msg', "无法打开请求页面");
-            $this->render('common/error.html');
-            die();
-        }
-        $response = @stream_get_contents($fp);
-        if ($response === false) {
-            $this->assign('ret', 2005);
-            $this->assign('status', "can't read content");
-            $this->assign('tp_error_msg', "无法读取页面内容");
-            $this->render('common/error.html');
-            die();
-        }
-        return $response;
+        $this->redirect((new OauthService($this))->avatar($type, $bind_id));
     }
 }

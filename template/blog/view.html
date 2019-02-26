@@ -82,6 +82,7 @@
                     <div class="oauth-bar text-center">
                         <a href="/oauth/connect/qq?referer=/blog/view/<?=$blog['tid']?>"><img alt="QQ" class="oauth-icon" src="/static/img/qq.png"></a>
                         <a href="/oauth/connect/wb?referer=/blog/view/<?=$blog['tid']?>"><img alt="微博" class="oauth-icon" src="/static/img/wb.png"></a>
+                        <a href="/oauth/connect/gh?referer=/blog/view/<?=$blog['tid']?>"><img alt="Github" class="oauth-icon" src="/static/img/gh.png"></a>
                         <a href="/oauth/connect/tm?referer=/blog/view/<?=$blog['tid']?>"><img alt="Twimi" class="oauth-icon" src="/static/img/tm.png"></a>
                     </div>
                     <?php endif;?>
@@ -99,6 +100,10 @@
                         <?php elseif($comment['type']=='tm'):?>
                         <img class="rounded-circle"
                              src="https://twimi.cn/user/avatar/<?= $comment['username'] ?>"
+                             width="40px"/>
+                        <?php elseif($comment['type']=='gh'):?>
+                        <img class="rounded-circle"
+                             src="https://avatars.githubusercontent.com/u/<?= $comment['username'] ?>"
                              width="40px"/>
                         <?php else:?>
                         <img class="rounded-circle"
@@ -129,6 +134,14 @@
                                        class="text-muted font-weight-bold">
                                         <?=$comment['nickname']?>
                                         <img alt="Twimi" class="oauth-icon-small" src="/static/img/tm.png">
+                                    </a>
+                                </span>
+                                <?php elseif ($comment['type']=='gh'):?>
+                                <span class="username">
+									<a href="https://github.com/<?=$comment['nickname']?>"
+                                       class="text-muted font-weight-bold">
+                                        <?=$comment['nickname']?>
+                                        <img alt="Twimi" class="oauth-icon-small" src="/static/img/gh.png">
                                     </a>
                                 </span>
                                 <?php else:?>

@@ -16,9 +16,4 @@ class UserService extends Service
         }
         return null;
     }
-
-    public function getAuthUser()
-    {
-
-    }
 }

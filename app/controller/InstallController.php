@@ -167,26 +167,14 @@ class InstallController extends Controller
                 'expire' => ['text']
             ], ['id'], 'id');
 
-            Database::getInstance()->createTable($db_prefix . 'qq_bind', [
+            Database::getInstance()->createTable($db_prefix . 'bind', [
+                'id' => ['integer', 'not null'],
                 'uid' => ['integer', 'not null'],
+                'type' => ['text'],
                 'buid' => ['text', 'not null'],
                 'token' => ['text', 'not null'],
                 'expire' => ['text']
-            ], ['uid']);
-
-            Database::getInstance()->createTable($db_prefix . 'sina_bind', [
-                'uid' => ['integer', 'not null'],
-                'buid' => ['text', 'not null'],
-                'token' => ['text', 'not null'],
-                'expire' => ['text']
-            ], ['uid']);
-
-            Database::getInstance()->createTable($db_prefix . 'twimi_bind', [
-                'uid' => ['integer', 'not null'],
-                'buid' => ['text', 'not null'],
-                'token' => ['text', 'not null'],
-                'expire' => ['text']
-            ], ['uid']);
+            ], ['id'], 'id');
 
             Database::getInstance()->insert(['username' => $username, 'password' => $password, 'email' => $email, 'nickname' => $nickname, 'token' => ''], $db_prefix . 'user');
             $config_file = fopen(APP_PATH . "config/config.php", "w") or die("Unable to open file!");
