@@ -29,13 +29,14 @@
             <?php endif;?>
             <input type="submit" class="btn btn-success btn-block" value="登陆">
             <div class="oauth-bar">
-                <a href="/oauth/connect/qq"><img alt="QQ" class="oauth-icon" src="/static/img/qq.png"></a>
-                <a href="/oauth/connect/wb"><img alt="微博" class="oauth-icon" src="/static/img/wb.png"></a>
-                <a href="/oauth/connect/gh"><img alt="Github" class="oauth-icon" src="/static/img/gh.png"></a>
-                <a href="/oauth/connect/tm"><img alt="Twimi" class="oauth-icon" src="/static/img/tm.png"></a>
+                <?php foreach ($oauth as $o): ?>
+                <a href="/oauth/connect/<?=$o?>"><img alt="<?=$o?>" class="oauth-icon" src="/static/img/<?=$o?>.png"></a>
+                <?php endforeach ?>
             </div>
-            <div class="float-right"><a href="/user/register?referer=<?=isset($referer)?urlencode($referer):''?>">注册</a> | <a
-                    href="/user/findpass">忘记密码</a></div>
+            <div class="float-right">
+                <a href="/user/register?referer=<?=isset($referer)?urlencode($referer):''?>">注册</a>
+                | <a href="/user/findpass">忘记密码</a>
+            </div>
         </form>
     </div>
 </div>

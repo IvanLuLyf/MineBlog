@@ -16,6 +16,14 @@ class UserController extends Controller
             $_SESSION['referer'] = $referer;
             $this->assign('referer', $referer);
         }
+        if (Config::check("oauth")) {
+            $sites = Config::load('oauth')->all();
+            $oauth = [];
+            foreach ($sites as $name => $site) {
+                $oauth[] = $name;
+            }
+            $this->assign('oauth', $oauth);
+        }
         $this->render("user/login.html");
     }
 
