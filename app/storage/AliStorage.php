@@ -51,6 +51,7 @@ class AliStorage implements Storage
     {
         try {
             $this->ossClient->uploadFile($this->bucket, $filename, $path);
+            return $this->url . $filename;
         } catch (OssException $e) {
             exit($e->getMessage());
         }
@@ -59,10 +60,5 @@ class AliStorage implements Storage
     public function remove($filename)
     {
         $this->ossClient->deleteObject($this->bucket, $filename);
-    }
-
-    public function geturl($filename)
-    {
-        return $this->url . $filename;
     }
 }
