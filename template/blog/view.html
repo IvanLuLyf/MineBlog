@@ -32,6 +32,8 @@
                     <div>
                         <?php if(isset($shares)):?>
                         分享到:
+                        <a target="_blank" href="/ipfs/publish/<?=$blog['tid']?>"><img alt="IPFS" class="oauth-icon"
+                                                                      src="/static/img/ipfs.png"></a>
                         <?php foreach ($shares as $s): ?>
                         <a target="_blank" href="<?=$s['url']?>"><img alt="<?=$s['name']?>" class="oauth-icon"
                                                                       src="/static/img/<?=$s['name']?>.png"></a>
