@@ -28,6 +28,16 @@
                     <div class="markdown-body">
                         <?=$html_content?>
                     </div>
+                    <hr>
+                    <div>
+                        <?php if(isset($shares)):?>
+                        分享到:
+                        <?php foreach ($shares as $s): ?>
+                        <a target="_blank" href="<?=$s['url']?>"><img alt="<?=$s['name']?>" class="oauth-icon"
+                                                                      src="/static/img/<?=$s['name']?>.png"></a>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
             <div class="card neo_card mt-3">
@@ -56,7 +66,8 @@
                         <div class="float-right">
                             <img class="rounded-circle"
                                  src="/oauth/avatar/<?=$oauth_user['type']?>/<?=$oauth_user['uid']?>"
-                                 width="24px"/> <?=$oauth_user['nickname']?> | <a href="/oauth/logout?referer=/blog/view/<?=$blog['tid']?>">退出</a>
+                                 width="24px"/> <?=$oauth_user['nickname']?> | <a
+                                href="/oauth/logout?referer=/blog/view/<?=$blog['tid']?>">退出</a>
                         </div>
                         <div class="form-group">
                             <label for="o_content">评论</label>
@@ -80,10 +91,11 @@
                         </p>
                     </div>
                     <div class="oauth-bar text-center">
-                        <a href="/oauth/connect/qq?referer=/blog/view/<?=$blog['tid']?>"><img alt="QQ" class="oauth-icon" src="/static/img/qq.png"></a>
-                        <a href="/oauth/connect/wb?referer=/blog/view/<?=$blog['tid']?>"><img alt="微博" class="oauth-icon" src="/static/img/wb.png"></a>
-                        <a href="/oauth/connect/gh?referer=/blog/view/<?=$blog['tid']?>"><img alt="Github" class="oauth-icon" src="/static/img/gh.png"></a>
-                        <a href="/oauth/connect/tm?referer=/blog/view/<?=$blog['tid']?>"><img alt="Twimi" class="oauth-icon" src="/static/img/tm.png"></a>
+                        <?php foreach ($oauth as $o): ?>
+                        <a href="/oauth/connect/<?=$o?>?referer=/blog/view/<?=$blog['tid']?>"><img alt="<?=$o?>"
+                                                                                                   class="oauth-icon"
+                                                                                                   src="/static/img/<?=$o?>.png"></a>
+                        <?php endforeach ?>
                     </div>
                     <?php endif;?>
                     <?php foreach ($comments as $comment) : ?>

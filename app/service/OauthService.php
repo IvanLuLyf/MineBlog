@@ -55,6 +55,24 @@ class OauthService extends Service
         return $imgUrl;
     }
 
+    function share_url($type, $url, $title, $description = '')
+    {
+        $result = "/index";
+        switch ($type) {
+            case 'qq':
+                $result = "https://connect.qq.com/widget/shareqq/index.html?url={$url}&title={$title}&desc={$description}&summary=&site=" . TP_SITE_NAME;
+                break;
+            case 'qz':
+                $result = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url={$url}&desc={$description}&summary=&title={$title}&site=" . TP_SITE_NAME;
+                break;
+            case 'wb':
+                $oauth = Config::load('oauth')->get('wb');
+                $result = "http://service.weibo.com/share/share.php?url={$url}&title={$title}&appkey={$oauth['key']}&searchPic=true";
+                break;
+        }
+        return $result;
+    }
+
     private function tm_oauth($oauth, $code)
     {
         $strInfo = $this->do_post_request("http://tp.twimi.cn/api.php?mod=tauth&action=gettoken", "appkey=" . $oauth['key'] . "&appsecret=" . $oauth['secret'] . "&code=" . $code);

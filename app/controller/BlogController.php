@@ -50,6 +50,20 @@ class BlogController extends Controller
             if ($blog['visible'] == 0 || ($blog['visible'] > 0 && $tp_user['username'] == $blog['username'])) {
                 $comments = (new CommentModel())->listComment($tid);
                 if ($this->_mode == BunnyPHP::MODE_NORMAL) {
+                    $oauth = [];
+                    if (Config::check("oauth")) {
+                        $oauth = Config::load('oauth')->get('enabled', []);
+                    }
+                    $this->assign('oauth', $oauth);
+                    if (Config::check('oauth')) {
+                        $sl = Config::load('oauth')->get('shares');
+                        $share = new OauthService($this);
+                        $shares = [];
+                        foreach ($sl as $item) {
+                            $shares[] = ['name' => $item, 'url' => $share->share_url($item, 'https://' . $_SERVER["HTTP_HOST"] . "/blog/view/{$blog['tid']}", $blog['title'])];
+                        }
+                        $this->assign('shares', $shares);
+                    }
                     $this->assign('tp_user', $tp_user);
                     if (isset($_SESSION['oauth_user'])) {
                         $this->assign('oauth_user', $_SESSION['oauth_user']);
