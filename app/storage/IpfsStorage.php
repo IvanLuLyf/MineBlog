@@ -41,28 +41,28 @@ class IpfsStorage implements Storage
         $context = stream_context_create(['http' => ['method' => 'POST', 'header' => $header, 'content' => $content,], "ssl" => ["verify_peer" => false, "verify_peer_name" => false,],]);
         $result = file_get_contents($this->server . '/add', false, $context);
         $data = json_decode($result, true);
-        return $data['Hash'];
+        return $this->url . $data['Hash'];
     }
 
     public function upload($filename, $path)
     {
         define('MULTIPART_BOUNDARY', '--------------------------' . microtime(true));
         $header = 'Content-Type: multipart/form-data; boundary=' . MULTIPART_BOUNDARY;
-        $file_contents = file_get_contents($filename);
+        $file_contents = file_get_contents($path);
         $content = "--" . MULTIPART_BOUNDARY . "\r\n" .
-            "Content-Disposition: form-data; name=\"file\"; filename=\"" . basename($filename) . "\"\r\n" .
+            "Content-Disposition: form-data; name=\"file\"; filename=\"" . basename($path) . "\"\r\n" .
             "Content-Type: application/octet-stream\r\n\r\n" .
             $file_contents . "\r\n";
         $content .= "--" . MULTIPART_BOUNDARY . "--\r\n";
         $context = stream_context_create(['http' => ['method' => 'POST', 'header' => $header, 'content' => $content,], "ssl" => ["verify_peer" => false, "verify_peer_name" => false,],]);
         $result = file_get_contents($this->server . '/add', false, $context);
         $data = json_decode($result, true);
-        return $data['Hash'];
+        return $this->url . $data['Hash'];
     }
 
     public function remove($filename)
     {
-        // TODO: Implement remove() method.
+
     }
 
     private function do_get_request($url)
