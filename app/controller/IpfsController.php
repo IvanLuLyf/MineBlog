@@ -8,13 +8,17 @@
 
 class IpfsController extends Controller
 {
-    public function ac_publish(array $path, UserService $userService)
+    /**
+     * @filter auth
+     * @param array $path
+     */
+    public function ac_publish(array $path)
     {
         $tid = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : (isset($path[0]) ? $path[0] : 0);
         $blog = (new BlogModel())->getBlogById($tid);
-        $tp_user = $userService->getLoginUser();
-        if ($blog != null) {
-            if ($blog['visible'] == 0 || ($blog['visible'] > 0 && $tp_user['username'] == $blog['username'])) {
+        $tp_user = BunnyPHP::app()->get("tp_user");
+        if ($tp_user != null && $blog != null) {
+            if ($tp_user['username'] == $blog['username']) {
                 $static_path = '/ipfs/Qma39UmDJ7T2Ns2Bvjoditt1JrjFzML4eXPv7utMupjEUj/';
                 $blog_date = date('Y-m-d H:i:s', $blog['timestamp']);
                 $avatar = 'https://' . $_SERVER["HTTP_HOST"] . "/user/avatar?username={$blog['username']}";
@@ -43,7 +47,7 @@ class IpfsController extends Controller
 </body></html>
 HTML_CONTENT;
                 $url = (new IpfsStorage([]))->write('', $result);
-                $this->redirect("https://ipfs.infura.io/ipfs/" . $url);
+                $this->redirect($url);
             } else {
                 $this->assign('ret', 4002)->assign('status', 'permission denied')->assign('tp_error_msg', "没有访问权限")
                     ->render('common/error.html');
