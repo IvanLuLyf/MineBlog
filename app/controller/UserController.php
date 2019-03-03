@@ -130,6 +130,35 @@ class UserController extends Controller
         $this->redirect($imgUrl);
     }
 
+    /**
+     * @filter ajax
+     * @filter api
+     * @filter auth
+     */
+    public function ac_avatar_post()
+    {
+        $tp_user = BunnyPHP::app()->get('tp_user');
+        $this->assign('tp_user', $tp_user);
+        if (isset($_FILES['avatar'])) {
+            $image_type = ['image/bmp', 'image/gif', 'image/jpeg', 'image/pjpeg', 'image/png', 'application/x-bmp', 'application/x-jpg', 'application/x-png'];
+            if (in_array($_FILES["avatar"]["type"], $image_type) && ($_FILES["avatar"]["size"] < 2000000)) {
+                $t = time() % 1000;
+                $url = $this->storage()->upload("avatar/" . $tp_user['uid'] . '_' . $t . ".jpg", $_FILES["avatar"]["tmp_name"]);
+                (new AvatarModel())->upload($tp_user['uid'], $url);
+                $response = array('ret' => 0, 'status' => 'ok', 'url' => $url);
+            } else {
+                $response = array('ret' => 1007, 'status' => 'wrong file');
+            }
+            $this->assignAll($response);
+        }
+        if ($this->_mode == BunnyPHP::MODE_NORMAL) {
+            $this->redirect('setting', 'avatar');
+        } else {
+            $this->render('setting/avatar.html');
+        }
+    }
+
+
     public function ac_blog(array $path)
     {
         if (count($path) == 0) $path = [''];

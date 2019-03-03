@@ -41,7 +41,7 @@ class IpfsStorage implements Storage
         $context = stream_context_create(['http' => ['method' => 'POST', 'header' => $header, 'content' => $content,], "ssl" => ["verify_peer" => false, "verify_peer_name" => false,],]);
         $result = file_get_contents($this->server . '/add', false, $context);
         $data = json_decode($result, true);
-        return $this->url . $data['Hash'];
+        return "/ipfs/" . $data['Hash'];
     }
 
     public function upload($filename, $path)
@@ -57,7 +57,7 @@ class IpfsStorage implements Storage
         $context = stream_context_create(['http' => ['method' => 'POST', 'header' => $header, 'content' => $content,], "ssl" => ["verify_peer" => false, "verify_peer_name" => false,],]);
         $result = file_get_contents($this->server . '/add', false, $context);
         $data = json_decode($result, true);
-        return $this->url . $data['Hash'];
+        return "/ipfs/" . $data['Hash'];
     }
 
     public function remove($filename)

@@ -21,7 +21,7 @@ class IpfsController extends Controller
             if ($tp_user['username'] == $blog['username']) {
                 $static_path = '/ipfs/Qma39UmDJ7T2Ns2Bvjoditt1JrjFzML4eXPv7utMupjEUj/';
                 $blog_date = date('Y-m-d H:i:s', $blog['timestamp']);
-                $avatar = 'https://' . $_SERVER["HTTP_HOST"] . "/user/avatar?username={$blog['username']}";
+                $avatar = (new AvatarModel())->getAvatar($tp_user['uid']);
                 include APP_PATH . 'library/Parser.php';
                 $parser = new HyperDown\Parser;
                 $blogContent = $parser->makeHtml($blog['content']);
