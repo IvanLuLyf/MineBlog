@@ -1,6 +1,6 @@
 <html lang="zh-cn">
 <head>
-    <title>发帖 - <?=constant("TP_SITE_NAME")?></title>
+    <title>写博客 - <?=constant("TP_SITE_NAME")?></title>
     <?php include "template/common/header.html"; ?>
     <script src="https://cdn.bootcss.com/showdown/1.8.6/showdown.min.js"></script>
     <link href="/static/css/article.css" rel="stylesheet">
@@ -22,6 +22,10 @@
                         </div>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-secondary" onclick="onImageClick()">图片</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="summary">摘要</label>
+                            <input id="summary" name="summary" type="text" placeholder="摘要" class="form-control"/>
                         </div>
                         <div class="form-row">
                             <div class="col-lg-6 form-group">
@@ -50,9 +54,12 @@
 <script>
     let converter = new showdown.Converter();
     let txt_content = $("#content");
+    let div_preview = $('#preview');
+    let txt_summary = $('#summary');
 
     function markdownIt() {
-        $('#preview').html(converter.makeHtml($('#content').val()))
+        div_preview.html(converter.makeHtml(txt_content.val()))
+        txt_summary.val(div_preview.text().substring(0,20));
     }
 
     function onImageClick() {

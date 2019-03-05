@@ -14,6 +14,7 @@ class BlogModel extends Model
         'nickname' => ['varchar(32)'],
         'title' => ['text', 'not null'],
         'content' => ['text', 'not null'],
+        'summary' => ['varchar(60)'],
         'timestamp' => ['text'],
         'visible' => ['integer', 'default 0'],
         'view_num' => ['integer', 'default 0'],
@@ -50,10 +51,10 @@ class BlogModel extends Model
         return $this->where("username=:un and visible<=:v", ['un' => $username, 'v' => $visible])->order(['tid desc'])->fetchAll();
     }
 
-    public function sendBlog($user, $title, $content, $visible = 0)
+    public function sendBlog($user, $title, $content, $summary = '', $visible = 0)
     {
         if ($user != null && $title != null && $content != null) {
-            $blog = ['username' => $user['username'], 'nickname' => $user['nickname'], 'title' => $title, 'content' => $content, 'timestamp' => time(), 'visible' => $visible];
+            $blog = ['username' => $user['username'], 'nickname' => $user['nickname'], 'title' => $title, 'content' => $content, 'summary' => $summary, 'timestamp' => time(), 'visible' => $visible];
             return $this->add($blog);
         } else {
             return -1;

@@ -29,7 +29,8 @@ class BlogController extends Controller
     public function ac_create_post()
     {
         if (isset($_POST['title']) && isset($_POST['content'])) {
-            $tid = (new BlogModel())->sendBlog(BunnyPHP::app()->get('tp_user'), $_POST['title'], $_POST['content']);
+            $summary = isset($_POST['summary']) ? $_POST['summary'] : $_POST['title'];
+            $tid = (new BlogModel())->sendBlog(BunnyPHP::app()->get('tp_user'), $_POST['title'], $_POST['content'], $summary);
             if ($this->_mode == BunnyPHP::MODE_NORMAL) {
                 $this->redirect('blog', 'view', ['tid' => $tid]);
             } elseif ($this->_mode == BunnyPHP::MODE_API) {

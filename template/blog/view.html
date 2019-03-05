@@ -1,6 +1,10 @@
 <html lang="zh-cn">
 <head>
     <title><?=$blog['title']?> - <?=constant("TP_SITE_NAME")?></title>
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://<?=TP_SITE_URL?>/blog/view/<?=$blog['tid']?>" />
+    <meta property="og:title" content="<?=$blog['title']?>" />
+    <meta property="og:description" content="<?=$blog['summary']?>" />
     <?php include "template/common/header.html"; ?>
     <link href="/static/css/article.css" rel="stylesheet">
 </head>
@@ -30,7 +34,7 @@
                     </div>
                     <hr>
                     <div>
-                        <?php if(isset($tp_user)):?>
+                        <?php if(isset($tp_user)&&$blog["username"]==$tp_user["username"]):?>
                         发送到:
                         <a target="_blank" href="/ipfs/publish/<?=$blog['tid']?>"><img alt="IPFS" class="oauth-icon"
                                                                                        src="/static/img/ipfs.png"></a>
