@@ -10,7 +10,6 @@ class OauthController extends Controller
 {
     function ac_connect(array $path)
     {
-        $url = '/index';
         if (count($path) < 1) $path = [''];
         list($type) = $path;
         switch ($type) {
@@ -26,9 +25,9 @@ class OauthController extends Controller
                 $oauth = Config::load('oauth')->get('gh');
                 $url = 'https://github.com/login/oauth/authorize?client_id=' . $oauth['key'] . '&redirect_uri=' . urlencode($oauth['callback']) . '&scope=user,public_repo';
                 break;
-            case 'tm':
-                $oauth = Config::load('oauth')->get('tm');
-                $url = 'http://tp.twimi.cn/index.php?mod=tauth&appkey=' . $oauth['key'] . '&url=' . urlencode($oauth['callback']);
+            default:
+                $oauth = Config::load('oauth')->get($type);
+                $url = $oauth['url'] . '/oauth/authorize?client_id=' . $oauth['key'] . '&redirect_uri=' . urlencode($oauth['callback']);
                 break;
         }
         if (isset($_REQUEST['referer'])) {

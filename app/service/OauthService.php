@@ -18,9 +18,6 @@ class OauthService extends Service
     function oauth($type)
     {
         switch ($type) {
-            case 'tm';
-                $oauth = Config::load('oauth')->get('tm');
-                return $this->tm_oauth($oauth, $_GET['code']);
             case 'qq':
                 $oauth = Config::load('oauth')->get('qq');
                 return $this->qq_oauth($oauth, $_GET['code']);
@@ -30,8 +27,10 @@ class OauthService extends Service
             case 'gh':
                 $oauth = Config::load('oauth')->get('gh');
                 return $this->gh_oauth($oauth, $_GET['code']);
+            default:
+                $oauth = Config::load('oauth')->get('tm');
+                return $this->tm_oauth($oauth, $_GET['code']);
         }
-        return null;
     }
 
     function avatar($type, $bind_id, $token = '')
@@ -48,8 +47,9 @@ class OauthService extends Service
             case 'gh':
                 $imgUrl = "https://avatars.githubusercontent.com/u/$bind_id";
                 break;
-            case 'tm':
-                $imgUrl = "https://ts.twimi.cn/user/avatar/$bind_id";
+            default:
+                $oauth = Config::load('oauth')->get($type);
+                $imgUrl = "{$oauth['url']}/user/avatar/$bind_id";
                 break;
         }
         return $imgUrl;
@@ -75,12 +75,12 @@ class OauthService extends Service
 
     private function tm_oauth($oauth, $code)
     {
-        $strInfo = $this->do_post_request("http://tp.twimi.cn/api.php?mod=tauth&action=gettoken", "appkey=" . $oauth['key'] . "&appsecret=" . $oauth['secret'] . "&code=" . $code);
+        $strInfo = $this->do_post_request("{$oauth['url']}/api/oauth/token", "client_id=" . $oauth['key'] . "&client_secret=" . $oauth['secret'] . "&code=" . $code);
         $oauth_data = json_decode($strInfo, true);
         $oauthToken = $oauth_data['token'];
-        $strUserInfo = $this->do_post_request("http://tp.twimi.cn/api.php?mod=user&action=getinfo", "appkey=" . $oauth['key'] . "&token=$oauthToken");
+        $strUserInfo = $this->do_post_request("{$oauth['url']}/api/user/info", "client_id=" . $oauth['key'] . "&token=$oauthToken");
         $user_info = json_decode($strUserInfo, true);
-        return ['uid' => $user_info['id'], 'nickname' => $user_info['nickname'], 'token' => $oauthToken, 'expire' => $oauth_data['expire']];
+        return ['uid' => $user_info['uid'], 'nickname' => $user_info['nickname'], 'token' => $oauthToken, 'expire' => $oauth_data['expire']];
     }
 
     private function qq_oauth($oauth, $code)
