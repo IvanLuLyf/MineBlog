@@ -49,7 +49,7 @@ class OauthController extends Controller
                 $userToken = (new UserModel())->refresh($uid);
                 session_start();
                 $_SESSION['token'] = $userToken;
-                $bind_model->where(['buid = :buid and type = :t'], ['buid' => $bind['uid'], 't' => $type])->update(['token' => $bind['token'], 'expire' => $bind['expire']]);
+                $bind_model->where(['bind = :b and type = :t'], ['b' => $bind['uid'], 't' => $type])->update(['token' => $bind['token'], 'expire' => $bind['expire']]);
                 if (isset($_SESSION['referer'])) {
                     $referer = $_SESSION['referer'];
                     unset($_SESSION['referer']);
@@ -59,7 +59,7 @@ class OauthController extends Controller
                 }
             } else {
                 if ($user = $userService->getLoginUser()) {
-                    $bind_data = array('uid' => $user['uid'], 'type' => $type, 'buid' => $bind['uid'], 'token' => $bind['token'], 'expire' => $bind['expire']);
+                    $bind_data = array('uid' => $user['uid'], 'type' => $type, 'bind' => $bind['uid'], 'token' => $bind['token'], 'expire' => $bind['expire']);
                     $bind_model->add($bind_data);
                     $this->redirect('setting', 'oauth', ['type' => $type]);
                 } else {
@@ -94,11 +94,11 @@ class OauthController extends Controller
     function ac_login()
     {
         $type = $_REQUEST['type'];
-        $bind_uid = $_REQUEST['buid'];
+        $bind_uid = $_REQUEST['bind'];
         $bind_token = $_REQUEST['token'];
         $model = new BindModel();
         if ($uid = $model->getUid($bind_uid, $type)) {
-            $model->where(['buid=:b and type=:t'], ['b' => $bind_uid, 't' => $type])->update(['token' => $bind_token]);
+            $model->where(['bind=:b and type=:t'], ['b' => $bind_uid, 't' => $type])->update(['token' => $bind_token]);
             $result = (new UserModel())->getUserByUid($uid);
             $appToken = (new OauthTokenModel())->get($uid, $_POST['appkey']);
             $result['token'] = $appToken['token'];
@@ -121,7 +121,7 @@ class OauthController extends Controller
             session_start();
             $_SESSION['access_token'] = $result['token'];
             $bind = $_SESSION['oauth_user'];
-            $bind_data = ['uid' => $result['uid'], 'type' => $type, 'buid' => $bind['uid'], 'token' => $bind['token'], 'expire' => $bind['expire']];
+            $bind_data = ['uid' => $result['uid'], 'type' => $type, 'bind' => $bind['uid'], 'token' => $bind['token'], 'expire' => $bind['expire']];
             (new BindModel())->add($bind_data);
             if (isset($_SESSION['referer'])) {
                 $referer = $_SESSION['referer'];

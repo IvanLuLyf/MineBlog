@@ -12,7 +12,7 @@ class BindModel extends Model
         'id' => ['integer', 'not null'],
         'uid' => ['integer', 'not null'],
         'type' => ['text'],
-        'buid' => ['text', 'not null'],
+        'bind' => ['text', 'not null'],
         'token' => ['text', 'not null'],
         'expire' => ['text']
     ];
