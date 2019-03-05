@@ -103,78 +103,17 @@ class InstallController extends Controller
             $nickname = (isset($_POST['nickname']) && $_POST['nickname'] != '') ? $_POST['nickname'] : $username;
             $site_name = $_POST['site_name'];
             $db_prefix = $db_info['prefix'];
-            Database::getInstance()->createTable($db_prefix . 'user', [
-                'uid' => ['integer', 'not null'],
-                'username' => ['varchar(16)', 'not null'],
-                'password' => ['varchar(32)', 'not null'],
-                'nickname' => ['varchar(32)'],
-                'email' => ['text', 'not null'],
-                'token' => ['text', 'not null'],
-                'expire' => ['text']
-            ], ['uid'], 'uid');
-
-            Database::getInstance()->createTable($db_prefix . 'blog', [
-                'tid' => ['integer', 'not null'],
-                'username' => ['varchar(16)', 'not null'],
-                'nickname' => ['varchar(32)'],
-                'title' => ['text', 'not null'],
-                'content' => ['text', 'not null'],
-                'timestamp' => ['text'],
-                'visible' => ['integer', 'default 0'],
-                'view_num' => ['integer', 'default 0'],
-                'comment_num' => ['integer', 'default 0'],
-                'like_num' => ['integer', 'default 0'],
-            ], ['tid'], 'tid');
-
-            Database::getInstance()->createTable($db_prefix . 'comment', [
-                'cid' => ['integer', 'not null'],
-                'tid' => ['integer', 'not null'],
-                'type' => ['text'],
-                'username' => ['text', 'not null'],
-                'nickname' => ['text'],
-                'content' => ['text', 'not null'],
-                'timestamp' => ['text'],
-            ], ['cid'], 'cid');
-
-            Database::getInstance()->createTable($db_prefix . 'user_info', [
-                'uid' => ['integer', 'not null'],
-                'signature' => ['text'],
-                'cover' => ['text'],
-                'background' => ['text'],
-            ], ['uid']);
-
-            Database::getInstance()->createTable($db_prefix . 'avatar', [
-                'uid' => ['integer', 'not null'],
-                'url' => ['text', 'not null'],
-            ], ['uid']);
-
-            Database::getInstance()->createTable($db_prefix . 'api', [
-                'id' => ['integer', 'not null'],
-                'uid' => ['integer', 'not null'],
-                'appname' => ['text', 'not null'],
-                'appkey' => ['text', 'not null'],
-                'appsecret' => ['text', 'not null'],
-                'appurl' => ['text', 'not null'],
-                'type' => ['integer'],
-                'auth' => ['integer'],
-            ], ['id'], 'id');
-
-            Database::getInstance()->createTable($db_prefix . 'oauth_token', [
-                'id' => ['integer', 'not null'],
-                'uid' => ['integer', 'not null'],
-                'appkey' => ['text', 'not null'],
-                'token' => ['text', 'not null'],
-                'expire' => ['text']
-            ], ['id'], 'id');
-
-            Database::getInstance()->createTable($db_prefix . 'bind', [
-                'id' => ['integer', 'not null'],
-                'uid' => ['integer', 'not null'],
-                'type' => ['text'],
-                'buid' => ['text', 'not null'],
-                'token' => ['text', 'not null'],
-                'expire' => ['text']
-            ], ['id'], 'id');
+            
+            $models = scandir(APP_PATH . "app/model");
+            /**
+             * @var $modelClass Model
+             */
+            foreach ($models as $model) {
+                if (substr($model, -9) == "Model.php") {
+                    $modelClass = substr($model, 0, -4);
+                    $modelClass::create();
+                }
+            }
 
             Database::getInstance()->insert(['username' => $username, 'password' => $password, 'email' => $email, 'nickname' => $nickname, 'token' => ''], $db_prefix . 'user');
             $config_file = fopen(APP_PATH . "config/config.php", "w") or die("Unable to open file!");

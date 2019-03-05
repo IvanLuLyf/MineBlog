@@ -8,6 +8,19 @@
  */
 class ApiModel extends Model
 {
+    protected $_column = [
+        'id' => ['integer', 'not null'],
+        'uid' => ['integer', 'not null'],
+        'appname' => ['text', 'not null'],
+        'appkey' => ['text', 'not null'],
+        'appsecret' => ['text', 'not null'],
+        'appurl' => ['text', 'not null'],
+        'type' => ['integer'],
+        'auth' => ['integer'],
+    ];
+    protected $_pk = ['id'];
+    protected $_ai = 'id';
+
     public function check($appKey)
     {
         if ($row = $this->where(["appkey = ?"], [$appKey])->fetch()) {

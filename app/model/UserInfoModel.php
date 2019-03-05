@@ -8,6 +8,14 @@
 
 class UserInfoModel extends Model
 {
+    protected $_column = [
+        'uid' => ['integer', 'not null'],
+        'signature' => ['text'],
+        'cover' => ['text'],
+        'background' => ['text'],
+    ];
+    protected $_pk = ['uid'];
+
     public function get($uid)
     {
         return $this->where(['uid = :uid'], ['uid' => $uid])->fetch();

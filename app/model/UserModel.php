@@ -8,6 +8,21 @@
 
 class UserModel extends Model
 {
+    protected $_column = [
+        'tid' => ['integer', 'not null'],
+        'username' => ['varchar(16)', 'not null'],
+        'nickname' => ['varchar(32)'],
+        'title' => ['text', 'not null'],
+        'content' => ['text', 'not null'],
+        'timestamp' => ['text'],
+        'visible' => ['integer', 'default 0'],
+        'view_num' => ['integer', 'default 0'],
+        'comment_num' => ['integer', 'default 0'],
+        'like_num' => ['integer', 'default 0'],
+    ];
+    protected $_pk = ['tid'];
+    protected $_ai = 'tid';
+
     public function getUsers($page = 1)
     {
         return $this->limit(10, ($page - 1) * 10)->fetchAll();

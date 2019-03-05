@@ -8,6 +8,21 @@
 
 class BlogModel extends Model
 {
+    protected $_column = [
+        'tid' => ['integer', 'not null'],
+        'username' => ['varchar(16)', 'not null'],
+        'nickname' => ['varchar(32)'],
+        'title' => ['text', 'not null'],
+        'content' => ['text', 'not null'],
+        'timestamp' => ['text'],
+        'visible' => ['integer', 'default 0'],
+        'view_num' => ['integer', 'default 0'],
+        'comment_num' => ['integer', 'default 0'],
+        'like_num' => ['integer', 'default 0'],
+    ];
+    protected $_pk = ['tid'];
+    protected $_ai = 'tid';
+
     public function getBlogByPage($page = 1, $visible = 0, $size = 5)
     {
         return $this->where('visible=:v', ['v' => $visible])->order(['tid desc'])->limit($size, ($page - 1) * $size)->fetchAll();

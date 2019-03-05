@@ -8,6 +8,16 @@
  */
 class OauthTokenModel extends Model
 {
+    protected $_column = [
+        'id' => ['integer', 'not null'],
+        'uid' => ['integer', 'not null'],
+        'appkey' => ['text', 'not null'],
+        'token' => ['text', 'not null'],
+        'expire' => ['text']
+    ];
+    protected $_pk = ['id'];
+    protected $_ai = 'id';
+
     public function check($appKey, $appToken)
     {
         if ($row = $this->where(["appkey = ? and token = ? and expire > ?"], [$appKey, $appToken, time()])->fetch()) {

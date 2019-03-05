@@ -8,9 +8,20 @@
 
 class BindModel extends Model
 {
+    protected $_column = [
+        'id' => ['integer', 'not null'],
+        'uid' => ['integer', 'not null'],
+        'type' => ['text'],
+        'buid' => ['text', 'not null'],
+        'token' => ['text', 'not null'],
+        'expire' => ['text']
+    ];
+    protected $_pk = ['id'];
+    protected $_ai = 'id';
+
     public function getUid($bind_uid, $type)
     {
-        if ($bind_row = $this->where(['buid=:b and type=:t'], ['b' => $bind_uid, 't' => $type])->fetch()) {
+        if ($bind_row = $this->where(['bind=:b and type=:t'], ['b' => $bind_uid, 't' => $type])->fetch()) {
             return $bind_row['uid'];
         } else {
             return null;

@@ -8,6 +8,12 @@
 
 class AvatarModel extends Model
 {
+    protected $_column = [
+        'uid' => ['integer', 'not null'],
+        'url' => ['text', 'not null'],
+    ];
+    protected $_pk = ['uid'];
+
     public function upload($uid, $path)
     {
         if ($this->where(["uid = ?"], [$uid])->fetch()) {
