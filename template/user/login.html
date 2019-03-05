@@ -30,7 +30,7 @@
             <input type="submit" class="btn btn-success btn-block" value="登陆">
             <div class="oauth-bar">
                 <?php foreach ($oauth as $o): ?>
-                <a href="/oauth/connect/<?=$o?>"><img alt="<?=$o?>" class="oauth-icon" src="/static/img/<?=$o?>.png"></a>
+                <a href="/oauth/connect/<?=$o[0]?>"><img alt="<?=$o[1]?>" class="oauth-icon" src="/static/img/<?=$o[0]?>.png"></a>
                 <?php endforeach ?>
             </div>
             <div class="float-right">

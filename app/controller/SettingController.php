@@ -41,21 +41,37 @@ class SettingController extends Controller
      */
     public function ac_oauth(array $path)
     {
-        if (count($path) < 1) $path = [''];
-        list($type) = $path;
-        $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : $type;
-        $tp_user = BunnyPHP::app()->get('tp_user');
-        $bind = (new BindModel())->where(['uid = :u and type = :t'], ['u' => $tp_user['uid'], 't' => $type])->fetch();
-        $names = ['wb' => '微博', 'qq' => 'QQ', 'tm' => 'Twimi', 'gh' => 'Github'];
-        if ($bind != null) {
-            $this->assign('tp_bind', $bind);
-            $image = (new OauthService($this))->avatar($type, $bind['bind'], $bind['token']);
-            $this->assign('avatar', $image);
+        if (Config::check('oauth')) {
+            if (count($path) < 1) $path = [''];
+            list($type) = $path;
+            $oauth_enabled = Config::load('oauth')->get('enabled', []);
+            $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : $type;
+            $type = $type == '' ? $oauth_enabled[0][0] : $type;
+            $tp_user = BunnyPHP::app()->get('tp_user');
+            $bind = (new BindModel())->where(['uid=:u and type=:t'], ['u' => $tp_user['uid'], 't' => $type])->fetch();
+            if ($bind != null) {
+                $this->assign('tp_bind', $bind);
+                $image = (new OauthService($this))->avatar($type, $bind['bind'], $bind['token']);
+                $this->assign('avatar', $image);
+            }
+            $name = '';
+            foreach ($oauth_enabled as $o) {
+                if ($o[0] == $type) {
+                    $name = $o[1];
+                    break;
+                }
+            }
+            $this->assign("oauth_list", $oauth_enabled);
+            $this->assign('cur_st', "oauth")
+                ->assign('oauth', ['type' => $type, 'name' => $name])
+                ->assign('tp_user', $tp_user)
+                ->render('setting/oauth.html');
+        } else {
+            $this->assign('ret', 1010);
+            $this->assign('status', 'oauth is not enabled');
+            $this->assign('tp_error_msg', "站点未开启OAuth");
+            $this->render('common/error.html');
         }
-        $this->assign('cur_st', $type)
-            ->assign('oauth', ['type' => $type, 'name' => $names[$type]])
-            ->assign('tp_user', $tp_user)
-            ->render('setting/oauth.html');
     }
 
     /**

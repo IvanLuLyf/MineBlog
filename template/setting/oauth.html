@@ -13,6 +13,13 @@
         <div class="col-lg-9">
             <div class="card neo_card mt-4">
                 <div class="card-body">
+                    <ul id="selTab" class="nav nav-tabs mb-2">
+                        <?php foreach($oauth_list as $o):?>
+                        <li class="nav-item">
+                            <a class="nav-link <?=($oauth['type']==$o[0])?'active':''?>" href="/setting/oauth/<?=$o[0]?>"><?=$o[1]?></a>
+                        </li>
+                        <?php endforeach;?>
+                    </ul>
                     <?php if(isset($tp_bind)):?>
                     <form action="/setting/oauth_avatar/<?=$oauth['type']?>">
                         <input type="hidden" name="avatar" value="<?=$avatar?>">
