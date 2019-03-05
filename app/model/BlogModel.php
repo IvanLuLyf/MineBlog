@@ -14,6 +14,7 @@ class BlogModel extends Model
         'nickname' => ['varchar(32)'],
         'title' => ['text', 'not null'],
         'content' => ['text', 'not null'],
+        'recommend' => ['varchar(1)', 'default 0'],
         'summary' => ['varchar(60)'],
         'timestamp' => ['text'],
         'visible' => ['integer', 'default 0'],
@@ -24,9 +25,14 @@ class BlogModel extends Model
     protected $_pk = ['tid'];
     protected $_ai = 'tid';
 
-    public function getBlogByPage($page = 1, $visible = 0, $size = 5)
+    public function getBlogByPage($page = 1, $visible = 0, $size = 10)
     {
         return $this->where('visible=:v', ['v' => $visible])->order(['tid desc'])->limit($size, ($page - 1) * $size)->fetchAll();
+    }
+
+    public function getRecommendBlog($page = 1, $visible = 0, $size = 10)
+    {
+        return $this->where('visible=:v and recommend=1', ['v' => $visible])->order(['tid desc'])->limit($size, ($page - 1) * $size)->fetchAll(['tid', 'title']);
     }
 
     public function getTotal()
@@ -34,7 +40,7 @@ class BlogModel extends Model
         return $this->fetch("count(*) num")['num'];
     }
 
-    public function searchBlog($word, $page = 1, $visible = 0, $size = 5)
+    public function searchBlog($word, $page = 1, $visible = 0, $size = 10)
     {
         $blogs = $this->where('visible=:v and content like :c', ['v' => $visible, 'c' => "%$word%"])->order(['tid desc'])->limit($size, ($page - 1) * $size)->fetchAll();
         $total = $this->where('visible=:v and content like :c', ['v' => $visible, 'c' => "%$word%"])->fetch("count(*) num")['num'];

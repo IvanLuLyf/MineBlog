@@ -14,19 +14,19 @@
                 <div class="card-body">
                     <div class="media">
                         <div class="media-body small">
-                            <h4><a class="link-dark" href="/blog/view/<?= $blog['tid'] ?>"><?= $blog['title'] ?></a></h4>
+                            <h4><a class="link-dark" href="/blog/view/<?= $blog['tid'] ?>"><?= $blog['title'] ?></a>
+                            </h4>
                             <div>
 								<span class="username">
-									<a href="/user/blog/<?=$blog['username']?>" class="text-muted font-weight-bold"><?= $blog['nickname'] ?></a>
+									<a href="/user/blog/<?=$blog['username']?>"
+                                       class="text-muted font-weight-bold"><?= $blog['nickname'] ?></a>
 								</span>
                                 <span class="text-grey ml-2"><?= date('Y-m-d H:i:s', $blog['timestamp']) ?></span>
                             </div>
                         </div>
                     </div>
                     <hr>
-                    <div class="markdown-body">
-                        <?=$parser->makeHtml($blog['content'])?>
-                    </div>
+                    <?=$blog['summary']?>
                 </div>
             </div>
             <?php endforeach ?>
@@ -36,7 +36,8 @@
                         <a class="page-link link-dark" href="/blog/list/1">首页</a>
                     </li>
                     <li class="page-item <?=$page==1?'disabled':''?>">
-                        <a aria-label="Previous" class="page-link link-dark" href="/blog/list/<?=$page==1?1:($page-1)?>">
+                        <a aria-label="Previous" class="page-link link-dark"
+                           href="/blog/list/<?=$page==1?1:($page-1)?>">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">上一页</span>
                         </a>
@@ -75,14 +76,12 @@
             <?php endif; ?>
             <?php if(isset($recommend_blogs)):?>
             <div class="card neo_card mt-4">
-                <div class="card-header">
-                    推荐列表
-                </div>
-                <ul class="list-group list-group-flush">
+                <div class="card-body">
+                    <h5>推荐列表</h5>
                     <?php foreach ($recommend_blogs as $blog): ?>
-                    <li class="list-group-item list-group-item-action"><?=$blog['title']?></li>
+                    <p><a class="link-dark" href="/blog/view/<?=$blog['tid']?>"><?=$blog['title']?></a></p>
                     <?php endforeach ?>
-                </ul>
+                </div>
             </div>
             <?php endif;?>
         </div>

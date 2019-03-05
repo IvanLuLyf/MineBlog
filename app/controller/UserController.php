@@ -159,12 +159,12 @@ class UserController extends Controller
     }
 
 
-    public function ac_blog(array $path)
+    public function ac_blog(array $path, UserService $userService)
     {
         if (count($path) == 0) $path = [''];
         $username = isset($_GET['username']) ? $_GET['username'] : $path[0];
         $page = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : isset($path[1]) ? $path[1] : 1;
-        $tp_user = $this->service('user')->getLoginUser();
+        $tp_user = $userService->getLoginUser();
         if ($username == '') {
             if ($tp_user == null) {
                 $this->redirect('user', 'login', ['referer' => View::get_url('user', 'blog')]);
@@ -177,9 +177,6 @@ class UserController extends Controller
             $visible = 2;
         }
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
-            include APP_PATH . 'library/Parser.php';
-            $parser = new HyperDown\Parser;
-            $this->assign('parser', $parser);
             $this->assign('tp_user', $tp_user);
             $this->assign('cur_ctr', 'blog');
         }
