@@ -49,7 +49,7 @@ class SettingController extends Controller
         $names = ['wb' => '微博', 'qq' => 'QQ', 'tm' => 'Twimi', 'gh' => 'Github'];
         if ($bind != null) {
             $this->assign('tp_bind', $bind);
-            $image = (new OauthService($this))->avatar($type, $bind['buid'], $bind['token']);
+            $image = (new OauthService($this))->avatar($type, $bind['bind'], $bind['token']);
             $this->assign('avatar', $image);
         }
         $this->assign('cur_st', $type)
