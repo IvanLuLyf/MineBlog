@@ -15,15 +15,16 @@ class BlogController extends Controller
     }
 
     /**
+     * @filter csrf
      * @filter auth
      */
     public function ac_create_get()
     {
-        $this->assign('tp_user', BunnyPHP::app()->get('tp_user'));
         $this->render('blog/create.html');
     }
 
     /**
+     * @filter csrf check
      * @filter auth canFeed
      */
     public function ac_create_post()
@@ -37,14 +38,17 @@ class BlogController extends Controller
                 $this->assign('ret', 0)->assign('status', 'ok')->assign('tid', $tid)->render();
             }
         } else {
-            $this->assign('ret', 1004)->assign('status', 'empty arguments')->assign('tp_error_msg', "必要参数为空")
-                ->render('common/error.html');
+            $this->assign('ret', 1004)->assign('status', 'empty arguments')->assign('tp_error_msg', "必要参数为空")->error();
         }
     }
 
-    public function ac_view(array $path, UserService $userService)
+    /**
+     * @param $tid
+     * @param UserService $userService
+     * @path tid 0 0
+     */
+    public function ac_view($tid, UserService $userService)
     {
-        $tid = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : (isset($path[0]) ? $path[0] : 0);
         $blog = (new BlogModel())->getBlogById($tid);
         $tp_user = $userService->getLoginUser();
         if ($blog != null) {
@@ -77,18 +81,20 @@ class BlogController extends Controller
                 $this->assign("blog", $blog)->assign('comments', $comments)
                     ->render('blog/view.html');
             } else {
-                $this->assign('ret', 4002)->assign('status', 'permission denied')->assign('tp_error_msg', "没有访问权限")
-                    ->render('common/error.html');
+                $this->assign('ret', 4002)->assign('status', 'permission denied')->assign('tp_error_msg', "没有访问权限")->error();
             }
         } else {
-            $this->assign('ret', 3001)->assign('status', 'invalid tid')->assign('tp_error_msg', "博客不存在")
-                ->render('common/error.html');
+            $this->assign('ret', 3001)->assign('status', 'invalid tid')->assign('tp_error_msg', "博客不存在")->error();
         }
     }
 
-    function ac_list(array $path, UserService $userService)
+    /**
+     * @param $page
+     * @param UserService $userService
+     * @path page 0 1
+     */
+    function ac_list($page, UserService $userService)
     {
-        $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : isset($path[0]) ? $path[0] : 1;
         $blogModel = new BlogModel();
         $blogs = $blogModel->getBlogByPage($page);
         $recommend_blogs = $blogModel->getRecommendBlog();
@@ -104,12 +110,12 @@ class BlogController extends Controller
     }
 
     /**
-     * @param array $path
+     * @param $tid
      * @filter auth
+     * @path tid 0 0
      */
-    function ac_comment(array $path)
+    function ac_comment($tid)
     {
-        $tid = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : isset($path[0]) ? $path[0] : 0;
         $blog = (new BlogModel())->getBlogById($tid);
         if ($blog != null) {
             if ($this->_mode == BunnyPHP::MODE_NORMAL) {
@@ -124,18 +130,18 @@ class BlogController extends Controller
         }
     }
 
-    function ac_o_comment(array $path)
+    /**
+     * @param $tid
+     * @path tid 0 0
+     */
+    function ac_o_comment($tid)
     {
-        $tid = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : isset($path[0]) ? $path[0] : 0;
         $blog = (new BlogModel())->getBlogById($tid);
         if ($blog != null) {
             if ($this->_mode == BunnyPHP::MODE_NORMAL) {
-                session_start();
-                if (isset($_SESSION['oauth_user'])) {
-                    $cid = (new CommentModel())->sendComment($tid, [
-                        'username' => $_SESSION['oauth_user']['uid'],
-                        'nickname' => $_SESSION['oauth_user']['nickname']
-                    ], $_POST['content'], $_SESSION['oauth_user']['type']);
+                $oauth_user = BunnyPHP::getRequest()->getSession('oauth_user');
+                if ($oauth_user) {
+                    $cid = (new CommentModel())->sendComment($tid, ['username' => $oauth_user['uid'], 'nickname' => $oauth_user['nickname']], $_POST['content'], $oauth_user['type']);
                     $this->redirect('blog', 'view', ['tid' => $tid]);
                 }
             }
@@ -147,7 +153,7 @@ class BlogController extends Controller
         }
     }
 
-    function ac_search(array $path, UserService $userService)
+    function ac_search(UserService $userService)
     {
         if (isset($_REQUEST['word']) && $_REQUEST['word'] != '') {
             $word = $_REQUEST['word'];

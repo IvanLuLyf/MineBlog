@@ -49,12 +49,10 @@ HTML_CONTENT;
                 $url = (new IpfsStorage([]))->write('', $result);
                 $this->redirect($url);
             } else {
-                $this->assign('ret', 4002)->assign('status', 'permission denied')->assign('tp_error_msg', "没有访问权限")
-                    ->render('common/error.html');
+                $this->assign('ret', 4002)->assign('status', 'permission denied')->assign('tp_error_msg', "没有访问权限")->error();
             }
         } else {
-            $this->assign('ret', 3001)->assign('status', 'invalid tid')->assign('tp_error_msg', "博客不存在")
-                ->render('common/error.html');
+            $this->assign('ret', 3001)->assign('status', 'invalid tid')->assign('tp_error_msg', "博客不存在")->error();
         }
     }
 

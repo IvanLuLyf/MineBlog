@@ -8,7 +8,7 @@
 
 class OauthController extends Controller
 {
-    function ac_connect(array $path)
+    function ac_connect(array $path, $referer)
     {
         if (count($path) < 1) $path = [''];
         list($type) = $path;
@@ -30,9 +30,8 @@ class OauthController extends Controller
                 $url = $oauth['url'] . '/oauth/authorize?client_id=' . $oauth['key'] . '&redirect_uri=' . urlencode($oauth['callback']);
                 break;
         }
-        if (isset($_REQUEST['referer'])) {
-            session_start();
-            $_SESSION['referer'] = $_REQUEST['referer'];
+        if ($referer) {
+            BunnyPHP::getRequest()->setSession('referer', $referer);
         }
         $this->redirect($url);
     }
@@ -47,12 +46,10 @@ class OauthController extends Controller
             $bind = (new OauthService($this))->oauth($type);
             if ($uid = $bind_model->getUid($bind['uid'], $type)) {
                 $userToken = (new UserModel())->refresh($uid);
-                session_start();
-                $_SESSION['token'] = $userToken;
+                BunnyPHP::getRequest()->setSession('token', $userToken);
                 $bind_model->where(['bind = :b and type = :t'], ['b' => $bind['uid'], 't' => $type])->update(['token' => $bind['token'], 'expire' => $bind['expire']]);
-                if (isset($_SESSION['referer'])) {
-                    $referer = $_SESSION['referer'];
-                    unset($_SESSION['referer']);
+                $referer = BunnyPHP::getRequest()->delSession('referer');
+                if ($referer) {
                     $this->redirect($referer);
                 } else {
                     $this->redirect('index', 'index');
@@ -63,21 +60,19 @@ class OauthController extends Controller
                     $bind_model->add($bind_data);
                     $this->redirect('setting', 'oauth', ['type' => $type]);
                 } else {
-                    session_start();
-                    $_SESSION['oauth_user'] = [
+                    BunnyPHP::getRequest()->setSession('oauth_user', [
                         'type' => $type,
                         'uid' => $bind['uid'],
                         'token' => $bind['token'],
                         'expire' => $bind['expire'],
                         'nickname' => $bind['nickname'],
-                    ];
+                    ]);
                     if (Config::load('config')->get('allow_reg')) {
                         $this->assign('oauth', ['nickname' => $bind['nickname'], 'type' => $type])
                             ->render('oauth/connect.html');
                     } else {
-                        if (isset($_SESSION['referer'])) {
-                            $referer = $_SESSION['referer'];
-                            unset($_SESSION['referer']);
+                        $referer = BunnyPHP::getRequest()->delSession('referer');
+                        if ($referer) {
                             $this->redirect($referer);
                         } else {
                             $this->redirect('index', 'index');
@@ -90,15 +85,15 @@ class OauthController extends Controller
 
     /**
      * @filter api
+     * @param $type
+     * @param $bind
+     * @param $token
      */
-    function ac_login()
+    function ac_login($type, $bind, $token)
     {
-        $type = $_REQUEST['type'];
-        $bind_uid = $_REQUEST['bind'];
-        $bind_token = $_REQUEST['token'];
         $model = new BindModel();
-        if ($uid = $model->getUid($bind_uid, $type)) {
-            $model->where(['bind=:b and type=:t'], ['b' => $bind_uid, 't' => $type])->update(['token' => $bind_token]);
+        if ($uid = $model->getUid($bind, $type)) {
+            $model->where(['bind=:b and type=:t'], ['b' => $bind, 't' => $type])->update(['token' => $token]);
             $result = (new UserModel())->getUserByUid($uid);
             $appToken = (new OauthTokenModel())->get($uid, $_POST['appkey']);
             $result['token'] = $appToken['token'];
@@ -118,14 +113,12 @@ class OauthController extends Controller
             $result = (new UserModel())->login($_POST['username'], $_POST['password']);
         }
         if ($result['ret'] == 0) {
-            session_start();
-            $_SESSION['access_token'] = $result['token'];
-            $bind = $_SESSION['oauth_user'];
+            BunnyPHP::getRequest()->setSession('access_token', $result['token']);
+            $bind = BunnyPHP::getRequest()->getSession('oauth_user');
             $bind_data = ['uid' => $result['uid'], 'type' => $type, 'bind' => $bind['uid'], 'token' => $bind['token'], 'expire' => $bind['expire']];
             (new BindModel())->add($bind_data);
-            if (isset($_SESSION['referer'])) {
-                $referer = $_SESSION['referer'];
-                unset($_SESSION['referer']);
+            $referer = BunnyPHP::getRequest()->delSession('referer');
+            if ($referer) {
                 $this->redirect($referer);
             } else {
                 $this->redirect('index', 'index');
@@ -137,21 +130,25 @@ class OauthController extends Controller
         }
     }
 
-    function ac_logout()
+    function ac_logout($referer)
     {
-        session_start();
-        unset($_SESSION['oauth_user']);
-        if (isset($_REQUEST['referer'])) {
-            $this->redirect($_REQUEST['referer']);
+        BunnyPHP::getRequest()->delSession('oauth_user');
+        if ($referer) {
+            $this->redirect($referer);
         } else {
             $this->redirect('user', 'login');
         }
     }
 
-    function ac_avatar(array $path)
+
+    /**
+     * @param $type
+     * @param $bind_id
+     * @path type 0
+     * @path bind_id 1
+     */
+    function ac_avatar($type, $bind_id)
     {
-        if (count($path) < 1) $path = ['', ''];
-        list($type, $bind_id) = $path;
         $this->redirect((new OauthService($this))->avatar($type, $bind_id));
     }
 }
