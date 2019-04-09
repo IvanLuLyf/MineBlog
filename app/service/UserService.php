@@ -10,9 +10,9 @@ class UserService extends Service
 {
     public function getLoginUser()
     {
-        session_start();
-        if (isset($_SESSION['token']) && $_SESSION['token'] != "") {
-            return (new UserModel)->check($_SESSION["token"]);
+        $token = BunnyPHP::getRequest()->getSession('token');
+        if ($token) {
+            return (new UserModel)->check($token);
         }
         return null;
     }
