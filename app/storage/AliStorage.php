@@ -59,6 +59,9 @@ class AliStorage implements Storage
 
     public function remove($filename)
     {
+        if (strpos($filename, $this->url) === 0) {
+            $filename = substr($filename, strlen($this->url));
+        }
         $this->ossClient->deleteObject($this->bucket, $filename);
     }
 }
