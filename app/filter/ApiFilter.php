@@ -28,6 +28,10 @@ class ApiFilter extends Filter
                 $this->error(['ret' => 1004, 'status' => 'empty arguments']);
             }
             return self::STOP;
+        } else if ($this->_mode == BunnyPHP::MODE_AJAX) {
+            if (BunnyPHP::app()->get("tp_ajax") !== true) {
+                return self::STOP;
+            }
         }
         return self::NEXT;
     }

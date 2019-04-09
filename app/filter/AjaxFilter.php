@@ -8,8 +8,9 @@
 
 class AjaxFilter extends Filter
 {
-    public function doFilter()
+    public function doFilter($fa = [])
     {
         BunnyPHP::app()->set("tp_ajax", true);
+        return self::NEXT;
     }
 }

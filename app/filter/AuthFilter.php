@@ -11,11 +11,13 @@ class AuthFilter extends Filter
     public function doFilter($fa = [])
     {
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
-            if (!session_id()) session_start();
-            if (isset($_SESSION['token']) && $_SESSION['token'] != "") {
-                $user = (new UserModel)->check($_SESSION["token"]);
+            $token = BunnyPHP::getRequest()->getSession('token');
+            if (!$token) $token = BunnyPHP::getRequest()->getHeader('token');
+            if ($token) {
+                $user = (new UserModel)->check($token);
                 if ($user != null) {
                     BunnyPHP::app()->set('tp_user', $user);
+                    $this->assign('tp_user', $user);
                     return self::NEXT;
                 } else {
                     $this->redirect('user', 'login', ['referer' => $_SERVER['REQUEST_URI']]);
@@ -49,9 +51,10 @@ class AuthFilter extends Filter
             }
         } elseif ($this->_mode == BunnyPHP::MODE_AJAX) {
             if (BunnyPHP::app()->get("tp_ajax") === true) {
-                if (!session_id()) session_start();
-                if (isset($_SESSION['token']) && $_SESSION['token'] != "") {
-                    $user = (new UserModel)->check($_SESSION["token"]);
+                $token = BunnyPHP::getRequest()->getSession('token');
+                if (!$token) $token = BunnyPHP::getRequest()->getHeader('token');
+                if ($token) {
+                    $user = (new UserModel)->check($token);
                     if ($user != null) {
                         BunnyPHP::app()->set('tp_user', $user);
                         return self::NEXT;
