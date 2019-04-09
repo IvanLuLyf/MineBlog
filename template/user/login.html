@@ -15,6 +15,7 @@
     <?php endif; ?>
     <div class="card form-login">
         <form action="/user/login" method="post">
+            <input type="hidden" name="csrf_token" value="<?=$csrf_token?>"/>
             <div class="form-group">
                 <label for="username">用户名</label>
                 <input type="text" id="username" name="username" class="form-control" placeholder="用户名" required
