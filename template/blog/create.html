@@ -16,6 +16,7 @@
                         <input type="file" style="height:0;width:0;display: none;" id="file" name="file" required/>
                     </form>
                     <form class="form-horizontal" role="form" action="/blog/create" method="post">
+                        <input type="hidden" name="csrf_token" value="<?=$csrf_token?>"/>
                         <div class="form-group">
                             <label for="title">标题</label>
                             <input id="title" name="title" type="text" placeholder="标题" class="form-control" required/>
