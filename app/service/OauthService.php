@@ -28,14 +28,13 @@ class OauthService extends Service
                 $oauth = Config::load('oauth')->get('gh');
                 return $this->gh_oauth($oauth, $_GET['code']);
             default:
-                $oauth = Config::load('oauth')->get('tm');
+                $oauth = Config::load('oauth')->get($type);
                 return $this->tm_oauth($oauth, $_GET['code']);
         }
     }
 
     function avatar($type, $bind_id, $token = '')
     {
-        $imgUrl = '/static/img/avatar.png';
         switch ($type) {
             case 'qq':
                 $oauth = Config::load('oauth')->get('qq');
