@@ -43,9 +43,8 @@ class BlogController extends Controller
     }
 
     /**
-     * @param $tid
+     * @param $tid integer path(0,0)
      * @param UserService $userService
-     * @path tid 0 0
      */
     public function ac_view($tid, UserService $userService)
     {
@@ -89,9 +88,8 @@ class BlogController extends Controller
     }
 
     /**
-     * @param $page
+     * @param $page integer path(0,1)
      * @param UserService $userService
-     * @path page 0 1
      */
     function ac_list($page, UserService $userService)
     {
@@ -110,9 +108,8 @@ class BlogController extends Controller
     }
 
     /**
-     * @param $tid
+     * @param $tid integer path(0,0)
      * @filter auth
-     * @path tid 0 0
      */
     function ac_comment($tid)
     {
@@ -131,8 +128,7 @@ class BlogController extends Controller
     }
 
     /**
-     * @param $tid
-     * @path tid 0 0
+     * @param $tid integer path(0,0)
      */
     function ac_o_comment($tid)
     {

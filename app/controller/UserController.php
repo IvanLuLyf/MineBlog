@@ -45,6 +45,11 @@ class UserController extends Controller
                 }
             } else {
                 $this->assignAll($result);
+                $oauth = [];
+                if (Config::check("oauth")) {
+                    $oauth = Config::load('oauth')->get('enabled', []);
+                }
+                $this->assign('oauth', $oauth);
                 $this->render('user/login.html');
             }
         } elseif ($this->_mode == BunnyPHP::MODE_API) {
@@ -161,11 +166,9 @@ class UserController extends Controller
     }
 
     /**
-     * @param $username
-     * @param $page
+     * @param $username string path(0)
+     * @param $page integer path(1,1)
      * @param UserService $userService
-     * @path username 0
-     * @path page 1 1
      */
     public function ac_blog($username, $page, UserService $userService)
     {
@@ -186,12 +189,16 @@ class UserController extends Controller
             $this->assign('cur_ctr', 'blog');
         }
         $user = (new UserModel())->where(["username = :username"], ['username' => $username])->fetch(['uid', 'username', 'nickname']);
-        $user_info = (new UserInfoModel())->get($user['uid']);
-        $blogs = (new BlogModel())->getBlogByUsername($username, $visible);
-        $this->assign('user', $user);
-        $this->assign('user_info', $user_info);
-        $this->assign("page", $page);
-        $this->assign("blogs", $blogs);
-        $this->render('user/blog.html');
+        if ($user != null) {
+            $user_info = (new UserInfoModel())->get($user['uid']);
+            $blogs = (new BlogModel())->getBlogByUsername($username, $visible);
+            $this->assign('user', $user);
+            $this->assign('user_info', $user_info);
+            $this->assign("page", $page);
+            $this->assign("blogs", $blogs);
+            $this->render('user/blog.html');
+        } else {
+            $this->assignAll(['ret' => 1002, 'status' => "user not exists", 'tp_error_msg' => "用户名不存在"])->error();
+        }
     }
 }
