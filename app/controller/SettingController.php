@@ -64,10 +64,7 @@ class SettingController extends Controller
                 ->assign('oauth', ['type' => $type, 'name' => $name])
                 ->render('setting/oauth.html');
         } else {
-            $this->assign('ret', 1010);
-            $this->assign('status', 'oauth is not enabled');
-            $this->assign('tp_error_msg', "站点未开启OAuth");
-            $this->render('common/error.html');
+            $this->assignAll(['ret' => 1010, 'status' => 'oauth is not enabled', 'tp_error_msg' => '站点未开启OAuth'])->error();
         }
     }
 

@@ -80,10 +80,10 @@ class BlogController extends Controller
                 $this->assign("blog", $blog)->assign('comments', $comments)
                     ->render('blog/view.html');
             } else {
-                $this->assign('ret', 4002)->assign('status', 'permission denied')->assign('tp_error_msg', "没有访问权限")->error();
+                $this->assignAll(['ret' => 4002, 'status' => 'permission denied', 'tp_error_msg' => "没有访问权限"])->error();
             }
         } else {
-            $this->assign('ret', 3001)->assign('status', 'invalid tid')->assign('tp_error_msg', "博客不存在")->error();
+            $this->assignAll(['ret' => 3001, 'status' => 'invalid tid', 'tp_error_msg' => "博客不存在"])->error();
         }
     }
 
@@ -116,14 +116,11 @@ class BlogController extends Controller
         $blog = (new BlogModel())->getBlogById($tid);
         if ($blog != null) {
             if ($this->_mode == BunnyPHP::MODE_NORMAL) {
-                $cid = (new CommentModel())->sendComment($tid, BunnyPHP::app()->get('tp_user'), $_POST['content']);
+                (new CommentModel())->sendComment($tid, BunnyPHP::app()->get('tp_user'), $_POST['content']);
                 $this->redirect('blog', 'view', ['tid' => $tid]);
             }
         } else {
-            $this->assign('ret', 4001);
-            $this->assign('status', 'blog not found');
-            $this->assign('tp_error_msg', "博客不存在");
-            $this->render('common/error.html');
+            $this->assignAll(['ret' => 4001, 'status' => 'blog not found', 'tp_error_msg' => "博客不存在"])->error();
         }
     }
 
@@ -137,15 +134,12 @@ class BlogController extends Controller
             if ($this->_mode == BunnyPHP::MODE_NORMAL) {
                 $oauth_user = BunnyPHP::getRequest()->getSession('oauth_user');
                 if ($oauth_user) {
-                    $cid = (new CommentModel())->sendComment($tid, ['username' => $oauth_user['uid'], 'nickname' => $oauth_user['nickname']], $_POST['content'], $oauth_user['type']);
+                    (new CommentModel())->sendComment($tid, ['username' => $oauth_user['uid'], 'nickname' => $oauth_user['nickname']], $_POST['content'], $oauth_user['type']);
                     $this->redirect('blog', 'view', ['tid' => $tid]);
                 }
             }
         } else {
-            $this->assign('ret', 4001);
-            $this->assign('status', 'blog not found');
-            $this->assign('tp_error_msg', "博客不存在");
-            $this->render('common/error.html');
+            $this->assignAll(['ret' => 4001, 'status' => 'blog not found', 'tp_error_msg' => "博客不存在"])->error();
         }
     }
 
@@ -185,9 +179,9 @@ class BlogController extends Controller
             if (in_array($_FILES["file"]["type"], $image_type) && ($_FILES["file"]["size"] < 2000000)) {
                 $t = time() % 1000;
                 $url = $this->storage()->upload("blog/" . $tp_user['uid'] . '_' . $t . ".jpg", $_FILES["file"]["tmp_name"]);
-                $response = array('ret' => 0, 'status' => 'ok', 'url' => $url);
+                $response = ['ret' => 0, 'status' => 'ok', 'url' => $url];
             } else {
-                $response = array('ret' => 1007, 'status' => 'wrong file');
+                $response = ['ret' => 1007, 'status' => 'wrong file'];
             }
             $this->assignAll($response);
         }
