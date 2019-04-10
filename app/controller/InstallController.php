@@ -28,30 +28,18 @@ class InstallController extends Controller
         }
     }
 
-    public function ac_step2()
+    public function ac_step2($db_type, $db_host, $db_port, $db_name, $db_user, $db_pass, $db_prefix)
     {
         if (Config::checkLock('install')) {
             $this->assign('err_msg', '检测到./config/install.lock请先删除后安装本程序');
             $this->render('install/error.html');
         } else {
-            if ($_POST['db_type'] == 'mysql') {
-                $dsn = "mysql:host=" . $_POST['db_host'] . ";dbname=" . $_POST['db_name'] . ";charset=utf8mb4";
-                $db_host = $_POST['db_host'];
-                $db_port = $_POST['db_port'];
-                $db_user = $_POST['db_user'];
-                $db_pass = $_POST['db_pass'];
-            } elseif ($_POST['db_type'] == 'pgsql') {
-                $dsn = "pgsql:host=" . $_POST['db_host'] . ";dbname=" . $_POST['db_name'] . ";port=" . $_POST['db_port'];
-                $db_host = $_POST['db_host'];
-                $db_port = $_POST['db_port'];
-                $db_user = $_POST['db_user'];
-                $db_pass = $_POST['db_pass'];
+            if ($db_type == 'mysql') {
+                $dsn = "mysql:host=$db_host;dbname=$db_name;charset=utf8mb4";
+            } elseif ($db_type == 'pgsql') {
+                $dsn = "pgsql:host=$db_host;dbname=$db_name;port=$db_port";
             } else {
-                $dsn = "sqlite:" . $_POST['db_name'];
-                $db_host = '';
-                $db_port = '';
-                $db_user = '';
-                $db_pass = '';
+                $dsn = "sqlite:$db_name";
             }
             $option = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC);
             try {
@@ -59,13 +47,13 @@ class InstallController extends Controller
                 if ($pdo != null) {
                     session_start();
                     $db_info = [
-                        'type' => $_POST['db_type'],
+                        'type' => $db_type,
                         'host' => $db_host,
                         'port' => $db_port,
                         'username' => $db_user,
                         'password' => $db_pass,
-                        'database' => $_POST['db_name'],
-                        'prefix' => $_POST['db_prefix'],
+                        'database' => $db_name,
+                        'prefix' => $db_prefix,
                     ];
                     $_SESSION['db_info'] = $db_info;
                     $this->render('install/step2.html');
@@ -80,7 +68,7 @@ class InstallController extends Controller
         }
     }
 
-    public function ac_step3()
+    public function ac_step3($username, $password, $email, $nickname, $site_name, $site_url)
     {
         if (Config::checkLock('install')) {
             $this->assign('err_msg', '检测到./config/install.lock请先删除后安装本程序');
@@ -96,14 +84,8 @@ class InstallController extends Controller
             define('DB_PASS', $db_info['password']);
             define('DB_PREFIX', $db_info['prefix']);
 
+            $nickname = ($nickname != '') ? $nickname : $username;
 
-            $username = $_POST['username'];
-            $password = md5($_POST['password']);
-            $email = $_POST['email'];
-            $nickname = (isset($_POST['nickname']) && $_POST['nickname'] != '') ? $_POST['nickname'] : $username;
-            $site_name = $_POST['site_name'];
-            $db_prefix = $db_info['prefix'];
-            
             $models = scandir(APP_PATH . "app/model");
             /**
              * @var $modelClass Model
@@ -114,14 +96,13 @@ class InstallController extends Controller
                     $modelClass::create();
                 }
             }
-
-            Database::getInstance()->insert(['username' => $username, 'password' => $password, 'email' => $email, 'nickname' => $nickname, 'token' => ''], $db_prefix . 'user');
+            (new UserModel())->register($username, $password, $email, $nickname);
             $config_file = fopen(APP_PATH . "config/config.php", "w") or die("Unable to open file!");
             $config = Config::make([
                 'db' => $db_info,
                 'site_name' => $site_name,
+                'site_url' => $site_url,
                 'controller' => 'Index',
-                'action' => 'index',
                 'allow_reg' => isset($_POST['allow_reg']),
             ]);
             fwrite($config_file, $config);
