@@ -75,12 +75,12 @@ class BlogController extends Controller
                     $html_content = $parser->makeHtml($blog['content']);
                     $this->assign('cur_ctr', 'blog')->assign("html_content", $html_content);
                 }
-                $this->assignAll(["blog" => $blog, 'comments' => $comments])->render('blog/view.html');
+                $this->assignAll(['ret' => 0, 'status' => 'ok', 'blog' => $blog, 'comments' => $comments])->render('blog/view.html');
             } else {
-                $this->assignAll(['ret' => 4002, 'status' => 'permission denied', 'tp_error_msg' => "没有访问权限"])->error();
+                $this->assignAll(['ret' => 4002, 'status' => 'permission denied', 'tp_error_msg' => '没有访问权限'])->error();
             }
         } else {
-            $this->assignAll(['ret' => 3001, 'status' => 'invalid tid', 'tp_error_msg' => "博客不存在"])->error();
+            $this->assignAll(['ret' => 3001, 'status' => 'invalid tid', 'tp_error_msg' => '博客不存在'])->error();
         }
     }
 
@@ -99,7 +99,7 @@ class BlogController extends Controller
             $this->assignAll(['tp_user' => $userService->getLoginUser(), 'cur_ctr' => 'blog', 'end_page' => $endPage]);
         }
         $this->assign("recommend_blogs", $recommend_blogs);
-        $this->assignAll(["page" => $page, 'total' => $total, "blogs" => $blogs])->render('blog/list.html');
+        $this->assignAll(['ret' => 0, 'status' => 'ok', "page" => $page, 'total' => $total, "blogs" => $blogs])->render('blog/list.html');
     }
 
     /**
@@ -150,7 +150,7 @@ class BlogController extends Controller
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
             $this->assignAll(['tp_user' => $userService->getLoginUser(), 'cur_ctr' => 'blog', 'end_page' => $endPage]);
         }
-        $this->assignAll(['word' => $word, "page" => $page, 'total' => $result['total'], "blogs" => $result['blogs']])->render('blog/search.html');
+        $this->assignAll(['ret' => 0, 'status' => 'ok', 'word' => $word, "page" => $page, 'total' => $result['total'], "blogs" => $result['blogs']])->render('blog/search.html');
     }
 
     /**
