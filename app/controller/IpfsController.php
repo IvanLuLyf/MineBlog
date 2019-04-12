@@ -10,11 +10,10 @@ class IpfsController extends Controller
 {
     /**
      * @filter auth
-     * @param array $path
+     * @param int $tid path(0)
      */
-    public function ac_publish(array $path)
+    public function ac_publish(int $tid = 0)
     {
-        $tid = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : (isset($path[0]) ? $path[0] : 0);
         $blog = (new BlogModel())->getBlogById($tid);
         $tp_user = BunnyPHP::app()->get("tp_user");
         if ($tp_user != null && $blog != null) {
@@ -49,10 +48,10 @@ HTML_CONTENT;
                 $url = (new IpfsStorage([]))->write('', $result);
                 $this->redirect($url);
             } else {
-                $this->assign('ret', 4002)->assign('status', 'permission denied')->assign('tp_error_msg', "没有访问权限")->error();
+                $this->assignAll(['ret' => 4002, 'status' => 'permission denied', 'tp_error_msg' => "没有访问权限"])->error();
             }
         } else {
-            $this->assign('ret', 3001)->assign('status', 'invalid tid')->assign('tp_error_msg', "博客不存在")->error();
+            $this->assignAll(['ret' => 3001, 'status' => 'invalid tid', 'tp_error_msg' => "博客不存在"])->error();
         }
     }
 

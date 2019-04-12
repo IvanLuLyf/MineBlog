@@ -140,14 +140,11 @@ class OauthController extends Controller
         }
     }
 
-
     /**
-     * @param $type
-     * @param $bind_id
-     * @path type 0
-     * @path bind_id 1
+     * @param string $type path(0)
+     * @param string $bind_id path(1)
      */
-    function ac_avatar($type, $bind_id)
+    function ac_avatar(string $type, string $bind_id)
     {
         $this->redirect((new OauthService($this))->avatar($type, $bind_id));
     }

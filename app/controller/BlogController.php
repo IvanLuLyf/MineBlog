@@ -43,10 +43,10 @@ class BlogController extends Controller
     }
 
     /**
-     * @param $tid integer path(0,0)
+     * @param int $tid path(0,0)
      * @param UserService $userService
      */
-    public function ac_view($tid, UserService $userService)
+    public function ac_view(int $tid = 0, UserService $userService)
     {
         $blog = (new BlogModel())->getBlogById($tid);
         $tp_user = $userService->getLoginUser();
@@ -57,9 +57,6 @@ class BlogController extends Controller
                     $oauth = [];
                     if (Config::check("oauth")) {
                         $oauth = Config::load('oauth')->get('enabled', []);
-                    }
-                    $this->assign('oauth', $oauth);
-                    if (Config::check('oauth')) {
                         $sl = Config::load('oauth')->get('shares');
                         $share = new OauthService($this);
                         $shares = [];
@@ -68,6 +65,7 @@ class BlogController extends Controller
                         }
                         $this->assign('shares', $shares);
                     }
+                    $this->assign('oauth', $oauth);
                     $this->assign('tp_user', $tp_user);
                     if (isset($_SESSION['oauth_user'])) {
                         $this->assign('oauth_user', $_SESSION['oauth_user']);
@@ -77,8 +75,7 @@ class BlogController extends Controller
                     $html_content = $parser->makeHtml($blog['content']);
                     $this->assign('cur_ctr', 'blog')->assign("html_content", $html_content);
                 }
-                $this->assign("blog", $blog)->assign('comments', $comments)
-                    ->render('blog/view.html');
+                $this->assignAll(["blog" => $blog, 'comments' => $comments])->render('blog/view.html');
             } else {
                 $this->assignAll(['ret' => 4002, 'status' => 'permission denied', 'tp_error_msg' => "没有访问权限"])->error();
             }
@@ -88,10 +85,10 @@ class BlogController extends Controller
     }
 
     /**
-     * @param $page integer path(0,1)
+     * @param int $page path(0,1)
      * @param UserService $userService
      */
-    function ac_list($page, UserService $userService)
+    function ac_list(int $page = 1, UserService $userService)
     {
         $blogModel = new BlogModel();
         $blogs = $blogModel->getBlogByPage($page);
@@ -99,19 +96,17 @@ class BlogController extends Controller
         $total = $blogModel->getTotal();
         $endPage = ceil($total / 10);
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
-            $this->assign('tp_user', $userService->getLoginUser())
-                ->assign('cur_ctr', 'blog')->assign('end_page', $endPage);
+            $this->assignAll(['tp_user' => $userService->getLoginUser(), 'cur_ctr' => 'blog', 'end_page' => $endPage]);
         }
         $this->assign("recommend_blogs", $recommend_blogs);
-        $this->assign("page", $page)->assign('total', $total)->assign("blogs", $blogs)
-            ->render('blog/list.html');
+        $this->assignAll(["page" => $page, 'total' => $total, "blogs" => $blogs])->render('blog/list.html');
     }
 
     /**
-     * @param $tid integer path(0,0)
      * @filter auth
+     * @param int $tid path(0,0)
      */
-    function ac_comment($tid)
+    function ac_comment(int $tid = 0)
     {
         $blog = (new BlogModel())->getBlogById($tid);
         if ($blog != null) {
@@ -125,9 +120,9 @@ class BlogController extends Controller
     }
 
     /**
-     * @param $tid integer path(0,0)
+     * @param int $tid path(0,0)
      */
-    function ac_o_comment($tid)
+    function ac_o_comment(int $tid = 0)
     {
         $blog = (new BlogModel())->getBlogById($tid);
         if ($blog != null) {
@@ -143,27 +138,19 @@ class BlogController extends Controller
         }
     }
 
-    function ac_search(UserService $userService)
+    function ac_search($word, UserService $userService, $page = 1, $limit = 5)
     {
-        if (isset($_REQUEST['word']) && $_REQUEST['word'] != '') {
-            $word = $_REQUEST['word'];
-            $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-            $result = (new BlogModel())->searchBlog($word, $page);
-            $endPage = ceil($result['total'] / 5);
-            if ($this->_mode == BunnyPHP::MODE_NORMAL) {
-                $this->assign('tp_user', $userService->getLoginUser())
-                    ->assign('cur_ctr', 'blog')->assign('end_page', $endPage);
-            }
-            $this->assign('word', $word);
-            $this->assign("page", $page)->assign('total', $result['total'])->assign("blogs", $result['blogs'])
-                ->render('blog/search.html');
+        if ($word) {
+            $result = (new BlogModel())->searchBlog($word, $page, 0, $limit);
+            $endPage = ceil($result['total'] / $limit);
         } else {
-            if ($this->_mode == BunnyPHP::MODE_NORMAL) {
-                $this->assign('word', '');
-                $this->assign('total', 0)->assign("blogs", []);
-                $this->assign('tp_user', $userService->getLoginUser())->render('blog/search.html');
-            }
+            $result = ['total' => 0, 'blogs' => []];
+            $endPage = 0;
         }
+        if ($this->_mode == BunnyPHP::MODE_NORMAL) {
+            $this->assignAll(['tp_user' => $userService->getLoginUser(), 'cur_ctr' => 'blog', 'end_page' => $endPage]);
+        }
+        $this->assignAll(['word' => $word, "page" => $page, 'total' => $result['total'], "blogs" => $result['blogs']])->render('blog/search.html');
     }
 
     /**

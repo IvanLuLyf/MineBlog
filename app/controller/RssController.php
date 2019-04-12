@@ -8,11 +8,11 @@
 
 class RssController extends Controller
 {
-    public function ac_index()
+    public function ac_index($page = 1)
     {
         header('Content-type: application/xml');
         $blogModel = new BlogModel();
-        $blogs = $blogModel->getBlogByPage(1);
+        $blogs = $blogModel->getBlogByPage($page);
         $site_name = TP_SITE_NAME;
         $site_url = 'http://' . TP_SITE_URL;
         echo '<?xml version="1.0" encoding="utf-8"?><rss version="2.0">';
