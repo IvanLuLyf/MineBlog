@@ -32,6 +32,7 @@ class BlogController extends Controller
         if (isset($_POST['title']) && isset($_POST['content'])) {
             $summary = isset($_POST['summary']) ? $_POST['summary'] : $_POST['title'];
             $tid = (new BlogModel())->sendBlog(BunnyPHP::app()->get('tp_user'), $_POST['title'], $_POST['content'], $summary);
+            BunnyPHP::getCache()->del('blog_list');
             if ($this->_mode == BunnyPHP::MODE_NORMAL) {
                 $this->redirect('blog', 'view', ['tid' => $tid]);
             } elseif ($this->_mode == BunnyPHP::MODE_API) {
@@ -70,9 +71,15 @@ class BlogController extends Controller
                     if (isset($_SESSION['oauth_user'])) {
                         $this->assign('oauth_user', $_SESSION['oauth_user']);
                     }
-                    include APP_PATH . 'library/Parser.php';
-                    $parser = new HyperDown\Parser;
-                    $html_content = $parser->makeHtml($blog['content']);
+                    $cache = BunnyPHP::getCache();
+                    if ($cache->has('blog_' . $tid)) {
+                        $html_content = $cache->get('blog_' . $tid);
+                    } else {
+                        include APP_PATH . 'library/Parser.php';
+                        $parser = new HyperDown\Parser;
+                        $html_content = $parser->makeHtml($blog['content']);
+                        $cache->set('blog_' . $tid, $html_content);
+                    }
                     $this->assign('cur_ctr', 'blog')->assign("html_content", $html_content);
                 }
                 $this->assignAll(['ret' => 0, 'status' => 'ok', 'blog' => $blog, 'comments' => $comments])->render('blog/view.html');
