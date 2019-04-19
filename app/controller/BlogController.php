@@ -172,7 +172,7 @@ class BlogController extends Controller
             $image_type = ['image/bmp', 'image/gif', 'image/jpeg', 'image/pjpeg', 'image/png', 'application/x-bmp', 'application/x-jpg', 'application/x-png'];
             if (in_array($_FILES["file"]["type"], $image_type) && ($_FILES["file"]["size"] < 2000000)) {
                 $t = time() % 1000;
-                $url = $this->storage()->upload("blog/" . $tp_user['uid'] . '_' . $t . ".jpg", $_FILES["file"]["tmp_name"]);
+                $url = BunnyPHP::getStorage()->upload("blog/" . $tp_user['uid'] . '_' . $t . ".jpg", $_FILES["file"]["tmp_name"]);
                 $response = ['ret' => 0, 'status' => 'ok', 'url' => $url];
             } else {
                 $response = ['ret' => 1007, 'status' => 'wrong file'];

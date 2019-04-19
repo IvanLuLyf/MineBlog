@@ -45,6 +45,7 @@ class UserController extends Controller
                 }
             } else {
                 $this->assignAll($result);
+                BunnyPHP::getLogger()->info("login failed username:'{u}' password:'{p}'", ['{u}' => $_POST['username'], '{p}' => $_POST['password']]);
                 $oauth = [];
                 if (Config::check("oauth")) {
                     $oauth = Config::load('oauth')->get('enabled', []);
@@ -150,7 +151,7 @@ class UserController extends Controller
             $image_type = ['image/bmp', 'image/gif', 'image/jpeg', 'image/pjpeg', 'image/png', 'application/x-bmp', 'application/x-jpg', 'application/x-png'];
             if (in_array($_FILES["avatar"]["type"], $image_type) && ($_FILES["avatar"]["size"] < 2000000)) {
                 $t = time() % 1000;
-                $url = $this->storage()->upload("avatar/" . $tp_user['uid'] . '_' . $t . ".jpg", $_FILES["avatar"]["tmp_name"]);
+                $url = BunnyPHP::getStorage()->upload("avatar/" . $tp_user['uid'] . '_' . $t . ".jpg", $_FILES["avatar"]["tmp_name"]);
                 (new AvatarModel())->upload($tp_user['uid'], $url);
                 $response = ['ret' => 0, 'status' => 'ok', 'url' => $url];
             } else {
