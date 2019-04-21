@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title><![CDATA[{{title }}]]></title>
+        <description><![CDATA[{{ title }}]]></description>
+        <link>{{ blog_url }}</link>
+        <language>zh-cn</language>
+        <generator>MineBlog</generator>
+        {% for blog in blogs %}
+        <item>
+            <title>{{ blog.title }}</title>
+            <link>{{ site_url }}/blog/view/{{ blog.tid }}</link>
+            <description><![CDATA[{{ blog.summary }}]]></description>
+            <pubDate>{{ blog.pubDate }}</pubDate>
+            <author>{{ blog.nickname }}</author>
+            <guid>{{ site_url }}/blog/view/{{ blog.tid }}</guid>
+        </item>
+        {% endfor %}
+    </channel>
+</rss>
