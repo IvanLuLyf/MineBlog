@@ -25,6 +25,9 @@ class Template
         extract($context);
         $cacheDir = APP_PATH . 'cache/template/';
         if (file_exists($cacheDir . $view)) {
+            if (filemtime(APP_PATH . "template/{$view}") > filemtime($cacheDir . $view)) {
+                (new self($view))->compile();
+            }
             include $cacheDir . $view;
         } elseif (file_exists(APP_PATH . "template/{$view}")) {
             (new self($view))->compile();
@@ -42,11 +45,17 @@ class Template
         if (!is_dir($cacheDir)) {
             mkdir($cacheDir, 0777, true);
         }
+        file_put_contents($output, $this->parse()->content);
+    }
+
+    private function parse()
+    {
         $this->parse_var();
         $this->parse_if();
         $this->parse_for();
         $this->parse_url();
-        file_put_contents($output, $this->content);
+        $this->parse_include();
+        return $this;
     }
 
     public static function process($template, $context = [])
@@ -69,15 +78,23 @@ class Template
         }
     }
 
+    private function var_name($word)
+    {
+        $word_arr = explode('.', trim($word));
+        $var_name = '$' . array_shift($word_arr);
+        if ($word_arr) {
+            $var_name .= '[\'' . join('\'][\'', $word_arr) . '\']';
+        }
+        return $var_name;
+    }
+
     private function parse_var()
     {
-        $pattern = '/\{\{\s*([\w]+)\s*\}\}/';
-        if (preg_match($pattern, $this->content)) {
-            $this->content = preg_replace($pattern, "<?=\$$1?>", $this->content);
-        }
-        $pattern = '/\{\{\s*([\w]+).([\w]+)\s*\}\}/';
-        if (preg_match($pattern, $this->content)) {
-            $this->content = preg_replace($pattern, "<?=\$$1['$2']?>", $this->content);
+        $pattern = '/\{\{\s*(.*)\s*\}\}/';
+        if (preg_match_all($pattern, $this->content, $match)) {
+            foreach ($match[1] as $index => $word) {
+                $this->content = str_replace($match[0][$index], '<?=' . $this->var_name($word) . '?>', $this->content);
+            }
         }
     }
 
@@ -86,15 +103,17 @@ class Template
         $_patternIf = '/\{%\s?if\s+(.*)\s?%\}/';
         $_patternEnd = '/\{%\s?endif\s?%\}/';
         $_patternElse = '/\{%\s?else\s?%\}/';
-        if (preg_match($_patternIf, $this->content)) {
-            if (preg_match($_patternEnd, $this->content)) {
-                $this->content = preg_replace($_patternIf, "<?php if($1):?>", $this->content);
-                $this->content = preg_replace($_patternEnd, "<?php endif; ?>", $this->content, 1);
-                if (preg_match($_patternElse, $this->content)) {
-                    $this->content = preg_replace($_patternElse, "<?php else: ?>", $this->content);
+        if (preg_match_all($_patternIf, $this->content, $match)) {
+            foreach ($match[0] as $exp) {
+                if (preg_match($_patternEnd, $this->content)) {
+                    $this->content = preg_replace($_patternIf, "<?php if($1):?>", $this->content, 1);
+                    $this->content = preg_replace($_patternEnd, "<?php endif; ?>", $this->content, 1);
+                    if (preg_match($_patternElse, $this->content)) {
+                        $this->content = preg_replace($_patternElse, "<?php else: ?>", $this->content, 1);
+                    }
+                } else {
+                    View::error(['ret' => -4, 'status' => 'template render error', 'tp_error_msg' => '(' . $exp . ')没有结束标签']);
                 }
-            } else {
-                View::error([]);
             }
         }
     }
@@ -104,20 +123,24 @@ class Template
         $_patternFor = '/\{%\s?for\s+(\w+)\s+in\s+(\w+)\s?%\}/';
         $_patternForKV = '/\{%\s?for\s+(\w+)\s?,\s?(\w+)\s+in\s+(\w+)\s?%\}/';
         $_patternEnd = '/\{%\s?endfor\s?%\}/';
-        if (preg_match($_patternFor, $this->content)) {
-            if (preg_match($_patternEnd, $this->content)) {
-                $this->content = preg_replace($_patternFor, "<?php foreach(\$$2 as \$$1):?>", $this->content);
-                $this->content = preg_replace($_patternEnd, "<?php endforeach; ?>", $this->content, 1);
-            } else {
-                View::error([]);
+        if (preg_match_all($_patternFor, $this->content, $match)) {
+            foreach ($match[0] as $i => $exp) {
+                if (preg_match($_patternEnd, $this->content)) {
+                    $this->content = str_replace($exp, '<?php foreach($' . $match[2][$i] . ' as ' . $this->var_name($match[1][$i]) . '):?>', $this->content);
+                    $this->content = preg_replace($_patternEnd, "<?php endforeach; ?>", $this->content, 1);
+                } else {
+                    View::error(['ret' => -4, 'status' => 'template render error', 'tp_error_msg' => $exp . '没有结束标签']);
+                }
             }
         }
-        if (preg_match($_patternForKV, $this->content)) {
-            if (preg_match($_patternEnd, $this->content)) {
-                $this->content = preg_replace($_patternForKV, "<?php foreach(\$$3 as \$$1=>\$$2):?>", $this->content);
-                $this->content = preg_replace($_patternEnd, "<?php endforeach; ?>", $this->content, 1);
-            } else {
-                View::error([]);
+        if (preg_match_all($_patternForKV, $this->content, $match)) {
+            foreach ($match[0] as $i => $exp) {
+                if (preg_match($_patternEnd, $this->content)) {
+                    $this->content = str_replace($exp, '<?php foreach($' . $match[3][$i] . ' as ' . $this->var_name($match[1][$i]) . '=>' . $this->var_name($match[2][$i]) . '):?>', $this->content);
+                    $this->content = preg_replace($_patternEnd, "<?php endforeach; ?>", $this->content, 1);
+                } else {
+                    View::error(['ret' => -4, 'status' => 'template render error', 'tp_error_msg' => $exp . '没有结束标签']);
+                }
             }
         }
     }
@@ -127,6 +150,17 @@ class Template
         $pattern = '/\{u\s+(.*)\s+\}/';
         if (preg_match($pattern, $this->content)) {
             $this->content = preg_replace($pattern, "<?=View::get_url($1)?>", $this->content);
+        }
+    }
+
+    private function parse_include()
+    {
+        $_patternInclude = '/\{%\s?include\s+\'(.*)\'\s?%\}/';
+        if (preg_match_all($_patternInclude, $this->content, $match)) {
+            foreach ($match[1] as $index => $file) {
+                $file_content = (new self($file))->parse()->content;
+                $this->content = str_replace($match[0][$index], $file_content, $this->content);
+            }
         }
     }
 }
