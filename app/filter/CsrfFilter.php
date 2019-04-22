@@ -16,7 +16,7 @@ class CsrfFilter extends Filter
                 if ($csrf_token && !empty($_POST['csrf_token']) && $_POST['csrf_token'] == $csrf_token) {
                     unset($_SESSION['csrf_token']);
                 } else {
-                    $this->error(['ret' => 2004, 'status' => 'invalid csrf token', 'tp_error_msg' => '非法的请求操作']);
+                    $this->error(['ret' => 1, 'status' => 'invalid csrf token', 'tp_error_msg' => '非法的请求操作']);
                     return self::STOP;
                 }
             }

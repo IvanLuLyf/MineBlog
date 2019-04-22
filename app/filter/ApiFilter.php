@@ -25,7 +25,7 @@ class ApiFilter extends Filter
                     $this->error(['ret' => 2001, 'status' => 'invalid client id']);
                 }
             } else {
-                $this->error(['ret' => 1004, 'status' => 'empty arguments']);
+                $this->error(['ret' => -7, 'status' => 'parameter cannot be empty']);
             }
             return self::STOP;
         } else if ($this->_mode == BunnyPHP::MODE_AJAX) {

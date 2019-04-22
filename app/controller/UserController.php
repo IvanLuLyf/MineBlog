@@ -77,7 +77,7 @@ class UserController extends Controller
             }
             $this->render("user/register.html");
         } else {
-            $this->assignAll(['ret' => 1007, 'status' => 'register not allowed', 'tp_error_msg' => "站点关闭注册"])->error();
+            $this->assignAll(['ret' => 1005, 'status' => 'registration is not allowed', 'tp_error_msg' => "站点关闭注册"])->error();
         }
     }
 
@@ -113,7 +113,7 @@ class UserController extends Controller
                 $this->render();
             }
         } else {
-            $this->assignAll(['ret' => 1007, 'status' => 'register not allowed', 'tp_error_msg' => "站点关闭注册"])->error();
+            $this->assignAll(['ret' => 1005, 'status' => 'registration is not allowed', 'tp_error_msg' => "站点关闭注册"])->error();
         }
     }
 
@@ -155,7 +155,7 @@ class UserController extends Controller
                 (new AvatarModel())->upload($tp_user['uid'], $url);
                 $response = ['ret' => 0, 'status' => 'ok', 'url' => $url];
             } else {
-                $response = ['ret' => 1007, 'status' => 'wrong file'];
+                $response = ['ret' => 2, 'status' => 'invalid file'];
             }
             $this->assignAll($response);
         }
@@ -199,7 +199,7 @@ class UserController extends Controller
             $this->assign("blogs", $blogs);
             $this->render('user/blog.html');
         } else {
-            $this->assignAll(['ret' => 1002, 'status' => "user not exists", 'tp_error_msg' => "用户名不存在"])->error();
+            $this->assignAll(['ret' => 1002, 'status' => "user does not exist", 'tp_error_msg' => "用户名不存在"])->error();
         }
     }
 }

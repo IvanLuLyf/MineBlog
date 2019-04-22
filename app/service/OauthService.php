@@ -139,19 +139,11 @@ class OauthService extends Service
         $ctx = stream_context_create($params);
         $fp = @fopen($url, 'rb', false, $ctx);
         if (!$fp) {
-            $this->controller->assign('ret', 2004)
-                ->assign('status', "can't open url")
-                ->assign('tp_error_msg', "无法打开请求页面" . json_encode(error_get_last()))
-                ->render('common/error.html');
-            die();
+            $this->controller->assignAll(['ret' => -8, 'status' => 'internal error', 'tp_error_msg' => '无法打开请求页面' . json_encode(error_get_last())])->error();
         }
         $response = @stream_get_contents($fp);
         if ($response === false) {
-            $this->controller->assign('ret', 2005)
-                ->assign('status', "can't read content")
-                ->assign('tp_error_msg', "无法读取页面内容" . json_encode(error_get_last()))
-                ->render('common/error.html');
-            die();
+            $this->controller->assignAll(['ret' => -8, 'status' => 'internal error', 'tp_error_msg' => '无法读取页面内容' . json_encode(error_get_last())])->error();
         }
         return $response;
     }
@@ -163,19 +155,11 @@ class OauthService extends Service
         $ctx = stream_context_create($params);
         $fp = @fopen($url, 'rb', false, $ctx);
         if (!$fp) {
-            $this->controller->assign('ret', 2004)
-                ->assign('status', "can't open url")
-                ->assign('tp_error_msg', "无法打开请求页面")
-                ->render('common/error.html');
-            die();
+            $this->controller->assignAll(['ret' => -8, 'status' => 'internal error', 'tp_error_msg' => '无法打开请求页面' . json_encode(error_get_last())])->error();
         }
         $response = @stream_get_contents($fp);
         if ($response === false) {
-            $this->controller->assign('ret', 2005)
-                ->assign('status', "can't read content")
-                ->assign('tp_error_msg', "无法读取页面内容")
-                ->render('common/error.html');
-            die();
+            $this->controller->assignAll(['ret' => -8, 'status' => 'internal error', 'tp_error_msg' => '无法读取页面内容' . json_encode(error_get_last())])->error();
         }
         return $response;
     }

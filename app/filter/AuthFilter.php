@@ -47,7 +47,7 @@ class AuthFilter extends Filter
                     $this->error(['ret' => 2001, 'status' => 'invalid client id']);
                 }
             } else {
-                $this->error(['ret' => 1004, 'status' => 'empty arguments']);
+                $this->error(['ret' => -7, 'status' => 'parameter cannot be empty']);
             }
         } elseif ($this->_mode == BunnyPHP::MODE_AJAX) {
             if (BunnyPHP::app()->get("tp_ajax") === true) {
@@ -65,10 +65,10 @@ class AuthFilter extends Filter
                     $this->redirect('user', 'login', ['referer' => $_SERVER['REQUEST_URI']]);
                 }
             } else {
-                $this->error(['ret' => -1, 'status' => 'not permission']);
+                $this->error(['ret' => 2002, 'status' => 'permission denied']);
             }
         } else {
-            $this->error(['ret' => -1, 'status' => 'not permission']);
+            $this->error(['ret' => 2002, 'status' => 'permission denied']);
         }
         return self::STOP;
     }
