@@ -4,8 +4,11 @@
 
 MineBlog is a simple blog software powered by BunnyPHP framework.
 
-![GitHub release](https://img.shields.io/github/release/ivanlulyf/mineblog.svg?color=brightgreen)
-![GitHub](https://img.shields.io/github/license/ivanlulyf/mineblog.svg?color=blue)
+![Release](https://img.shields.io/github/release/ivanlulyf/mineblog.svg?color=brightgreen&style=flat-square)
+![Code Size](https://img.shields.io/github/languages/code-size/ivanlulyf/mineblog.svg?color=orange&style=flat-square)
+![License](https://img.shields.io/github/license/ivanlulyf/mineblog.svg?color=blue&style=flat-square)
+
+English | [中文](README_CN.md)
 
 ## Requirement
 
