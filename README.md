@@ -49,7 +49,7 @@ location / {
 ## Error Code
 
 |Code|Description|
-|---|---|
+|:---:|---|
 |0|ok|
 |-1|network error|
 |-2|mod does not exist|

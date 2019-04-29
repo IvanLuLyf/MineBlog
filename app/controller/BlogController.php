@@ -97,10 +97,20 @@ class BlogController extends Controller
      */
     function ac_list(int $page = 1, UserService $userService)
     {
-        $blogModel = new BlogModel();
-        $blogs = $blogModel->getBlogByPage($page);
-        $recommend_blogs = $blogModel->getRecommendBlog();
-        $total = $blogModel->getTotal();
+        $cache = BunnyPHP::getCache();
+        if ($cache->has('blog/list/' . $page)) {
+            $cacheData = unserialize($cache->get('blog/list/' . $page));
+            $blogs = $cacheData['blogs'];
+            $recommend_blogs = $cacheData['recommend'];
+            $total = $cacheData['total'];
+        } else {
+            $blogModel = new BlogModel();
+            $blogs = $blogModel->getBlogByPage($page);
+            $recommend_blogs = $blogModel->getRecommendBlog();
+            $total = $blogModel->getTotal();
+            $cache->set('blog/list/' . $page, serialize(['blogs' => $blogs, 'recommend' => $recommend_blogs, 'total' => $total]));
+        }
+
         $endPage = ceil($total / 10);
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
             $this->assignAll(['tp_user' => $userService->getLoginUser(), 'cur_ctr' => 'blog', 'end_page' => $endPage]);
