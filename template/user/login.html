@@ -28,7 +28,7 @@
             <?php if(isset($referer)):?>
             <input type="hidden" id="referer" name="referer" value="<?=$referer?>">
             <?php endif;?>
-            <input type="submit" class="btn btn-success btn-block" value="登陆">
+            <input type="submit" class="btn btn-success btn-block" value="登录">
             <div class="oauth-bar">
                 <?php foreach ($oauth as $o): ?>
                 <a href="/oauth/connect/<?=$o[0]?>"><img alt="<?=$o[1]?>" class="oauth-icon" src="/static/img/<?=$o[0]?>.png"></a>
