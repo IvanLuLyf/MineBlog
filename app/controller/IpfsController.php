@@ -61,7 +61,7 @@ HTML_CONTENT;
         if (count($path) > 0) {
             $extra = '/' . implode('/', $path);
         }
-        $url = "https://ipfs.infura.io/ipfs/" . $this->getAction() . $extra;
+        $url = "https://ipfs.eternum.io/ipfs/" . $this->getAction() . $extra;
         $this->redirect($url);
     }
 }

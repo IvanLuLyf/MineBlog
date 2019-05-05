@@ -20,7 +20,7 @@ class IpfsStorage implements Storage
         if (isset($config['url']) && $config['url'] != '')
             $this->url = $config['url'];
         else
-            $this->url = "https://ipfs.infura.io/ipfs/";
+            $this->url = "https://ipfs.eternum.io/ipfs/";
     }
 
     public function read($filename)
