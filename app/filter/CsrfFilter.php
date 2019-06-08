@@ -6,6 +6,9 @@
  * Time: 15:45
  */
 
+use BunnyPHP\BunnyPHP;
+use BunnyPHP\Filter;
+
 class CsrfFilter extends Filter
 {
     public function doFilter($fa = [])

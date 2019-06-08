@@ -6,6 +6,9 @@
  * Time: 17:12
  */
 
+use BunnyPHP\Config;
+use BunnyPHP\Controller;
+
 class InstallController extends Controller
 {
     public function ac_index()

@@ -6,6 +6,8 @@
  * Time: 1:29
  */
 
+use BunnyPHP\Controller;
+
 class SettingController extends Controller
 {
     public function ac_index()

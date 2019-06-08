@@ -6,6 +6,8 @@
  * Time: 3:37
  */
 
+use BunnyPHP\Storage;
+
 class IpfsStorage implements Storage
 {
     private $server;

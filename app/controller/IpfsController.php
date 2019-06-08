@@ -6,6 +6,8 @@
  * Time: 17:26
  */
 
+use BunnyPHP\Controller;
+
 class IpfsController extends Controller
 {
     /**

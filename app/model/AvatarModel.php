@@ -6,6 +6,8 @@
  * Time: 17:30
  */
 
+use BunnyPHP\Model;
+
 class AvatarModel extends Model
 {
     protected $_column = [

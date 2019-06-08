@@ -6,6 +6,8 @@
  * Time: 1:27
  */
 
+use BunnyPHP\Model;
+
 class UserModel extends Model
 {
     protected $_column = [

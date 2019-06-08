@@ -6,6 +6,9 @@
  * Time: 0:50
  */
 
+use BunnyPHP\BunnyPHP;
+use BunnyPHP\Service;
+
 class UserService extends Service
 {
     public function getLoginUser()

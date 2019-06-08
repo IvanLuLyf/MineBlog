@@ -6,6 +6,8 @@
  * Time: 16:33
  */
 
+use BunnyPHP\Controller;
+
 class RssController extends Controller
 {
     public function ac_index($page = 1)
@@ -32,7 +34,7 @@ class RssController extends Controller
             $blogs = $blogModel->getBlogByUsername($username);
             $this->assign('title', $user['nickname'] . "的博客");
             $this->assign('site_url', 'http://' . TP_SITE_URL);
-            $this->assign('blog_url', 'http://' . TP_SITE_URL. '/user/blog/' . $username);
+            $this->assign('blog_url', 'http://' . TP_SITE_URL . '/user/blog/' . $username);
             foreach ($blogs as &$blog) {
                 $blog['pubDate'] = gmdate('r', $blog['timestamp']);
             }

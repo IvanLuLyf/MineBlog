@@ -6,6 +6,9 @@
  * Date: 2018/1/1
  * Time: 16:45
  */
+
+use BunnyPHP\Model;
+
 class ApiModel extends Model
 {
     protected $_column = [

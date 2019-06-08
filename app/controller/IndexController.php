@@ -6,6 +6,9 @@
  * Time: 18:17
  */
 
+use BunnyPHP\Config;
+use BunnyPHP\Controller;
+
 class IndexController extends Controller
 {
     function ac_index()

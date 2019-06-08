@@ -6,6 +6,8 @@
  * Time: 0:09
  */
 
+use BunnyPHP\Model;
+
 class BlogModel extends Model
 {
     protected $_column = [

@@ -6,6 +6,9 @@
  * Date: 2018/1/1
  * Time: 17:07
  */
+
+use BunnyPHP\Model;
+
 class OauthTokenModel extends Model
 {
     protected $_column = [

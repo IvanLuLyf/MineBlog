@@ -6,6 +6,8 @@
  * Time: 0:52
  */
 
+use BunnyPHP\Model;
+
 class CommentModel extends Model
 {
     protected $_column = [

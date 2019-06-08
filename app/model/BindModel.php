@@ -6,6 +6,8 @@
  * Time: 16:51
  */
 
+use BunnyPHP\Model;
+
 class BindModel extends Model
 {
     protected $_column = [

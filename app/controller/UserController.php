@@ -6,6 +6,10 @@
  * Time: 18:43
  */
 
+use BunnyPHP\BunnyPHP;
+use BunnyPHP\Config;
+use BunnyPHP\Controller;
+
 class UserController extends Controller
 {
     /**

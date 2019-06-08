@@ -1,0 +1,15 @@
+{
+  "name": "ivanlulyf/mineblog",
+  "description": "a blog engine by BunnyPHP",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "author's name",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "ivanlulyf/bunnyphp": "@dev"
+  }
+}

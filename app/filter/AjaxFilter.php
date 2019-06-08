@@ -6,6 +6,9 @@
  * Time: 15:31
  */
 
+use BunnyPHP\BunnyPHP;
+use BunnyPHP\Filter;
+
 class AjaxFilter extends Filter
 {
     public function doFilter($fa = [])

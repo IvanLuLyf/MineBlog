@@ -6,6 +6,10 @@
  * Time: 17:31
  */
 
+use BunnyPHP\Config;
+use BunnyPHP\Controller;
+use BunnyPHP\Service;
+
 class OauthService extends Service
 {
     private $controller;

@@ -5,6 +5,9 @@
  * Date: 2018/7/30
  * Time: 16:27
  */
+use BunnyPHP\BunnyPHP;
+use BunnyPHP\Config;
+use BunnyPHP\Controller;
 
 class OauthController extends Controller
 {

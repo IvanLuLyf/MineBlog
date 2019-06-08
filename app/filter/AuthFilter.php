@@ -6,6 +6,9 @@
  * Time: 1:22
  */
 
+use BunnyPHP\BunnyPHP;
+use BunnyPHP\Filter;
+
 class AuthFilter extends Filter
 {
     public function doFilter($fa = [])

@@ -6,6 +6,10 @@
  * Date: 2018/1/1
  * Time: 23:26
  */
+
+use BunnyPHP\BunnyPHP;
+use BunnyPHP\Filter;
+
 class ApiFilter extends Filter
 {
     public function doFilter($fa = [])

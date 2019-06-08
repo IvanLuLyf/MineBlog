@@ -11,6 +11,7 @@ require_once APP_PATH . "library/AliOSS/autoload.php";
 
 use OSS\OssClient;
 use OSS\Core\OssException;
+use BunnyPHP\Storage;
 
 class AliStorage implements Storage
 {

@@ -6,6 +6,10 @@
  * Time: 3:24
  */
 
+use BunnyPHP\BunnyPHP;
+use BunnyPHP\Config;
+use BunnyPHP\Controller;
+
 class BlogController extends Controller
 {
 
