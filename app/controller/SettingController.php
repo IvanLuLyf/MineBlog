@@ -6,6 +6,8 @@
  * Time: 1:29
  */
 
+use BunnyPHP\BunnyPHP;
+use BunnyPHP\Config;
 use BunnyPHP\Controller;
 
 class SettingController extends Controller

@@ -10,6 +10,7 @@
     }
   ],
   "require": {
-    "ivanlulyf/bunnyphp": "@dev"
+    "ivanlulyf/bunnyphp": "@dev",
+    "aliyuncs/oss-sdk-php": "^2.3"
   }
 }
