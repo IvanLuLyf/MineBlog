@@ -79,8 +79,7 @@ class BlogController extends Controller
                     if ($cache->has('blog_' . $tid)) {
                         $html_content = $cache->get('blog_' . $tid);
                     } else {
-                        include APP_PATH . 'library/Parser.php';
-                        $parser = new HyperDown\Parser;
+                        $parser = new \HyperDown\Parser();
                         $html_content = $parser->makeHtml($blog['content']);
                         $cache->set('blog_' . $tid, $html_content);
                     }

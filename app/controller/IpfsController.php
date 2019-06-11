@@ -23,8 +23,7 @@ class IpfsController extends Controller
                 $static_path = '/ipfs/Qma39UmDJ7T2Ns2Bvjoditt1JrjFzML4eXPv7utMupjEUj/';
                 $blog_date = date('Y-m-d H:i:s', $blog['timestamp']);
                 $avatar = (new AvatarModel())->getAvatar($tp_user['uid']);
-                include APP_PATH . 'library/Parser.php';
-                $parser = new HyperDown\Parser;
+                $parser = new \HyperDown\Parser();
                 $blogContent = $parser->makeHtml($blog['content']);
                 $result = <<<HTML_CONTENT
 <html>
