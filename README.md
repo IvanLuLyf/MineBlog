@@ -5,10 +5,12 @@
 MineBlog is a simple blog software powered by BunnyPHP framework.
 
 [![Release](https://img.shields.io/github/release/ivanlulyf/mineblog.svg?color=brightgreen&style=flat-square)](https://packagist.org/packages/ivanlulyf/mineblog)
+[![Packagist](https://img.shields.io/packagist/dt/ivanlulyf/mineblog.svg?color=lightgreen&style=flat-square)](https://packagist.org/packages/ivanlulyf/mineblog)
 ![Code Size](https://img.shields.io/github/languages/code-size/ivanlulyf/mineblog.svg?color=orange&style=flat-square)
 ![License](https://img.shields.io/github/license/ivanlulyf/mineblog.svg?color=blue&style=flat-square)
+
 ![PHP](https://img.shields.io/badge/PHP->%3D7.0.0-777bb3.svg?style=flat-square&logo=php)
-[![Packagist](https://img.shields.io/packagist/dt/ivanlulyf/mineblog.svg?color=lightgreen&style=flat-square)](https://packagist.org/packages/ivanlulyf/mineblog)
+[![BunnyPHP](https://img.shields.io/packagist/v/ivanlulyf/bunnyphp.svg?color=pink&label=%F0%9F%90%B0BunnyPHP&style=flat-square)](https://github.com/IvanLuLyf/BunnyPHP)
 
 English | [中文](README_CN.md)
 
@@ -19,7 +21,23 @@ English | [中文](README_CN.md)
 
 ## Installation
 
-### 1. Clone this repository to your site root.
+### 1. Download program
+
+> Through git 
+
+Clone this repository to your site root.And run composer install
+
+```shell
+git clone https://github.com/IvanLuLyf/MineBlog.git
+cd MineBlog
+composer install
+```
+
+> Through composer
+
+```shell
+composer create-project ivanlulyf/mineblog MineBlog
+```
 
 ### 2. Set up your server
 > Apache
@@ -46,7 +64,7 @@ location / {
 
 ### 3. Open http://yourdomain/install
 
-## Error Code
+## Error code
 
 |Code|Description|
 |:---:|---|

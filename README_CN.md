@@ -5,10 +5,12 @@
 MineBlog是基于BunnyPHP的简易PHP博客系统
 
 [![Release](https://img.shields.io/github/release/ivanlulyf/mineblog.svg?color=brightgreen&style=flat-square)](https://packagist.org/packages/ivanlulyf/mineblog)
+[![Packagist](https://img.shields.io/packagist/dt/ivanlulyf/mineblog.svg?color=lightgreen&style=flat-square)](https://packagist.org/packages/ivanlulyf/mineblog)
 ![Code Size](https://img.shields.io/github/languages/code-size/ivanlulyf/mineblog.svg?color=orange&style=flat-square)
 ![License](https://img.shields.io/github/license/ivanlulyf/mineblog.svg?color=blue&style=flat-square)
+
 ![PHP](https://img.shields.io/badge/PHP->%3D7.0.0-777bb3.svg?style=flat-square&logo=php)
-[![Packagist](https://img.shields.io/packagist/dt/ivanlulyf/mineblog.svg?color=lightgreen&style=flat-square)](https://packagist.org/packages/ivanlulyf/mineblog)
+[![BunnyPHP](https://img.shields.io/packagist/v/ivanlulyf/bunnyphp.svg?color=pink&label=%F0%9F%90%B0BunnyPHP&style=flat-square)](https://github.com/IvanLuLyf/BunnyPHP)
 
 [English](README.md) | 中文
 
@@ -19,7 +21,23 @@ MineBlog是基于BunnyPHP的简易PHP博客系统
 
 ## 安装方式
 
-### 1. 复制本项目
+### 1. 下载程序
+
+> 通过git 
+
+复制本项目,运行Composer安装脚本
+
+```shell
+git clone https://github.com/IvanLuLyf/MineBlog.git
+cd MineBlog
+composer install
+```
+
+> 通过composer
+
+```shell
+composer create-project ivanlulyf/mineblog MineBlog
+```
 
 ### 2. 配置服务器环境
 > Apache
