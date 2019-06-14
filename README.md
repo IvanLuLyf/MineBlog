@@ -10,7 +10,7 @@ MineBlog is a simple blog software powered by BunnyPHP framework.
 ![License](https://img.shields.io/github/license/ivanlulyf/mineblog.svg?color=blue&style=flat-square)
 
 ![PHP](https://img.shields.io/badge/PHP->%3D7.0.0-777bb3.svg?style=flat-square&logo=php)
-[![BunnyPHP](https://img.shields.io/packagist/v/ivanlulyf/bunnyphp.svg?color=pink&label=%F0%9F%90%B0BunnyPHP&style=flat-square)](https://github.com/IvanLuLyf/BunnyPHP)
+[![BunnyPHP](https://img.shields.io/packagist/v/ivanlulyf/bunnyphp.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABYUlEQVR42qWTMUsDQRCFs0lUtPAnnCBooUTtBQtBKwsFm5QWgZBCUVD8CRJsLLSwECsbQbARO61sUxhBMCDcH7CxUS85v4GZcG5WU7jweLydN3O7M3su17sG0jRtw3nnXCIb6CLUQRfgr6zZ5f65ugX4Ch9wULqDXAF19K3GlqF9cMPeoXm7BTLJ48iW7j+DOQmDBpjSb03gbVmOX2AM+QiGNXFS7g5epCfgA5Twvv4ooEWkaR34CrmmzZoB0tAmGATXeFbN6/fACiwg7zSxpPwk0wGLeO6DBbwix8iaXkc80+CUWDWbHCrg4jgejaLoErnkTUxOtQ7ebAL+FQoE2nAZeQESjTttpDymDTzn5vULFOXlwXXklk5hSMOfyid4ts372wk2kUfaPLurjFCe8a4+pN4TWA+gEXAAKt4JzsAeeA/2wF8Um4Xm1fNAUuPPfyE0zn57/U6Q187LSkLJsr4B6ae8Ef32tb0AAAAASUVORK5CYII=&color=pink&label=BunnyPHP&style=flat-square)](https://github.com/IvanLuLyf/BunnyPHP)
 
 English | [中文](README_CN.md)
 
