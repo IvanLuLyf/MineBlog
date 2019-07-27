@@ -6,9 +6,16 @@
  * Time: 3:24
  */
 
+namespace MineBlog\Controller;
+
 use BunnyPHP\BunnyPHP;
 use BunnyPHP\Config;
 use BunnyPHP\Controller;
+use HyperDown\Parser;
+use MineBlog\Model\BlogModel;
+use MineBlog\Model\CommentModel;
+use MineBlog\Service\OauthService;
+use MineBlog\Service\UserService;
 
 class BlogController extends Controller
 {
@@ -51,7 +58,7 @@ class BlogController extends Controller
      * @param int $tid path(0,0)
      * @param UserService $userService
      */
-    public function ac_view(int $tid = 0, UserService $userService)
+    public function ac_view(UserService $userService, int $tid = 0)
     {
         $blog = (new BlogModel())->getBlogById($tid);
         $tp_user = $userService->getLoginUser();
@@ -79,7 +86,7 @@ class BlogController extends Controller
                     if ($cache->has('blog_' . $tid)) {
                         $html_content = $cache->get('blog_' . $tid);
                     } else {
-                        $parser = new \HyperDown\Parser();
+                        $parser = new Parser();
                         $html_content = $parser->makeHtml($blog['content']);
                         $cache->set('blog_' . $tid, $html_content);
                     }
@@ -98,7 +105,7 @@ class BlogController extends Controller
      * @param int $page path(0,1)
      * @param UserService $userService
      */
-    function ac_list(int $page = 1, UserService $userService)
+    function ac_list(UserService $userService, int $page = 1)
     {
         $cache = BunnyPHP::getCache();
         if ($cache->has('blog/list/' . $page)) {

@@ -6,6 +6,8 @@
  * Time: 3:37
  */
 
+namespace MineBlog\Storage;
+
 use BunnyPHP\Storage;
 
 class IpfsStorage implements Storage

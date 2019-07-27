@@ -6,6 +6,8 @@
  * Time: 17:30
  */
 
+namespace MineBlog\Model;
+
 use BunnyPHP\Model;
 
 class AvatarModel extends Model

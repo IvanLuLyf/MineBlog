@@ -6,6 +6,8 @@
  * Time: 0:52
  */
 
+namespace MineBlog\Model;
+
 use BunnyPHP\Model;
 
 class CommentModel extends Model

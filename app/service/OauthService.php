@@ -6,9 +6,12 @@
  * Time: 17:31
  */
 
+namespace MineBlog\Service;
+
 use BunnyPHP\Config;
 use BunnyPHP\Controller;
 use BunnyPHP\Service;
+use MineBlog\Model\BindModel;
 
 class OauthService extends Service
 {

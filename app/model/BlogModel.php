@@ -6,6 +6,8 @@
  * Time: 0:09
  */
 
+namespace MineBlog\Model;
+
 use BunnyPHP\Model;
 
 class BlogModel extends Model

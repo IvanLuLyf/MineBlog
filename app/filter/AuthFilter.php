@@ -6,8 +6,11 @@
  * Time: 1:22
  */
 
+namespace MineBlog\Filter;
+
 use BunnyPHP\BunnyPHP;
 use BunnyPHP\Filter;
+use MineBlog\Model\UserModel;
 
 class AuthFilter extends Filter
 {

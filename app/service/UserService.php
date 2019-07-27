@@ -6,8 +6,11 @@
  * Time: 0:50
  */
 
+namespace MineBlog\Service;
+
 use BunnyPHP\BunnyPHP;
 use BunnyPHP\Service;
+use MineBlog\Model\UserModel;
 
 class UserService extends Service
 {

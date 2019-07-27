@@ -7,8 +7,11 @@
  * Time: 23:26
  */
 
+namespace MineBlog\Filter;
+
 use BunnyPHP\BunnyPHP;
 use BunnyPHP\Filter;
+use MineBlog\Model\ApiModel;
 
 class ApiFilter extends Filter
 {

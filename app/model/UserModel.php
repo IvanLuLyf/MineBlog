@@ -6,6 +6,8 @@
  * Time: 1:27
  */
 
+namespace MineBlog\Model;
+
 use BunnyPHP\Model;
 
 class UserModel extends Model

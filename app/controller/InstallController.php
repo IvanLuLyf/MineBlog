@@ -6,8 +6,14 @@
  * Time: 17:12
  */
 
+namespace MineBlog\Controller;
+
 use BunnyPHP\Config;
 use BunnyPHP\Controller;
+use BunnyPHP\Model;
+use Exception;
+use MineBlog\Model\UserModel;
+use PDO;
 
 class InstallController extends Controller
 {

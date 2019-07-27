@@ -6,7 +6,11 @@
  * Time: 16:33
  */
 
+namespace MineBlog\Controller;
+
 use BunnyPHP\Controller;
+use MineBlog\Model\BlogModel;
+use MineBlog\Model\UserModel;
 
 class RssController extends Controller
 {

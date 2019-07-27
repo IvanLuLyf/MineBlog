@@ -7,6 +7,8 @@
  * Time: 16:45
  */
 
+namespace MineBlog\Model;
+
 use BunnyPHP\Model;
 
 class ApiModel extends Model

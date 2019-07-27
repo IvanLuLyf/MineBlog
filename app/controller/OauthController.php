@@ -5,9 +5,17 @@
  * Date: 2018/7/30
  * Time: 16:27
  */
+
+namespace MineBlog\Controller;
+
 use BunnyPHP\BunnyPHP;
 use BunnyPHP\Config;
 use BunnyPHP\Controller;
+use MineBlog\Model\BindModel;
+use MineBlog\Model\OauthTokenModel;
+use MineBlog\Model\UserModel;
+use MineBlog\Service\OauthService;
+use MineBlog\Service\UserService;
 
 class OauthController extends Controller
 {

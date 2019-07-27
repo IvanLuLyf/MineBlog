@@ -7,6 +7,8 @@
  * Time: 17:07
  */
 
+namespace MineBlog\Model;
+
 use BunnyPHP\Model;
 
 class OauthTokenModel extends Model

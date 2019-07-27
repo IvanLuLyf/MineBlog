@@ -6,6 +6,8 @@
  * Time: 16:51
  */
 
+namespace MineBlog\Model;
+
 use BunnyPHP\Model;
 
 class BindModel extends Model

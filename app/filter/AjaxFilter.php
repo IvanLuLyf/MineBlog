@@ -6,6 +6,8 @@
  * Time: 15:31
  */
 
+namespace MineBlog\Filter;
+
 use BunnyPHP\BunnyPHP;
 use BunnyPHP\Filter;
 

@@ -6,6 +6,8 @@
  * Time: 14:14
  */
 
+namespace MineBlog\Model;
+
 use BunnyPHP\Model;
 
 class UserInfoModel extends Model

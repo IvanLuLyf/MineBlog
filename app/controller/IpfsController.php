@@ -6,7 +6,14 @@
  * Time: 17:26
  */
 
+namespace MineBlog\Controller;
+
+use BunnyPHP\BunnyPHP;
 use BunnyPHP\Controller;
+use HyperDown\Parser;
+use MineBlog\Model\AvatarModel;
+use MineBlog\Model\BlogModel;
+use MineBlog\Storage\IpfsStorage;
 
 class IpfsController extends Controller
 {
@@ -23,10 +30,10 @@ class IpfsController extends Controller
                 $static_path = '/ipfs/Qma39UmDJ7T2Ns2Bvjoditt1JrjFzML4eXPv7utMupjEUj/';
                 $blog_date = date('Y-m-d H:i:s', $blog['timestamp']);
                 $avatar = (new AvatarModel())->getAvatar($tp_user['uid']);
-                $parser = new \HyperDown\Parser();
+                $parser = new Parser();
                 $blogContent = $parser->makeHtml($blog['content']);
                 $result = <<<HTML_CONTENT
-<html>
+<html lang="zh-cn">
 <head>
 <title>${blog['title']}</title>
 <meta charset="utf-8">
@@ -38,12 +45,12 @@ class IpfsController extends Controller
 <div class="article">
 <h3>${blog['title']}</h3>
 <div class="user">
-<img class="avatar" src="${avatar}"/>
+<img class="avatar" src="${avatar}" alt="avatar"/>
 <div class="user-info"><div>${blog['nickname']}</div><div>${blog_date}</div></div>
 </div>
 <div class="markdown-body">${blogContent}</div>
 </div>
-<div class="footer"><p>Publish with <a href="https://github.com/IvanLuLyf/MineBlog"><img src="${static_path}mineblog.png" class="footer-img"></a> · Host by <a href="https://ipfs.io"><img src="${static_path}ipfs.png" class="footer-img"></a></p><p>&copy;2019 ${blog['nickname']}. All rights reserved.</p></div>
+<div class="footer"><p>Publish with <a href="https://github.com/IvanLuLyf/MineBlog"><img src="${static_path}mineblog.png" class="footer-img" alt="MineBlog"></a> · Host by <a href="https://ipfs.io"><img src="${static_path}ipfs.png" class="footer-img" alt="IPFS"></a></p><p>&copy;2019 ${blog['nickname']}. All rights reserved.</p></div>
 </body></html>
 HTML_CONTENT;
                 $url = (new IpfsStorage([]))->write('', $result);

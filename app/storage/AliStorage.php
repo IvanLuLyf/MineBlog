@@ -5,6 +5,7 @@
  * Date: 2018/8/4
  * Time: 22:12
  */
+namespace MineBlog\Storage;
 
 use OSS\OssClient;
 use OSS\Core\OssException;
@@ -29,7 +30,7 @@ class AliStorage implements Storage
 
         try {
             $this->ossClient = new OssClient($this->accessKeyId, $this->accessKeySecret, $this->endpoint);
-        } catch (\OSS\Core\OssException $e) {
+        } catch (OssException $e) {
             exit($e->getMessage());
         }
     }

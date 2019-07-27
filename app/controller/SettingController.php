@@ -6,9 +6,14 @@
  * Time: 1:29
  */
 
+namespace MineBlog\Controller;
+
 use BunnyPHP\BunnyPHP;
 use BunnyPHP\Config;
 use BunnyPHP\Controller;
+use MineBlog\Model\AvatarModel;
+use MineBlog\Model\BindModel;
+use MineBlog\Service\OauthService;
 
 class SettingController extends Controller
 {

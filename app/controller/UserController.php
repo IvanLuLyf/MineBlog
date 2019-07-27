@@ -6,9 +6,18 @@
  * Time: 18:43
  */
 
+namespace MineBlog\Controller;
+
 use BunnyPHP\BunnyPHP;
 use BunnyPHP\Config;
 use BunnyPHP\Controller;
+use BunnyPHP\View;
+use MineBlog\Model\AvatarModel;
+use MineBlog\Model\BlogModel;
+use MineBlog\Model\OauthTokenModel;
+use MineBlog\Model\UserInfoModel;
+use MineBlog\Model\UserModel;
+use MineBlog\Service\UserService;
 
 class UserController extends Controller
 {

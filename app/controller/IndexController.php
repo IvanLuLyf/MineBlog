@@ -6,6 +6,8 @@
  * Time: 18:17
  */
 
+namespace MineBlog\Controller;
+
 use BunnyPHP\Config;
 use BunnyPHP\Controller;
 
