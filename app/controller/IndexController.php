@@ -10,6 +10,7 @@ namespace MineBlog\Controller;
 
 use BunnyPHP\Config;
 use BunnyPHP\Controller;
+use MineBlog\Model\UserModel;
 
 class IndexController extends Controller
 {
@@ -20,5 +21,10 @@ class IndexController extends Controller
         } else {
             $this->redirect('install', 'index');
         }
+    }
+
+    public function ac_test(){
+        echo UserModel::name();
+        echo UserModel::create(true);
     }
 }

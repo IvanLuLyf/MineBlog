@@ -101,7 +101,7 @@ class InstallController extends Controller
              */
             foreach ($models as $model) {
                 if (substr($model, -9) == "Model.php") {
-                    $modelClass = substr($model, 0, -4);
+                    $modelClass = TP_NAMESPACE.'\\Model\\'.substr($model, 0, -4);
                     $modelClass::create();
                 }
             }
