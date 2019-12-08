@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "ivanlulyf/bunnyphp": "@dev",
+    "ivanlulyf/bunnyphp": "^2.3",
     "aliyuncs/oss-sdk-php": "^2.3",
     "joyqi/hyper-down": "dev-master",
     "ext-json": "*",
