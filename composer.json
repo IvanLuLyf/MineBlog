@@ -11,12 +11,13 @@
   ],
   "require": {
     "ivanlulyf/bunnyphp": "^2.3",
-    "aliyuncs/oss-sdk-php": "^2.3",
     "joyqi/hyper-down": "dev-master",
     "ext-json": "*",
     "ext-pdo": "*"
   },
   "suggest": {
-    "ivanlulyf/bunnyphp-admin": "Using BunnyPHP Admin Manage Your Data"
+    "ivanlulyf/bunnyphp-admin": "Using BunnyPHP Admin Manage Your Data",
+    "ivanlulyf/bunnyphp-redis": "RedisCache for BunnyPHP",
+    "ivanlulyf/bunnyphp-alioss": "Aliyun OSS Storage for BunnyPHP"
   }
 }
