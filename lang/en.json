@@ -1,6 +1,7 @@
 {
   "database_error": "Database Error",
   "param_required": "Some parameters is required",
+  "tip_info": "Info",
   "login": "Login",
   "username": "Username",
   "email": "Email",

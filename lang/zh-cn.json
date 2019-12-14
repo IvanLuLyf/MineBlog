@@ -1,6 +1,7 @@
 {
   "database_error": "数据库内部出错",
   "param_required": "参数不能为空",
+  "tip_info": "提示信息",
   "login": "登录",
   "username": "用户名",
   "email": "邮箱",
