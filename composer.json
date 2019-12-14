@@ -13,8 +13,7 @@
     "ivanlulyf/bunnyphp": "^2.3",
     "joyqi/hyper-down": "dev-master",
     "ext-json": "*",
-    "ext-pdo": "*",
-    "ivanlulyf/bunnyphp-admin": "^1.0"
+    "ext-pdo": "*"
   },
   "suggest": {
     "ivanlulyf/bunnyphp-admin": "Using BunnyPHP Admin Manage Your Data",
