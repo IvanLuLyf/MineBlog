@@ -11,6 +11,7 @@ namespace MineBlog\Controller;
 use BunnyPHP\BunnyPHP;
 use BunnyPHP\Config;
 use BunnyPHP\Controller;
+use BunnyPHP\Language;
 use HyperDown\Parser;
 use MineBlog\Model\BlogModel;
 use MineBlog\Model\CommentModel;
@@ -31,7 +32,7 @@ class BlogController extends Controller
      */
     public function ac_create_get()
     {
-        $this->render('blog/create.html');
+        $this->renderTemplate('blog/create.html');
     }
 
     /**
@@ -50,7 +51,7 @@ class BlogController extends Controller
                 $this->assign('ret', 0)->assign('status', 'ok')->assign('tid', $tid)->render();
             }
         } else {
-            $this->assign('ret', -7)->assign('status', 'parameter cannot be empty')->assign('tp_error_msg', "必要参数为空")->error();
+            $this->assign('ret', -7)->assign('status', 'parameter cannot be empty')->assign('tp_error_msg', Language::get('param_required'))->error();
         }
     }
 
@@ -92,12 +93,12 @@ class BlogController extends Controller
                     }
                     $this->assign('cur_ctr', 'blog')->assign("html_content", $html_content);
                 }
-                $this->assignAll(['ret' => 0, 'status' => 'ok', 'blog' => $blog, 'comments' => $comments])->render('blog/view.html');
+                $this->assignAll(['ret' => 0, 'status' => 'ok', 'blog' => $blog, 'comments' => $comments])->renderTemplate('blog/view.html');
             } else {
-                $this->assignAll(['ret' => 3002, 'status' => 'permission denied', 'tp_error_msg' => '没有访问权限'])->error();
+                $this->assignAll(['ret' => 3002, 'status' => 'permission denied', 'tp_error_msg' => Language::get('blog_not_permit')])->error();
             }
         } else {
-            $this->assignAll(['ret' => 3001, 'status' => 'invalid tid', 'tp_error_msg' => '博客不存在'])->error();
+            $this->assignAll(['ret' => 3001, 'status' => 'invalid tid', 'tp_error_msg' => Language::get('blog_not_exist')])->error();
         }
     }
 
@@ -126,7 +127,7 @@ class BlogController extends Controller
             $this->assignAll(['tp_user' => $userService->getLoginUser(), 'cur_ctr' => 'blog', 'end_page' => $endPage]);
         }
         $this->assign("recommend_blogs", $recommend_blogs);
-        $this->assignAll(['ret' => 0, 'status' => 'ok', "page" => $page, 'total' => $total, "blogs" => $blogs])->render('blog/list.html');
+        $this->assignAll(['ret' => 0, 'status' => 'ok', "page" => $page, 'total' => $total, "blogs" => $blogs])->renderTemplate('blog/list.html');
     }
 
     /**
@@ -142,7 +143,7 @@ class BlogController extends Controller
                 $this->redirect('blog', 'view', ['tid' => $tid]);
             }
         } else {
-            $this->assignAll(['ret' => 3001, 'status' => 'invalid tid', 'tp_error_msg' => "博客不存在"])->error();
+            $this->assignAll(['ret' => 3001, 'status' => 'invalid tid', 'tp_error_msg' => Language::get('blog_not_exist')])->error();
         }
     }
 
@@ -161,7 +162,7 @@ class BlogController extends Controller
                 }
             }
         } else {
-            $this->assignAll(['ret' => 3001, 'status' => 'invalid tid', 'tp_error_msg' => "博客不存在"])->error();
+            $this->assignAll(['ret' => 3001, 'status' => 'invalid tid', 'tp_error_msg' => Language::get('blog_not_exist')])->error();
         }
     }
 
@@ -177,7 +178,7 @@ class BlogController extends Controller
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
             $this->assignAll(['tp_user' => $userService->getLoginUser(), 'cur_ctr' => 'blog', 'end_page' => $endPage]);
         }
-        $this->assignAll(['ret' => 0, 'status' => 'ok', 'word' => $word, "page" => $page, 'total' => $result['total'], "blogs" => $result['blogs']])->render('blog/search.html');
+        $this->assignAll(['ret' => 0, 'status' => 'ok', 'word' => $word, "page" => $page, 'total' => $result['total'], "blogs" => $result['blogs']])->renderTemplate('blog/search.html');
     }
 
     /**

@@ -1,6 +1,6 @@
 <html lang="zh-cn">
 <head>
-    <title>写博客 - <?=TP_SITE_NAME?></title>
+    <title>{L'create_blog'} - <?=TP_SITE_NAME?></title>
     <?php include "template/common/header.html"; ?>
     <script src="https://cdn.bootcss.com/showdown/1.8.6/showdown.min.js"></script>
     <link href="/static/css/article.css" rel="stylesheet">
@@ -18,31 +18,34 @@
                     <form class="form-horizontal" role="form" action="/blog/create" method="post">
                         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>"/>
                         <div class="form-group">
-                            <label for="title">标题</label>
-                            <input id="title" name="title" type="text" placeholder="标题" class="form-control" required/>
+                            <label for="title">{L'title'}</label>
+                            <input id="title" name="title" type="text" placeholder="{L'title'}" class="form-control"
+                                   required/>
                         </div>
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-secondary" onclick="onImageClick()">图片</button>
+                            <button type="button" class="btn btn-secondary" onclick="onImageClick()">{L'picture'}
+                            </button>
                         </div>
                         <div class="form-group">
-                            <label for="summary">摘要</label>
-                            <input id="summary" name="summary" type="text" placeholder="摘要" class="form-control"/>
+                            <label for="summary">{L'summary'}</label>
+                            <input id="summary" name="summary" type="text" placeholder="{L'summary'}"
+                                   class="form-control"/>
                         </div>
                         <div class="form-row">
                             <div class="col-lg-6 form-group">
-                                <label for="content">内容</label>
+                                <label for="content">{L'content'}</label>
                                 <textarea class="form-control" id="content" name="content" rows="15" cols="60"
-                                          placeholder="内容" required oninput="markdownIt()"></textarea>
+                                          placeholder="{L'content'}" required oninput="markdownIt()"></textarea>
                             </div>
                             <div class="col-lg-6 form-group">
-                                <label for="preview">预览</label>
+                                <label for="preview">{L'preview'}</label>
                                 <div class="form-control markdown-body" style="height: 20rem;overflow:auto"
                                      id="preview"></div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="float-right">
-                                <button class="btn btn-outline-dark" type="submit">发布</button>
+                                <button class="btn btn-outline-dark" type="submit">{L'publish'}</button>
                             </div>
                         </div>
                     </form>

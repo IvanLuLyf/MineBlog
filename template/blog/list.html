@@ -1,6 +1,6 @@
 <html lang="zh-cn">
 <head>
-    <title>博客列表 - <?=TP_SITE_NAME?></title>
+    <title>{L'blog_list'} - <?=TP_SITE_NAME?></title>
     <?php include "template/common/header.html"; ?>
     <link href="/static/css/article.css" rel="stylesheet">
 </head>
@@ -33,13 +33,13 @@
             <nav class="mt-4" aria-label="">
                 <ul class="pagination justify-content-center">
                     <li class="page-item">
-                        <a class="page-link link-dark" href="/blog/list/1">首页</a>
+                        <a class="page-link link-dark" href="/blog/list/1">{L'first_page'}</a>
                     </li>
                     <li class="page-item <?=$page==1?'disabled':''?>">
                         <a aria-label="Previous" class="page-link link-dark"
                            href="/blog/list/<?=$page==1?1:($page-1)?>">
                             <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">上一页</span>
+                            <span class="sr-only">{L'prev_page'}</span>
                         </a>
                     </li>
                     <?php for($i=($page>4?($page-3):1);($i<=$page+5 && $i<=$end_page);$i++):?>
@@ -50,11 +50,11 @@
                         <a aria-label="Next" class="page-link link-dark"
                            href="/blog/list/<?=$page==$end_page?$end_page:($page+1)?>">
                             <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">下一页</span>
+                            <span class="sr-only">{L'next_page'}</span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link link-dark" href="/blog/list/<?=$end_page?>">尾页</a>
+                        <a class="page-link link-dark" href="/blog/list/<?=$end_page?>">{L'last_page'}</a>
                     </li>
                 </ul>
             </nav>
@@ -63,7 +63,7 @@
             <?php if (isset($tp_user)): ?>
             <div class="card neo_card mt-4">
                 <div class="card-body">
-                    <a href="/blog/create" class="btn btn-dark btn-block text-white badge-pill">发博客</a>
+                    <a href="/blog/create" class="btn btn-dark btn-block text-white badge-pill">{L'create_blog'}</a>
                 </div>
             </div>
             <div class="card neo_card mt-4">
@@ -77,7 +77,7 @@
             <?php if(isset($recommend_blogs)):?>
             <div class="card neo_card mt-4">
                 <div class="card-body">
-                    <h5>推荐列表</h5>
+                    <h5>{L'recommend_list'}</h5>
                     <?php foreach ($recommend_blogs as $blog): ?>
                     <p><a class="link-dark" href="/blog/view/<?=$blog['tid']?>"><?=$blog['title']?></a></p>
                     <?php endforeach ?>

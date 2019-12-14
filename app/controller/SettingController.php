@@ -11,6 +11,7 @@ namespace MineBlog\Controller;
 use BunnyPHP\BunnyPHP;
 use BunnyPHP\Config;
 use BunnyPHP\Controller;
+use BunnyPHP\Language;
 use MineBlog\Model\AvatarModel;
 use MineBlog\Model\BindModel;
 use MineBlog\Service\OauthService;
@@ -73,7 +74,7 @@ class SettingController extends Controller
                 ->assign('oauth', ['type' => $type, 'name' => $name])
                 ->render('setting/oauth.html');
         } else {
-            $this->assignAll(['ret' => 1007, 'status' => 'oauth is not enabled', 'tp_error_msg' => '站点未开启OAuth'])->error();
+            $this->assignAll(['ret' => 1007, 'status' => 'oauth is not enabled', 'tp_error_msg' => Language::get('oauth_close')])->error();
         }
     }
 

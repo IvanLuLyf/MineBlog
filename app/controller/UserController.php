@@ -11,6 +11,7 @@ namespace MineBlog\Controller;
 use BunnyPHP\BunnyPHP;
 use BunnyPHP\Config;
 use BunnyPHP\Controller;
+use BunnyPHP\Language;
 use BunnyPHP\View;
 use MineBlog\Model\AvatarModel;
 use MineBlog\Model\BlogModel;
@@ -36,7 +37,7 @@ class UserController extends Controller
             $oauth = Config::load('oauth')->get('enabled', []);
         }
         $this->assign('oauth', $oauth);
-        $this->render("user/login.html");
+        $this->renderTemplate("user/login.html");
     }
 
     /**
@@ -64,7 +65,7 @@ class UserController extends Controller
                     $oauth = Config::load('oauth')->get('enabled', []);
                 }
                 $this->assign('oauth', $oauth);
-                $this->render('user/login.html');
+                $this->renderTemplate('user/login.html');
             }
         } elseif ($this->_mode == BunnyPHP::MODE_API) {
             if ($result['ret'] == 0) {
@@ -88,9 +89,9 @@ class UserController extends Controller
                 BunnyPHP::getRequest()->setSession('referer', $referer);
                 $this->assign('referer', $referer);
             }
-            $this->render("user/register.html");
+            $this->renderTemplate("user/register.html");
         } else {
-            $this->assignAll(['ret' => 1005, 'status' => 'registration is not allowed', 'tp_error_msg' => "站点关闭注册"])->error();
+            $this->assignAll(['ret' => 1005, 'status' => 'registration is not allowed', 'tp_error_msg' => Language::get('reg_close')])->error();
         }
     }
 
@@ -114,7 +115,7 @@ class UserController extends Controller
                     }
                 } else {
                     $this->assignAll($result);
-                    $this->render('user/register.html');
+                    $this->renderTemplate('user/register.html');
                 }
             } elseif ($this->_mode == BunnyPHP::MODE_API) {
                 if ($result['ret'] == 0) {
@@ -126,7 +127,7 @@ class UserController extends Controller
                 $this->render();
             }
         } else {
-            $this->assignAll(['ret' => 1005, 'status' => 'registration is not allowed', 'tp_error_msg' => "站点关闭注册"])->error();
+            $this->assignAll(['ret' => 1005, 'status' => 'registration is not allowed', 'tp_error_msg' => Language::get('reg_close')])->error();
         }
     }
 
@@ -212,7 +213,7 @@ class UserController extends Controller
             $this->assign("blogs", $blogs);
             $this->render('user/blog.html');
         } else {
-            $this->assignAll(['ret' => 1002, 'status' => "user does not exist", 'tp_error_msg' => "用户名不存在"])->error();
+            $this->assignAll(['ret' => 1002, 'status' => "user does not exist", 'tp_error_msg' => Language::get('user_not_exist')])->error();
         }
     }
 }

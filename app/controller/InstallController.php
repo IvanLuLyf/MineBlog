@@ -101,7 +101,7 @@ class InstallController extends Controller
              */
             foreach ($models as $model) {
                 if (substr($model, -9) == "Model.php") {
-                    $modelClass = TP_NAMESPACE.'\\Model\\'.substr($model, 0, -4);
+                    $modelClass = TP_NAMESPACE . '\\Model\\' . substr($model, 0, -4);
                     $modelClass::create();
                 }
             }
@@ -113,6 +113,9 @@ class InstallController extends Controller
                 'site_url' => $site_url,
                 'controller' => 'Index',
                 'allow_reg' => isset($_POST['allow_reg']),
+                'apps' => [
+                    'admin' => ['namespace' => '\\Bunny\\Admin']
+                ]
             ]);
             fwrite($config_file, $config);
             fclose($config_file);

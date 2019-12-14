@@ -1,6 +1,6 @@
 <html lang="zh-cn">
 <head>
-    <title>搜索 - <?=TP_SITE_NAME?></title>
+    <title>{L'search'} - <?=TP_SITE_NAME?></title>
     <?php include "template/common/header.html"; ?>
     <link href="/static/css/article.css" rel="stylesheet">
 </head>
@@ -11,11 +11,11 @@
         <div class="col-lg-9">
             <div class="card neo_card mt-4">
                 <div class="card-body">
-                    搜索
+                    {L'search'}
                     <form class="form-inline mt-2 mb-2" action="/blog/search">
-                        <input name="word" class="form-control mr-sm-2" type="text" placeholder="搜索" aria-label="搜索"
+                        <input name="word" class="form-control mr-sm-2" type="text" placeholder="{L'search'}" aria-label="{L'search'}"
                                value="<?=$word?>">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{L'search'}</button>
                     </form>
                     <?php if($total==0): ?>
                     <?php if($word!=''):?>
@@ -49,13 +49,13 @@
             <nav class="mt-4" aria-label="">
                 <ul class="pagination justify-content-center">
                     <li class="page-item">
-                        <a class="page-link link-dark" href="/blog/search?word=<?=$word?>&page=1">首页</a>
+                        <a class="page-link link-dark" href="/blog/search?word=<?=$word?>&page=1">{L'first_page'}</a>
                     </li>
                     <li class="page-item <?=$page==1?'disabled':''?>">
                         <a aria-label="Previous" class="page-link link-dark"
                            href="/blog/search?word=<?=$word?>&page=<?=$page==1?1:($page-1)?>">
                             <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">上一页</span>
+                            <span class="sr-only">{L'prev_page'}</span>
                         </a>
                     </li>
                     <?php for($i=($page>4?($page-3):1);($i<=$page+5 && $i<=$end_page);$i++):?>
@@ -67,11 +67,11 @@
                         <a aria-label="Next" class="page-link link-dark"
                            href="/blog/search?word=<?=$word?>&page=<?=$page==$end_page?$end_page:($page+1)?>">
                             <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">下一页</span>
+                            <span class="sr-only">{L'next_page'}</span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link link-dark" href="/blog/search?word=<?=$word?>&page=<?=$end_page?>">尾页</a>
+                        <a class="page-link link-dark" href="/blog/search?word=<?=$word?>&page=<?=$end_page?>">{L'last_page'}</a>
                     </li>
                 </ul>
             </nav>

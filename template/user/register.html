@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>注册 - <?=TP_SITE_NAME?></title>
+    <title>{L'register'} - <?=TP_SITE_NAME?></title>
     <?php include "template/common/header.html"; ?>
     <link rel="stylesheet" href="/static/css/login.css"/>
 </head>
@@ -17,27 +17,27 @@
         <form action="/user/register" method="post">
             <input type="hidden" name="csrf_token" value="<?=$csrf_token?>"/>
             <div class="form-group">
-                <label for="username">用户名</label>
-                <input type="text" id="username" name="username" class="form-control" placeholder="用户名" required
+                <label for="username">{L'username'}</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="{L'username'}" required
                        autofocus>
             </div>
             <div class="form-group">
-                <label for="password">密码</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="密码" required>
+                <label for="password">{L'password'}</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="{L'password'}" required>
             </div>
             <div class="form-group">
-                <label for="email">邮箱</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="邮箱" required>
+                <label for="email">{L'email'}</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="{L'email'}" required>
             </div>
             <div class="form-group">
-                <label for="nickname">昵称</label>
-                <input type="text" id="nickname" name="nickname" class="form-control" placeholder="昵称(可选)">
+                <label for="nickname">{L'nickname'}</label>
+                <input type="text" id="nickname" name="nickname" class="form-control" placeholder="{L'nickname'}({L'optional'})">
             </div>
             <?php if(isset($referer)):?>
             <input type="hidden" id="referer" name="referer" value="<?=$referer?>">
             <?php endif;?>
-            <input type="submit" class="btn btn-success btn-block" value="注册">
-            <div class="mt-2 float-right"><a href="/user/login?referer=<?=isset($referer)?urlencode($referer):''?>">登录</a></div>
+            <input type="submit" class="btn btn-success btn-block" value="{L'register'}">
+            <div class="mt-2 float-right"><a href="/user/login?referer=<?=isset($referer)?urlencode($referer):''?>">{L'login'}</a></div>
         </form>
     </div>
 </div>

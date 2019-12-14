@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>登录 - <?=TP_SITE_NAME?></title>
+    <title>{L'login'} - <?=TP_SITE_NAME?></title>
     <?php include "template/common/header.html"; ?>
     <link rel="stylesheet" href="/static/css/login.css"/>
 </head>
@@ -17,26 +17,26 @@
         <form action="/user/login" method="post">
             <input type="hidden" name="csrf_token" value="<?=$csrf_token?>"/>
             <div class="form-group">
-                <label for="username">用户名</label>
-                <input type="text" id="username" name="username" class="form-control" placeholder="用户名" required
+                <label for="username">{L'username'}</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="{L'username'}" required
                        autofocus>
             </div>
             <div class="form-group">
-                <label for="password">密码</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="密码" required>
+                <label for="password">{L'password'}</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="{L'password'}" required>
             </div>
             <?php if(isset($referer)):?>
             <input type="hidden" id="referer" name="referer" value="<?=$referer?>">
             <?php endif;?>
-            <input type="submit" class="btn btn-success btn-block" value="登录">
+            <input type="submit" class="btn btn-success btn-block" value="{L'login'}">
             <div class="oauth-bar">
                 <?php foreach ($oauth as $o): ?>
                 <a href="/oauth/connect/<?=$o[0]?>"><img alt="<?=$o[1]?>" class="oauth-icon" src="/static/img/<?=$o[0]?>.png"></a>
                 <?php endforeach ?>
             </div>
             <div class="float-right">
-                <a href="/user/register?referer=<?=isset($referer)?urlencode($referer):''?>">注册</a>
-                | <a href="/user/findpass">忘记密码</a>
+                <a href="/user/register?referer=<?=isset($referer)?urlencode($referer):''?>">{L'register'}</a>
+                | <a href="/user/findpass">{L'forgot_password'}</a>
             </div>
         </form>
     </div>
