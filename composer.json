@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "ivanlulyf/bunnyphp": "^2.3",
+    "ivanlulyf/bunnyphp": "^2.5",
     "joyqi/hyper-down": "dev-master",
     "ext-json": "*",
     "ext-pdo": "*"

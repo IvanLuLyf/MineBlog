@@ -1,0 +1,101 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "d06b7794703550109d3cb3c5c27167ee",
+    "packages": [
+        {
+            "name": "ivanlulyf/bunnyphp",
+            "version": "2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IvanLuLyf/BunnyPHP.git",
+                "reference": "d4f3ff33d58aa85cac104b7bbbd623ec019ba1cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/IvanLuLyf/BunnyPHP/zipball/d4f3ff33d58aa85cac104b7bbbd623ec019ba1cc",
+                "reference": "d4f3ff33d58aa85cac104b7bbbd623ec019ba1cc",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-pdo": "*",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BunnyPHP\\": "BunnyPHP/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Lu",
+                    "email": "me@ivanlu.cn"
+                }
+            ],
+            "description": "a lightweight PHP MVC Framework",
+            "keywords": [
+                "framework",
+                "mvc"
+            ],
+            "time": "2020-12-07T16:05:01+00:00"
+        },
+        {
+            "name": "joyqi/hyper-down",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SegmentFault/HyperDown.git",
+                "reference": "15cecab7e5ff4af0d7b98e1452fa467009d13bbc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SegmentFault/HyperDown/zipball/15cecab7e5ff4af0d7b98e1452fa467009d13bbc",
+                "reference": "15cecab7e5ff4af0d7b98e1452fa467009d13bbc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HyperDown\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "joyqi",
+                    "email": "joyqi@segmentfault.com"
+                }
+            ],
+            "description": "A light weight markdown parser library",
+            "time": "2020-10-29T09:09:12+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "joyqi/hyper-down": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "ext-json": "*",
+        "ext-pdo": "*"
+    },
+    "platform-dev": []
+}
