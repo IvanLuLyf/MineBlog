@@ -14,7 +14,7 @@ use MineBlog\Model\UserModel;
 
 class AuthFilter extends Filter
 {
-    public function doFilter($fa = [])
+    public function doFilter($param = []): int
     {
         if ($this->_mode == BunnyPHP::MODE_NORMAL) {
             $token = BunnyPHP::getRequest()->getSession('token');
@@ -36,7 +36,7 @@ class AuthFilter extends Filter
                 $appKey = $_POST['client_id'];
                 $appToken = $_POST['token'];
                 if ($apiInfo = (new ApiModel())->check($appKey)) {
-                    if ($apiInfo['type'] == 1 || $fa[0] == '' || $apiInfo[$fa[0]] == true) {
+                    if ($apiInfo['type'] == 1 || $param[0] == '' || $apiInfo[$param[0]] == true) {
                         $userId = (new OauthTokenModel())->check($appKey, $appToken);
                         if ($userId != 0) {
                             $user = (new UserModel)->getUserByUid($userId);

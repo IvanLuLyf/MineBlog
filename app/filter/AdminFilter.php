@@ -10,7 +10,7 @@ use MineBlog\Model\UserModel;
 
 class AdminFilter extends Filter
 {
-    public function doFilter($param = [])
+    public function doFilter($param = []): int
     {
         $user = BunnyPHP::app()->get('tp_user');
         $token = BunnyPHP::getRequest()->getSession('token');

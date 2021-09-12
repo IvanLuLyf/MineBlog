@@ -13,7 +13,7 @@ use BunnyPHP\Filter;
 
 class AjaxFilter extends Filter
 {
-    public function doFilter($fa = [])
+    public function doFilter($param = []): int
     {
         BunnyPHP::app()->set("tp_ajax", true);
         return self::NEXT;
