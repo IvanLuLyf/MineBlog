@@ -5,13 +5,13 @@
   "license": "proprietary",
   "authors": [
     {
-      "name": "author's name",
-      "email": "email@example.com"
+      "name": "IvanLu",
+      "email": "me@ivanlu.cn"
     }
   ],
   "require": {
-    "ivanlulyf/bunnyphp": "^3.0",
-    "joyqi/hyper-down": "dev-master",
+    "ivanlulyf/bunnyphp": "^3",
+    "joyqi/hyper-down": "^2",
     "ext-json": "*",
     "ext-pdo": "*"
   },
